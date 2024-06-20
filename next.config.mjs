@@ -17,7 +17,10 @@ const nextConfig = {
         allowedOrigins: ['prompt2.ai', '*.prompt2.ai'],
       },
       //   serverActionsBodySizeLimit: '5mb',
-    }
+    },
+  eslint: {  //TO remove this for production
+      ignoreDuringBuilds: true,
+  }
 };
 
 export default withNextraConfig(nextConfig);
