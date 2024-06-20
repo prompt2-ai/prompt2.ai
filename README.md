@@ -1,3 +1,7 @@
+#WARNING 
+* this is a work in progress. The project is not yet ready for production or even for development.
+
+
 NextJS with shadcn/ui 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
