@@ -1,12 +1,14 @@
-# from nodejs latest run this nextjs app
-FROM node:20
-# Create app directory
+# Use a temporary image for copying files
+FROM node:20 AS builder
 WORKDIR /app
-# Install app dependencies
-COPY package*.json ./
-RUN npm install
-# Bundle app source
 COPY . .
-RUN npm run build
+RUN rm -rf node_modules .next
+
+# Use the final image for running the app
+FROM node:20
+WORKDIR /app
+COPY --from=builder /app .
+RUN yarn install
 EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+CMD [ "yarn", "dev", "--exit-zero" ]
+
