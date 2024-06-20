@@ -1,0 +1,17 @@
+{{- if .Values.storage.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "prompt2ai.fullname" . }}-app-pv-claim
+  labels:
+    app.kubernetes.io/name: prompt2ai
+    app.kubernetes.io/instance: prompt2ai
+    app: prompt2ai
+spec:
+  storageClassName: {{ include "prompt2ai.fullname" . }}-app-pv
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "10Gi"
+{{- end }}

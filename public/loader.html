@@ -1,0 +1,345 @@
+<style>
+    body {
+        background-color: #000000e0;
+    }
+
+    .connectionLine {
+        fill: navy;
+        stroke: #007d97;
+        stroke-width: .5;
+        stroke-linejoin: round;
+        stroke-dasharray: none;
+        stroke-opacity: 1;
+    }
+
+    .linesGlow path {
+        -webkit-filter: drop-shadow(0px 0px 1px rgba(255, 255, 255, 0.9));
+        filter: drop-shadow(0px 0px 1px rgba(255, 255, 255, 0.9));
+        clip-path: xywh(0 0 0% 100%);
+        /*set value by js */
+    }
+
+    .node {
+        fill: #f90;
+        stroke: rgb(232, 204, 163);
+        stroke-width: .5;
+        stroke-linejoin: round;
+    }
+
+    .arrow {
+        fill: context-stroke;
+        fill-rule: evenodd;
+        stroke: context-stroke;
+        stroke-width: 1pt;
+    }
+
+    #hidden2outputGlow {
+        display: none;
+    }
+
+    #input2hiddenGlow {
+        display: none;
+    }
+
+    /* set loader at the center of the screen */
+    #loader {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40%;
+        height: 40%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+<svg id="loader" width="492.348" height="590.342" viewBox="0 0 130.267 156.195" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Arrows -->
+        <marker style="overflow:visible" id="i" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="j" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="k" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="l" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="m" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="n" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="o" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="p" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="q" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="r" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="s" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="t" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="a" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="b" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="c" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="d" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="e" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="f" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="g" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+        <marker style="overflow:visible" id="h" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1.001"
+            markerHeight="1.001" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+            <path transform="scale(.5)" class="arrow" d="m5.77 0-8.65 5V-5Z" />
+        </marker>
+    </defs>
+    <g style="display:inline">
+        <g id="connections" style="display:inline">
+
+            <g id="hidden2output" class="lines" style="display:inline">
+                <path class="connectionLine" style="marker-end:url(#a)" d="m129.542 20.115 18.41 22.936"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#b)" d="m129.541 20.044 18.751 45.834"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#c)" d="m128.63 49.403 17.657-2.245"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#d)" d="m128.698 49.423 17.498 20.793"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#e)" d="m128.208 74.712 17.598-22.045"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#f)" d="m128.129 74.81 17.362-.592"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#g)" d="m127.445 105.838 19.8-47.569"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#h)" d="m127.425 106.015 18.561-27.61"
+                    transform="translate(-48.292 18.946)" />
+            </g>
+            <g id="input2hidden" class="lines" style="display:inline">
+                <path class="connectionLine" style="marker-end:url(#i)" d="m88.72 39.31 16.952-18.352"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#j)" d="m88.848 39.06 16.623 6.779"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#k)" d="m88.86 39.077 19.53 26.813"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#l)" d="m88.828 39.117 21.688 56.649"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#m)" d="m88.98 61.666 18.563-36.377"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#n)" d="m88.893 61.806 16.3-11.386"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#o)" d="m88.988 61.798 16.48 8.35"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#p)" d="m88.981 61.823 17.646 36.634"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#q)" d="m89.774 87.392 19.942-59.064"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#r)" d="m89.709 87.364 14.583 16.047"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#s)" d="m89.757 87.362 14.978-12.576"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#t)" d="m89.756 87.387 16.973-32.57"
+                    transform="translate(-47.657 19.126)" />
+            </g>
+
+
+            <g id="hidden2outputGlow" class="linesGlow">
+                <path class="connectionLine" style="marker-end:url(#a)" d="m129.542 20.115 18.41 22.936"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#b)" d="m129.541 20.044 18.751 45.834"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#c)" d="m128.63 49.403 17.657-2.245"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#d)" d="m128.698 49.423 17.498 20.793"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#e)" d="m128.208 74.712 17.598-22.045"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#f)" d="m128.129 74.81 17.362-.592"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#g)" d="m127.445 105.838 19.8-47.569"
+                    transform="translate(-48.292 18.946)" />
+                <path class="connectionLine" style="marker-end:url(#h)" d="m127.425 106.015 18.561-27.61"
+                    transform="translate(-48.292 18.946)" />
+            </g>
+            <g id="input2hiddenGlow" class="linesGlow">
+                <path class="connectionLine" style="marker-end:url(#i)" d="m88.72 39.31 16.952-18.352"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#j)" d="m88.848 39.06 16.623 6.779"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#k)" d="m88.86 39.077 19.53 26.813"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#l)" d="m88.828 39.117 21.688 56.649"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#m)" d="m88.98 61.666 18.563-36.377"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#n)" d="m88.893 61.806 16.3-11.386"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#o)" d="m88.988 61.798 16.48 8.35"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#p)" d="m88.981 61.823 17.646 36.634"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#q)" d="m89.774 87.392 19.942-59.064"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#r)" d="m89.709 87.364 14.583 16.047"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#s)" d="m89.757 87.362 14.978-12.576"
+                    transform="translate(-47.657 19.126)" />
+                <path class="connectionLine" style="marker-end:url(#t)" d="m89.756 87.387 16.973-32.57"
+                    transform="translate(-47.657 19.126)" />
+            </g>
+
+
+        </g>
+        <g id="nodes" style="display:inline">
+            <g id="inputNodes" transform="translate(-47.697 19.146)">
+                <circle class="node" cx="78.56" cy="88.174" r="11" />
+                <circle class="node" cx="78.56" cy="63.624" r="11" />
+                <circle class="node" cx="78.56" cy="39.073" r="11" />
+            </g>
+            <g id="hiddenNodes" transform="translate(-47.395 19.346)">
+                <circle class="node" cx="118.842" cy="18.03" r="11" />
+                <circle class="node" cx="118.642" cy="48.493" r="11" />
+                <circle class="node" cx="118.041" cy="75.949" r="11" />
+                <circle class="node" cx="116.838" cy="108.215" r="11" />
+            </g>
+            <g id="outputNodes" transform="translate(-47.697 19.146)">
+                <circle class="node" cx="159.125" cy="50.497" r="11" />
+                <circle class="node" cx="158.323" cy="74.145" r="11" />
+            </g>
+        </g>
+    </g>
+</svg>
+<script>
+    //use promise to load svg file
+    async function animate() {
+        return new Promise((resolve, reject) => {
+            var nodes = document.getElementById('nodes');
+            var inputNodes = document.getElementById('inputNodes');
+            var hiddenNodes = document.getElementById('hiddenNodes');
+            var outputNodes = document.getElementById('outputNodes');
+            var input2hiddenGlow = document.getElementById('input2hiddenGlow');
+            var hidden2outputGlow = document.getElementById('hidden2outputGlow');
+            var outputNodes = document.getElementById('outputNodes');
+            var nodesGlow = document.getElementsByClassName('nodesGlow');
+            var clipPath = 0;
+            var step = 10;
+            var interval = 100;
+            var timeout = 500;
+
+            function setDisplayNone(element) {
+                element.style.display = 'none';
+            }
+
+            function setDisplayInline(element) {
+                element.style.display = 'inline';
+            }
+
+            function setClipPath(clipPath, element) {
+                var paths = element.getElementsByTagName('path');
+                for (var i = 0; i < paths.length; i++) {
+                    paths[i].style.clipPath = 'xywh(0 0 ' + clipPath + '% 100%)';
+                }
+            }
+
+            function glowNodes(element, gValue) {
+                var circles = element.getElementsByTagName('circle');
+                for (var i = 0; i < circles.length; i++) {
+                    circles[i].style.filter = 'drop-shadow(0px 0px 3px rgba(221, 221, 4, ' + gValue + '))';
+                }
+            }
+
+            const inputNodesFadein = setInterval(function () {
+                clipPath += step;
+                glowNodes(inputNodes, clipPath / 100);
+                if (clipPath >= 100) {
+                    clearInterval(inputNodesFadein);
+                    clipPath = 0;
+                    setDisplayInline(input2hiddenGlow);
+                    setClipPath(clipPath, input2hiddenGlow);
+                    const inputInterval = setInterval(function () {
+                        clipPath += step;
+                        setClipPath(clipPath, input2hiddenGlow);
+                        glowNodes(hiddenNodes, clipPath / 100);
+                        glowNodes(inputNodes, 1 - (clipPath / 100));
+                        if (clipPath >= 100) {
+                            clearInterval(inputInterval);
+                            setDisplayNone(input2hiddenGlow);
+                            clipPath = 0;
+                            setDisplayInline(hidden2outputGlow);
+                            setClipPath(clipPath, hidden2outputGlow);
+                            const hiddenInterval = setInterval(function () {
+                                clipPath += step;
+                                setClipPath(clipPath, hidden2outputGlow);
+                                glowNodes(outputNodes, clipPath / 100);
+                                glowNodes(hiddenNodes, 1 - (clipPath / 100));
+                                if (clipPath >= 100) {
+                                    clearInterval(hiddenInterval);
+                                    setDisplayNone(hidden2outputGlow);
+                                    clipPath = 0;
+                                    const fadeOutOutputNodes = setInterval(function () {
+                                        clipPath += step;
+                                        glowNodes(outputNodes, 1 - (clipPath / 100));
+                                        if (clipPath >= 100) {
+                                            clearInterval(fadeOutOutputNodes);
+                                            resolve(true);
+                                        }
+                                    }, interval);
+                                }
+                            }, interval);
+                        }
+                    }, interval);
+                }
+            }, interval);
+        });
+    }
+
+    async function animateLoop() {
+        await animate();
+        animateLoop();
+    }
+
+    animateLoop();
+
+</script>
