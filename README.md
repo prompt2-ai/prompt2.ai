@@ -5,7 +5,7 @@
 NextJS with shadcn/ui 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-Then shadcn/ui is added to the project. `npx shadcn-ui@latest init` is used to add shadcn/ui to the project.
+Then [shadcn/ui](https://ui.shadcn.com/) is added to the project. `npx shadcn-ui@latest init` is used to add shadcn/ui to the project.
 
 ## build docker image
 ```bash
