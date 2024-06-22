@@ -9,12 +9,7 @@ export default function LoginForm() {
  
   return (
     <form action={dispatch} className="space-y-3">
-
-
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-        <h1 className="mb-3 text-2xl">
-          Please log in to continue.
-        </h1>
         <div className="w-full">
           <div>
             <label
@@ -55,9 +50,7 @@ export default function LoginForm() {
           </div>
         </div>
         <LoginButton />
-        <p className="mt-4 text-sm text-gray-500">
-        “This service has saved me countless hours of work and helped me deliver stunning workflows to my clients faster than ever before.
-        </p>
+        <p className="mt-4 text-sm text-gray-500"></p>
         <div
           className="flex h-8 items-end space-x-1"
           aria-live="polite"
@@ -70,8 +63,6 @@ export default function LoginForm() {
           )}
         </div>
       </div>
-    
-    
     </form>
   );
 }
@@ -81,7 +72,7 @@ function LoginButton() {
  
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
-      Log in 
+      Continue 
     </Button>
   );
 }
