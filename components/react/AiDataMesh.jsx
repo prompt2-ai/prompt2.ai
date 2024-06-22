@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import WebGL from 'three/addons/capabilities/WebGL.js';
 
 function AiDataMesh() {
   const mountRef = useRef(null);
 
   useEffect(() => {
+    if ( WebGL.isWebGLAvailable() ) {
     const scene = new THREE.Scene();
     const width = mountRef.current.clientWidth; // Full width of the container
     const height = mountRef.current.clientHeight; // Height of the container
@@ -73,11 +75,17 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+
+
 animate();
+
     return () => {
       mountRef.current.removeChild(renderer.domElement); // Cleanup on unmount
     };
-  }, []); // Empty dependency array ensures the effect runs only once
+}  
+
+}, []); // Empty dependency array ensures the effect runs only once
+
 
   return (
     <div ref={mountRef} style={{ width: '100%', height: '80vh' }}/>
