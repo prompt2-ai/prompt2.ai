@@ -29,7 +29,7 @@ export default async function RootLayout({
       <div className="shadow-2xl inset-y-0 min-h-7 sticky text-center bg-red-500 z-40"><strong>WARNING! this site is under heavy development.</strong></div>
       <main className="container isolate mx-auto px-4">
         <Menu session={session}/>
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen p-8">
           {children}
         </div>
        </main>
