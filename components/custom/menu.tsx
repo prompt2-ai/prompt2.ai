@@ -14,6 +14,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import { cn } from "@/lib/utils"
 import { logout } from "@/components/custom/actions";
+import { Quote } from "lucide-react";
 
 const components: { title: string; href: string; description: string  }[] = [
     {
@@ -55,7 +56,7 @@ export const Menu = ({session}:any) => {
   return (
       <>
         <div className="flex w-full flex-col">
-          <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+          <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
                 href="/"
@@ -69,7 +70,7 @@ export const Menu = ({session}:any) => {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                      <ul className="grid gap-1 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                         <li className="row-span-3">
                           <NavigationMenuLink asChild>
                             <a
@@ -83,7 +84,7 @@ export const Menu = ({session}:any) => {
                                 height={120}
                               />
                               <div className="mb-2 mt-4 text-lg font-medium">
-                                business
+                                Workflows for your bussiness
                               </div>
                               <p className="text-sm leading-tight text-muted-foreground">
                                 Create workflows, automate tasks, and build integrations,
@@ -94,37 +95,36 @@ export const Menu = ({session}:any) => {
                             </a>
                           </NavigationMenuLink>
                         </li>
-                        <ListItem href="/bpmn" title="BPMN2">
-                          Create BPMN2 workflows.
+                        <li className="row-span-1 col-span-1">
+                        <ListItem href="/dashboard#bpmn" title="BPMN2">
+                        Convert your text prompts into BPMN2 workflows.
                         </ListItem>
-                        <ListItem href="/docs/installation" title="Forms">
+                        <p className="p-6"><Quote className="w-6 h-6 inline-block"/>
+                        &nbsp;Effortlessly enabling visual representations of various business
+                           processes. These intuitive services eliminate the need for 
+                           programming expertise, guiding users through diagram creation 
+                           and enabling seamless workflow automation
+                            for optimized operations.</p>
+                        
+{/*                         <ListItem href="/dashboard#forms" title="Forms">
                           Create forms, surveys, and quizzes.
                         </ListItem>
-                        <ListItem href="/docs/primitives/typography" title="DMN">
+                        <ListItem href="/dashboard#dmn" title="DMN">
                           Convert prompt to DMN decision tables and rules.
-                        </ListItem>
+                        </ListItem> */}
+                        </li>
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger>Showcases</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <h3 className="text-lg font-medium p-4">Public domain</h3>
-                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                        {components.map((component) => (
-                          <ListItem
-                            key={component.title}
-                            title={component.title}
-                            href={component.href}
-                          >
-                            {component.description}
-                          </ListItem>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
+                    <Link href="/showcases" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Showcases
+                      </NavigationMenuLink>
+                    </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/docs" legacyBehavior passHref>
+                    <Link href="/documentation" legacyBehavior passHref>
                       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         Documentation
                       </NavigationMenuLink>
