@@ -80,7 +80,9 @@ function animate() {
 animate();
 
     return () => {
-      mountRef.current.removeChild(renderer.domElement); // Cleanup on unmount
+      if (mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement); // Cleanup on unmount
+      }
     };
 }  
 

@@ -1,4 +1,4 @@
-import AiDataMesh from "@/components/react/AiDataMesh"
+import AiDataMesh from "./AiDataMesh"
 
 export default function LoginLeftSide() {
     return (
