@@ -1,5 +1,4 @@
-'use client';
- 
+"use client";
 import { Button } from '@/components/ui/button';
 import { useFormState, useFormStatus } from 'react-dom';
 import { authenticate } from '@/app/login/actions';
@@ -69,7 +68,6 @@ export default function LoginForm() {
  
 function LoginButton() {
   const { pending } = useFormStatus();
- 
   return (
     <Button className="mt-4 w-full" aria-disabled={pending}>
       Continue 

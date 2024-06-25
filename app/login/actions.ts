@@ -23,3 +23,4 @@ export async function authenticate(
   }
 }
 
+export default signIn;

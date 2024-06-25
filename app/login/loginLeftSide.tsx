@@ -1,3 +1,4 @@
+"use client"; //for AiDataMesh
 import AiDataMesh from "./AiDataMesh"
 
 export default function LoginLeftSide() {
