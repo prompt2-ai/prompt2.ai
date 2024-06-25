@@ -1,6 +1,8 @@
 //NEXTAUTH
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import GitHub from "next-auth/providers/github"
+
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
@@ -31,10 +33,8 @@ function getUser(email: string): User | undefined {
 
 
 export const authConfig = {
-  pages: {
-    signIn: '/login'
-  },
   providers: [
+    GitHub,
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
