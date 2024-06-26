@@ -2,80 +2,113 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+prompt2ai:
+  ## Application image
+  replicaCount: 1
+  image:
+    repository: localhost:32000/prompt2ai
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: "latest"
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
 
-image:
-  repository: localhost:32000/prompt2ai
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+  podAnnotations: {}
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  podSecurityContext: {}
+    # fsGroup: 2000
 
-podAnnotations: {}
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
 
-podSecurityContext: {}
-  # fsGroup: 2000
+  service:
+    type: ClusterIP
+    port: 3000
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: leresolver
+      traefik.ingress.kubernetes.io/router.tls.domains.0.main: prompt2.ai
+    hosts:
+      - host: prompt2.ai
+        paths: 
+          - path: "/"
 
-service:
-  type: ClusterIP
-  port: 3000
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
 
-ingress:
-  enabled: true
-  annotations:
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.certresolver: leresolver
-    traefik.ingress.kubernetes.io/router.tls.domains.0.main: prompt2.ai
-  hosts:
-    - host: prompt2.ai
-      paths: 
-        - path: "/"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  nodeSelector: {}
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  tolerations: []
 
-nodeSelector: {}
+  affinity: {}
 
-tolerations: []
+  storage:
+    enabled: true
+    localPath: /root/ordinary.seaman.cloud/webSites/prompt2.ai
 
-affinity: {}
+prompt2ai-db:
+  service:
+    type: ClusterIP
+    port: 3306
+    ## The node port (only relevant for type LoadBalancer or NodePort)
+    nodePort:
+    ## The cluster ip address (only relevant for type LoadBalancer or NodePort)
+    clusterIP:
+    ## The loadbalancer ip address (only relevant for type LoadBalancer)
+    loadBalancerIP:
 
-storage:
-  enabled: true
-  localPath: /root/ordinary.seaman.cloud/webSites/prompt2.ai
+  ## MariaDB docker image
+  image:
+    repository: "localhost:32000/mariadb"
+    tag: 11.4
+    pullPolicy: IfNotPresent
+
+  settings:
+      prompt2Secrets: "prompt2ai-sercets"
+  ## Storage parameters
+  storage:
+
+    ## Alternative set requestedSize to define a size for a dynamically created PVC
+    requestedSize: 10Gi
+
+    ## Default access mode (ReadWriteOnce)
+    accessModes:
+      - ReadWriteOnce
+
+    ## Keep a created Persistent volume claim when uninstalling the helm chart (only for option useDeployment: true)
+    keepPvc: false
+
