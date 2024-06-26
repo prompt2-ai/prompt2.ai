@@ -13,6 +13,11 @@ docker build -t localhost:32000/prompt2ai:latest .
 docker push localhost:32000/prompt2ai:latest
 ```
 
+## generate secret from .env.local
+```bash
+kubectl create secret generic prompt2ai-sercets --from-env-file=.env.local
+```
+
 ## install helm chart form local directory charts/prompt2ai
 ```bash
 microk8s.helm3 install prompt2ai ./charts/prompt2ai/
