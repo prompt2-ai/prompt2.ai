@@ -20,6 +20,8 @@
 # misc
 .DS_Store
 *.pem
+trash
+local
 
 # debug
 npm-debug.log*
