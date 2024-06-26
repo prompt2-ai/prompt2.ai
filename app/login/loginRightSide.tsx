@@ -3,8 +3,7 @@ import UserAuthForm from '@/app/login/form';
 import { signIn } from '@/auth';
 import { AuthError } from "next-auth";
 import Link from "next/link"
-import { buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+
 
 export default function LoginRightSide() {  
     return (
@@ -24,7 +23,7 @@ export default function LoginRightSide() {
           action={async () => {
             "use server"
             try {
-              await signIn('github')
+              await signIn('github', { callbackUrl: '/dashboard' } );
             } catch (error) {
               // Signin can fail for a number of reasons, such as the user
               // not existing, or the user not having the correct role.
