@@ -33,6 +33,9 @@ function getUser(email: string): User | undefined {
 
 
 export const authConfig = {
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     GitHub,
     Credentials({
@@ -64,7 +67,7 @@ export const authConfig = {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/welcome', nextUrl));
+        return Response.redirect(new URL('/dashboard', nextUrl));
       }
       return true;
     },
