@@ -16,6 +16,8 @@ type User = {
 
 function getUser(email: string): User | undefined {
   try {
+      //use database/sequileze to get the user from the table User
+
     if (email !== 'sl45sms@yahoo.gr') return undefined;
     const user = {
       id: '1',
@@ -30,7 +32,6 @@ function getUser(email: string): User | undefined {
     throw new Error('Failed to fetch user.');
   }
 }
-
 
 export const authConfig = {
   pages: {
@@ -60,6 +61,10 @@ export const authConfig = {
     })
   ],
   callbacks: {
+    session({session, user}){
+      console.log('session callback', session, user);
+      return session;
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
@@ -73,3 +78,5 @@ export const authConfig = {
     },
   },
 } satisfies NextAuthConfig;
+
+export default authConfig;
