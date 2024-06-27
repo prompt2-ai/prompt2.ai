@@ -204,7 +204,7 @@ try {
       requireLocal:(path: string) => {
         if (path.includes('config/recommended')) {
         const mrequire = createRequire(import.meta.url);
-        return mrequire("/app/node_modules/bpmnlint/config/bpmnlint_recommended");
+        return mrequire("/app/node_modules/bpmnlint/config/recommended");
         }
         if (path.includes('rules')) {
           //extract rule name from path
