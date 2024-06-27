@@ -9,8 +9,9 @@ const withNextraConfig = withNextra({
 const nextConfig = {
     distDir: './.next', // Nextra supports custom `nextConfig.distDir`
     reactStrictMode: true,
-    pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
+    pageExtensions: ["ts", "tsx", "mdx"],
     experimental: {
+      serverComponentsExternalPackages: ['sequelize', 'sequelize-typescript'],
       mdxRs: true,
       // once this makes it into a release: https://github.com/vercel/next.js/pull/51755
       serverActions: {
@@ -20,7 +21,7 @@ const nextConfig = {
     },
   eslint: {  //TO remove this for production
       ignoreDuringBuilds: true,
-  }
+  } 
 };
 
 export default withNextraConfig(nextConfig);
