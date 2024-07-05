@@ -2,6 +2,12 @@
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
+
+//import db  from './db/models/index.js';
+
+//import Linkedin from "next-auth/providers/linkedin"
+//import Resend from "next-auth/providers/resend"
 
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
@@ -13,32 +19,35 @@ type User = {
   password: string;
 };
 
-
+/*
 function getUser(email: string): User | undefined {
   try {
-      //use database/sequileze to get the user from the table User
-
-    if (email !== 'sl45sms@yahoo.gr') return undefined;
-    const user = {
-      id: '1',
-      name: 'Test User',
-      email: 'sl45sms@yahoo.gr',
-      //bcrypt string "test" as password
-      password: '$2a$12$66G36t3Xbch7j1XgxD/L/OlfK.tnfmI7EDT9M6kQ7cXxuYdPiFhXW',//https://bcrypt-generator.com/
-    }
-    return user;
+      //use sequileze to get the user from DB on the table User where email=email
+      const users = db.sequelize.models.users;
+      const all = users.findAll();
+      console.log('all users', all);
+      const user = users.findOne({where: {email: email}});
+      return user;
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
   }
 }
-
+*/
 export const authConfig = {
   pages: {
     signIn: '/login',
   },
   providers: [
     GitHub,
+    Google,
+    /* Uncomment to enable other providers
+    Apple,
+    Linkedin,
+    Resend({
+      from: "no-reply@prompt2.ai",
+    }),
+    */
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
@@ -49,6 +58,7 @@ export const authConfig = {
           const { email, password } = parsedCredentials.data;
 
           const user = getUser(email);
+          console.log('user returned form DB', user)
           if (!user) return null;
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
@@ -59,6 +69,7 @@ export const authConfig = {
         return null;
       },
     })
+    
   ],
   callbacks: {
     session({session, user}){
