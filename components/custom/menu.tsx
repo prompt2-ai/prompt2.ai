@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { cn } from "@/lib/utils"
 import { logout } from "@/components/custom/actions";
 import { Quote } from "lucide-react";
+import { on } from "events";
 
 const components: { title: string; href: string; description: string  }[] = [
     {
@@ -41,8 +42,10 @@ export const Menu = ({session}:any) => {
   
 
   const [isLogged, setIsLogged] = useState(false);
+  const [onDashboard, setOnDashboard] = useState(false);
   useEffect(() => {
     const run = async () => {
+      setOnDashboard(window.location.pathname.includes("/dashboard"));
       const s = session;
       if (s === undefined || s === null) {
         setIsLogged(false);
@@ -56,6 +59,9 @@ export const Menu = ({session}:any) => {
   return (
       <>
         <div className="flex w-full flex-col">
+          
+          
+         {onDashboard==false ? (   
           <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
@@ -65,6 +71,9 @@ export const Menu = ({session}:any) => {
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
                 <span className="sr-only">P2?</span>
               </Link>
+
+
+
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -130,6 +139,16 @@ export const Menu = ({session}:any) => {
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
+                {(isLogged==true&&onDashboard==false) ? (
+                  <NavigationMenuItem>
+                    <Link href="/dashboard" legacyBehavior passHref>
+                      
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Dashboard
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                ) : (<></>)}  
                 </NavigationMenuList>
               </NavigationMenu>
               
@@ -148,6 +167,23 @@ export const Menu = ({session}:any) => {
               )}
             </nav>
           </header>
+         ):(<>
+            <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
+            <Link
+                href="/"
+                className="flex items-center gap-2 text-lg font-semibold md:text-base"
+              >
+                <Image src="/logo.svg" alt="P2?" width={40} height={40} />
+                <span className="sr-only">P2?</span>
+              </Link>
+              <Link href="/dashboard">Dashboard</Link>
+            <form action={logout}>
+                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                    <div className="md:block">Sign Out</div>
+                  </button>
+                </form>
+            </header>
+         </>)}
         </div>
       </>
     );
