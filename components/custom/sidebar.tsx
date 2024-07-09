@@ -8,9 +8,8 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-
 export const Sidebar = ({ className,session }: { className: string,session:any }) => {
-    
+   
     const [isLogged, setIsLogged] = useState(false);
     const [onDashboard, setOnDashboard] = useState(false);
     
@@ -27,21 +26,17 @@ export const Sidebar = ({ className,session }: { className: string,session:any }
         run();
       }, [session]);
 
-    return (
-        <div className={cn(className, "flex flex-col gap-4")}>
-        {onDashboard==true ? ( <div className={cn(className, "flex flex-col gap-4")}>
+    return <>{onDashboard==true ? (<div className={cn(className, "flex flex-col gap-4")}>
+         <div className={cn(className, "flex flex-col gap-4")}>
         <Link href="/dashboard/bpmn" className="text-blue-500">
             New Workflow
         </Link>
         <Link href="/dashboard/settings" className="text-blue-500">
             Settings
         </Link>
-        </div>) : ( <div className={cn(className, "flex flex-col gap-4")}>
-            {/*May add something here */}
-        </div> )}
-   </div>
-    );
-};
+        </div>
+   </div>) : (<></>)}{/*May add something here */}
+   </>};
 
 export default Sidebar;
 
