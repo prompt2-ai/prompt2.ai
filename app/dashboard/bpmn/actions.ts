@@ -7,6 +7,8 @@ import { layoutProcess } from 'bpmn-auto-layout';
 import Linter from 'bpmnlint/lib/linter';
 import NodeResolver from 'bpmnlint/lib/resolver/node-resolver';
 import BpmnModdle from 'bpmn-moddle';
+import testXml from './testXml';
+
 
 export async function prepareBPMN(subPrompt:string){
  if (!subPrompt || typeof subPrompt !== 'string') {
@@ -53,118 +55,7 @@ bpmn2 = data.candidates[0].content.parts[0].text;
 */ //remove the comment to make actualy work
 
 
-let bpmn2 =`\`\`\`xml
-<?xml version="1.0" encoding="UTF-8"?> 
-
-<definitions id="Definition"
-
-             targetNamespace="http://www.example.org/MinimalExample"
-
-             typeLanguage="http://www.java.com/javaTypes"
-
-             expressionLanguage="http://www.mvel.org/2.0"
-
-             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-
-             xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
-
-             xs:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
-
-             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-
-             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-
-             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-
-             xmlns:tns="http://www.jboss.org/drools">
-
-
-
-  <process processType="Private" isExecutable="true" id="com.sample.HelloWorld" name="Hello World" >
-
-
-
-    <!-- nodes -->
-
-    <startEvent id="_1" name="StartProcess" />
-
-    <scriptTask id="_2" name="Hello" >
-
-      <script>System.out.println("Hello World");</script>
-
-    </scriptTask>
-
-    <endEvent id="_3" name="EndProcess" >
-
-        <terminateEventDefinition/>
-
-    </endEvent>
-
-
-
-    <!-- connections -->
-
-    <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
-
-    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
-
-
-
-  </process>
-
-
-
-  <bpmndi:BPMNDiagram>
-
-    <bpmndi:BPMNPlane bpmnElement="Minimal" >
-
-      <bpmndi:BPMNShape bpmnElement="_1" >
-
-        <dc:Bounds x="15" y="91" width="48" height="48" />
-
-      </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape bpmnElement="_2" >
-
-        <dc:Bounds x="95" y="88" width="83" height="48" />
-
-      </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape bpmnElement="_3" >
-
-        <dc:Bounds x="258" y="86" width="48" height="48" />
-
-      </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
-
-        <di:waypoint x="39" y="115" />
-
-        <di:waypoint x="75" y="46" />
-
-        <di:waypoint x="136" y="112" />
-
-      </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
-
-        <di:waypoint x="136" y="112" />
-
-        <di:waypoint x="240" y="240" />
-
-        <di:waypoint x="282" y="110" />
-
-      </bpmndi:BPMNEdge>
-
-    </bpmndi:BPMNPlane>
-
-  </bpmndi:BPMNDiagram>
-
-
-
-</definitions>
-
-\`\`\``; //remove the comment to make actualy work
+let bpmn2 =testXml.xml;
 
 
 
@@ -177,7 +68,7 @@ if(!bpmn2||bpmn2.indexOf("definitions")===-1){
   return {reports:[],xml:'',response:response};
 }
 
-console.log("bpmn2 untouched:",bpmn2);
+//console.log("bpmn2 untouched:",bpmn2);
 if (bpmn2.indexOf("```xml")!==-1){
   //remove any line before and after the xml code
   bpmn2 = bpmn2.replace(/.*```xml/g,"");
@@ -225,7 +116,7 @@ try {
   return {reports:reports,xml:bpmn2,definitions:JSON.stringify(definitions)};
 } catch (error) {
   console.error(error);
-  console.error("Error while linting bpmn2 file",bpmn2);
+  console.error("Error while linting bpmn2 file");
   return {reports:[],xml:'',definitions:''};
 }
 
