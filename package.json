@@ -26,6 +26,7 @@
     "mysql2": "^3.10.1",
     "next": "^14.2.4",
     "next-auth": "^5.0.0-beta.19",
+    "next-video": "^1.1.1",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",
     "pg-hstore": "^2.3.4",

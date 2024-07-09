@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 
 import withNextra from 'nextra'; //patched with https://github.com/shuding/nextra/pull/2460/files
+import {withNextVideo} from 'next-video/process';
+
+
+
+
 const withNextraConfig = withNextra({
     theme: 'nextra-theme-docs',
     themeConfig: './doc.theme.config.jsx'
@@ -24,4 +29,8 @@ const nextConfig = {
   } 
 };
 
-export default withNextraConfig(nextConfig);
+
+const configWithNextra=withNextraConfig(nextConfig);
+const configWithVideo=withNextVideo(configWithNextra);
+
+export default configWithVideo;
