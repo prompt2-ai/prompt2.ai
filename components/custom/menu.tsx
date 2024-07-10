@@ -34,7 +34,7 @@ export const Menu = ({session}:any) => {
   const [isLogged, setIsLogged] = useState(false);
   const [onDashboard, setOnDashboard] = useState(false);
   const [avatar, setAvatar] = useState("");
-  const [avatarFallback, setAvatarFallback] = useState("JD");
+  const [avatarFallback, setAvatarFallback] = useState("");
   useEffect(() => {
     const run = async () => {
       setOnDashboard(window.location.pathname.includes("/dashboard"));
@@ -44,12 +44,15 @@ export const Menu = ({session}:any) => {
         setIsLogged(false);
       } else {
         setIsLogged(true);
-        if (s.user.image === null) {
+        if (s.user.image === null || s.user.image === undefined || s.user.image === "") {
           const name = s.user.name.split(" ");
           const nameLength = name.length;
           if (nameLength > 1) 
           setAvatarFallback(name[0][0] + name[1][0]);
+        else if (nameLength > 0)
+          setAvatarFallback(name[0][0]); 
           //keep JD for John Doe or Jane Doe
+          else setAvatarFallback("JD");
         }
         setAvatar(s.user.image);
       }
@@ -232,7 +235,7 @@ export const Menu = ({session}:any) => {
                   <Button variant="outline" className="top-2 absolute right-3 h-[48px] gap-2">
                   <Avatar>
                   <AvatarImage src={avatar} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>{avatarFallback}</AvatarFallback>
                   </Avatar><span>Sign Out</span>
                   </Button>
                 </form>
