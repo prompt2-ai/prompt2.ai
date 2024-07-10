@@ -29,10 +29,10 @@ export default function Home() {
 <Card className="lg:w-1/3 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
     <CardTitle>Start Free</CardTitle>
-    <CardDescription>Just bring your token</CardDescription>
+    <CardDescription>Just bring your tokens</CardDescription>
   </CardHeader>
   <CardContent>
-    <p>You can use our service free, just bring your token, or buy one of our subscriptions to create workflows without any hassle.</p>
+    <p>You can use our service free, just bring your tokens, or buy one of our subscriptions to create workflows without any hassle.</p>
   </CardContent>
   <CardFooter>
   <p><Link className={cn(
@@ -41,7 +41,7 @@ export default function Home() {
 </Card>
 <Card className="lg:w-1/3 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
-    <CardTitle>Inspiration</CardTitle>
+    <CardTitle>Get Inspiration</CardTitle>
     <CardDescription>Look what other users have create</CardDescription>
   </CardHeader>
   <CardContent>
@@ -54,7 +54,7 @@ export default function Home() {
 </Card>
 <Card className="lg:w-1/3 lg:flex-inline mt-2">
   <CardHeader>
-    <CardTitle>Easyness</CardTitle>
+    <CardTitle>It's Easy</CardTitle>
     <CardDescription>It has never been easier to create BPMN2 workflows</CardDescription>
   </CardHeader>
   <CardContent>
