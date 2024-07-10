@@ -1,5 +1,6 @@
 "use client"; // This is a client-side component, use this directive to avoid SSR errors like "(0 , react__WEBPACK_IMPORTED_MODULE_0__.createContext) is not a function"
 import React, { useState, useEffect } from "react";
+import {Button} from "@/components/ui/button";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -19,7 +20,8 @@ import {
     MenubarShortcut,
     MenubarTrigger,
   } from "@/components/ui/menubar"
-
+ 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import Link from "next/link";
 import Image from 'next/image';
@@ -31,14 +33,18 @@ export const Menu = ({session}:any) => {
 
   const [isLogged, setIsLogged] = useState(false);
   const [onDashboard, setOnDashboard] = useState(false);
+  const [avatar, setAvatar] = useState("");
+  const [avatarFallback, setAvatarFallback] = useState("JD");
   useEffect(() => {
     const run = async () => {
       setOnDashboard(window.location.pathname.includes("/dashboard"));
       const s = session;
+      console.log("SESSION",s);
       if (s === undefined || s === null) {
         setIsLogged(false);
       } else {
         setIsLogged(true);
+        setAvatar(s.user.image);
       }
     };
     run();
@@ -142,13 +148,13 @@ export const Menu = ({session}:any) => {
               </NavigationMenu>
               
               {isLogged==true ? (
-                <form action={logout} className="w-full float-end">
-                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
+                <form action={logout} className="w-full">
+                  <button className="absolute right-3 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
                     <div className="md:block">Sign Out</div>
                   </button>
                 </form>
               ) : (
-                <Link href="/login" legacyBehavior passHref className="">
+                <Link href="/login" legacyBehavior passHref>
                   <a className="absolute right-3 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
                     <div className="md:block">Sign In</div>
                   </a>
@@ -178,7 +184,7 @@ export const Menu = ({session}:any) => {
       {isLogged==true ? (
                 <MenubarItem>
                 <form action={logout}>
-                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                  <button className="absolute right-3 text-right h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
                     <div className="md:block">Sign Out</div>
                   </button>
                 </form>
@@ -186,7 +192,7 @@ export const Menu = ({session}:any) => {
               ) : (
                 <MenubarItem>
                 <Link href="/login" legacyBehavior passHref>
-                  <a className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                  <a className="absolute right-3 text-right h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
                     <div className="md:block">Sign In</div>
                   </a>
                 </Link>
@@ -205,20 +211,25 @@ export const Menu = ({session}:any) => {
 
           </>
          ):(<>
-            <header className="sticky top-0 h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
+            <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
+            <nav className="max-sm:hidden h-[48]] gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
             <Link
                 href="/"
-                className="flex items-center gap-2 text-lg font-semibold md:text-base"
+                className="items-center gap-2 text-lg font-semibold md:text-base"
               >
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
                 <span className="sr-only">P2?</span>
               </Link>
               <Link href="/dashboard">Dashboard</Link>
-            <form action={logout}>
-                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                    <div className="md:block">Sign Out</div>
-                  </button>
+            <form action={logout} className="h-[48px]">
+                  <Button variant="outline" className="top-2 absolute right-3 h-[48px] gap-2">
+                  <Avatar>
+                  <AvatarImage src={avatar} />
+                  <AvatarFallback>CN</AvatarFallback>
+                  </Avatar><span>Sign Out</span>
+                  </Button>
                 </form>
+            </nav>
             </header>
          </>)}
         </div>
