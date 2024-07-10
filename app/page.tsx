@@ -5,7 +5,7 @@ import Player from 'next-video/player';
 
 export default function Home() {
   return (
-<main className="lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-32 w-full">
+<main id="frontHeader" className="lg:container lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8 w-full">
   <div className="z-10 md:flex items-center justify-center">
      <Player 
      src="https://prompt2.ai/headerVideo.mp4" 
