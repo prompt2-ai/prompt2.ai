@@ -10,36 +10,24 @@ import {
     navigationMenuTriggerStyle,
   } from "@/components/ui/navigation-menu"
 
+  import {
+    Menubar,
+    MenubarContent,
+    MenubarItem,
+    MenubarMenu,
+    MenubarSeparator,
+    MenubarShortcut,
+    MenubarTrigger,
+  } from "@/components/ui/menubar"
+
+
 import Link from "next/link";
 import Image from 'next/image';
 import { cn } from "@/lib/utils"
 import { logout } from "@/components/custom/actions";
 import { Quote } from "lucide-react";
-import { on } from "events";
-
-const components: { title: string; href: string; description: string  }[] = [
-    {
-      title: "BPMN2 workflows",
-      href: "/showcases/bpmn2",
-      description:
-        "User made prompt2 workflows converted to BPMN2.",
-    },
-    {
-      title: "Forms",
-      href: "/showcases/forms",
-      description:
-        "User made forms, surveys, and quizzes.",
-    },
-    {
-      title: "DMN",
-      href: "/showcases/dmn",
-      description:
-        "User made prompt2 workflows converted to DMN decision tables and rules.",
-    },
-  ];
 
 export const Menu = ({session}:any) => {
-  
 
   const [isLogged, setIsLogged] = useState(false);
   const [onDashboard, setOnDashboard] = useState(false);
@@ -61,9 +49,10 @@ export const Menu = ({session}:any) => {
         <div className="flex w-full flex-col">
           
           
-         {onDashboard==false ? (   
-          <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
-            <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+         {onDashboard==false ? (
+          <>
+          <header className="max-sm:mt-3 md:flex sticky md:top-0 h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
+            <nav className="max-sm:hidden  flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
                 href="/"
                 className="flex items-center gap-2 text-lg font-semibold md:text-base"
@@ -166,7 +155,55 @@ export const Menu = ({session}:any) => {
                 </Link>
               )}
             </nav>
+            <nav className="hidden w-full max-sm:block items-center gap-4">
+             {/* puldown menu */}
+             <Link
+                href="/"
+                className="mt-3 float-start"
+              >
+                <Image src="/logo.svg" alt="P2?" width={40} height={40} />
+                <span className="sr-only">P2?</span>
+              </Link>
+             <Menubar className="float-end">
+  <MenubarMenu>
+    <MenubarTrigger>|||</MenubarTrigger>
+    <MenubarContent>
+      <MenubarItem>
+      <Link href="/documentation">Documentation</Link>
+      </MenubarItem>
+      <MenubarItem><Link href="/showcases">Showcases</Link></MenubarItem>
+      <MenubarSeparator />
+      <MenubarItem><Link href="/dashboard" legacyBehavior passHref>Dashboard</Link></MenubarItem>
+      <MenubarSeparator />
+      {isLogged==true ? (
+                <MenubarItem>
+                <form action={logout}>
+                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                    <div className="md:block">Sign Out</div>
+                  </button>
+                </form>
+                </MenubarItem>
+              ) : (
+                <MenubarItem>
+                <Link href="/login" legacyBehavior passHref>
+                  <a className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                    <div className="md:block">Sign In</div>
+                  </a>
+                </Link>
+                </MenubarItem>
+              )}
+    
+    
+    </MenubarContent>
+  </MenubarMenu>
+</Menubar>
+            </nav>
+
+              
+          
           </header>
+
+          </>
          ):(<>
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
             <Link
