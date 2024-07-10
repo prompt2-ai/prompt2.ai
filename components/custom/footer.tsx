@@ -1,28 +1,29 @@
 import Image from 'next/image'
+import Link from 'next/link'
 const Footer = () => {
     return <>
 <footer className="bg-white dark:bg-gray-900">
     <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
-              <a href="https://prompt2.ai/" className="flex items-center">
+              <Link href="https://prompt2.ai/" className="flex items-center">
                   <Image src="/logo.svg" 
                   className="h-8 me-3" 
                   width={50} 
                   height={50} 
                   alt="prompt 2 anything" />
                   <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Prompt2</span>
-              </a>
+              </Link>
           </div>
           <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
               <div>
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                       <li className="mb-4">
-                          <a href="https://prompt2.ai/" className="hover:underline">Prompt2</a>
+                          <Link href="https://www.bpmn.org/" target="_blank" className="hover:underline">Learn BPMN2</Link>
                       </li>
                       <li>
-                          <a href="https://tailwindcss.com/" className="hover:underline">Tailwind CSS</a>
+                          <Link href="https://ai.google.dev/gemini-api/docs/tokens" target="_blank" className="hover:underline">About Tokens</Link>
                       </li>
                   </ul>
               </div>
@@ -30,10 +31,10 @@ const Footer = () => {
                   <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
                   <ul className="text-gray-500 dark:text-gray-400 font-medium">
                       <li className="mb-4">
-                          <a href="https://github.com/prompt2-ai" className="hover:underline ">Github</a>
+                          <a href="https://github.com/prompt2-ai" target="_blank" className="hover:underline ">Github</a>
                       </li>
                       <li>
-                          <a href="https://discord.gg/" className="hover:underline">Discord</a>
+                          <a href="https://discord.gg/AM3EpBSs" target="_blank" className="hover:underline">Discord</a>
                       </li>
                   </ul>
               </div>
