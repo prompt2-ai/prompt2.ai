@@ -44,6 +44,13 @@ export const Menu = ({session}:any) => {
         setIsLogged(false);
       } else {
         setIsLogged(true);
+        if (s.user.image === null) {
+          const name = s.user.name.split(" ");
+          const nameLength = name.length;
+          if (nameLength > 1) 
+          setAvatarFallback(name[0][0] + name[1][0]);
+          //keep JD for John Doe or Jane Doe
+        }
         setAvatar(s.user.image);
       }
     };
