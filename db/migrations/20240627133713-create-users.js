@@ -10,22 +10,28 @@ module.exports = {
         type: Sequelize.CHAR(36)
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING(255)
       },
       email: {
         unique: true,
+        allowNull: false,
         type: Sequelize.STRING(2048)
       },
       phone: {
+        allowNull: true,
         type: Sequelize.STRING(255)
       },
       email_verified: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       phone_verified: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       image: {
+        allowNull: true,
         type: Sequelize.STRING(1024)
       }
     });

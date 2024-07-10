@@ -15,7 +15,7 @@ module.exports = {
       },
       description: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       user_id: {
         allowNull: false,
@@ -28,16 +28,22 @@ module.exports = {
       },
       workflow: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
+      },
+      image: {
+        allowNull: true,
+        type: Sequelize.TEXT
       },
       prompt: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       active: {
+        defaultValue: true,
         type: Sequelize.BOOLEAN
       },
       private: {
+        defaultValue: false,
         type: Sequelize.BOOLEAN
       },
       createdAt: {
