@@ -15,10 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   workflows.init({
     name: DataTypes.STRING,
-    description: DataTypes.STRING,
+    description: DataTypes.TEXT,
     user_id: DataTypes.STRING(36),
-    workflow: DataTypes.STRING,
-    prompt: DataTypes.STRING,
+    workflow: DataTypes.TEXT,//Store BPMN XML as text
+    image: DataTypes.TEXT,//Store SVG image as text
+    prompt: DataTypes.TEXT,//Store prompt as text
     active: DataTypes.BOOLEAN,
     private: DataTypes.BOOLEAN
   }, {

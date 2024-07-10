@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING(255),
     email_verified: DataTypes.DATE,
     phone_verified: DataTypes.DATE,
-    image: DataTypes.STRING(1024)
+    image: DataTypes.STRING(2048)//Store image URL as text
   }, {
     sequelize,
     modelName: 'users',
