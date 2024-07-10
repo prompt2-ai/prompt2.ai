@@ -46,16 +46,16 @@ export const Menu = ({session}:any) => {
 
   return (
       <>
-        <div className="flex w-full flex-col">
+        <div className="w-full">
           
           
          {onDashboard==false ? (
           <>
-          <header className="max-sm:mt-3 md:flex sticky md:top-0 h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
-            <nav className="max-sm:hidden  flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
+            <nav className="max-sm:hidden gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
                 href="/"
-                className="flex items-center gap-2 text-lg font-semibold md:text-base"
+                className="items-center gap-2 text-lg font-semibold md:text-base"
               >
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
                 <span className="sr-only">P2?</span>
@@ -142,14 +142,14 @@ export const Menu = ({session}:any) => {
               </NavigationMenu>
               
               {isLogged==true ? (
-                <form action={logout}>
-                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                <form action={logout} className="w-full float-end">
+                  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
                     <div className="md:block">Sign Out</div>
                   </button>
                 </form>
               ) : (
-                <Link href="/login" legacyBehavior passHref>
-                  <a className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                <Link href="/login" legacyBehavior passHref className="">
+                  <a className="absolute right-3 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
                     <div className="md:block">Sign In</div>
                   </a>
                 </Link>
@@ -205,7 +205,7 @@ export const Menu = ({session}:any) => {
 
           </>
          ):(<>
-            <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
+            <header className="sticky top-0 h-16 items-center gap-4 border-b bg-background/20 px-4 md:px-6">
             <Link
                 href="/"
                 className="flex items-center gap-2 text-lg font-semibold md:text-base"
