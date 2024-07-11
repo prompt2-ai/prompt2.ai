@@ -20,6 +20,8 @@ import {
     MenubarShortcut,
     MenubarTrigger,
   } from "@/components/ui/menubar"
+
+import ThemeToggle from "@/components/custom/themeToggle";
  
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
@@ -76,8 +78,6 @@ export const Menu = ({session}:any) => {
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
                 <span className="sr-only">P2?</span>
               </Link>
-
-
 
               <NavigationMenu>
                 <NavigationMenuList>
@@ -159,17 +159,14 @@ export const Menu = ({session}:any) => {
               
               {isLogged==true ? (
                 <form action={logout} className="w-full">
-                  <button className="absolute right-3 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
+                  <button className="absolute right-16 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
                     <div className="md:block">Sign Out</div>
                   </button>
                 </form>
               ) : (
-                <Link href="/login" legacyBehavior passHref>
-                  <a className="absolute right-3 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
-                    <div className="md:block">Sign In</div>
-                  </a>
-                </Link>
+                <Link href="/login" className="absolute right-16">Sign In</Link>
               )}
+              <div className="absolute right-3"><ThemeToggle /></div>
             </nav>
             <nav className="hidden w-full max-sm:block items-center gap-4">
              {/* puldown menu */}
@@ -208,17 +205,12 @@ export const Menu = ({session}:any) => {
                 </Link>
                 </MenubarItem>
               )}
-    
-    
+<div className="float-right absolute right-3"><ThemeToggle /></div>
     </MenubarContent>
   </MenubarMenu>
 </Menubar>
             </nav>
-
-              
-          
           </header>
-
           </>
          ):(<>
             <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
@@ -232,14 +224,16 @@ export const Menu = ({session}:any) => {
               </Link>
               <Link href="/dashboard">Dashboard</Link>
             <form action={logout} className="h-[48px]">
-                  <Button variant="outline" className="top-2 absolute right-3 h-[48px] gap-2">
+                  <Button variant="outline" className="top-2 absolute right-16 h-[48px] gap-2">
                   <Avatar>
                   <AvatarImage src={avatar} />
                   <AvatarFallback>{avatarFallback}</AvatarFallback>
                   </Avatar><span>Sign Out</span>
                   </Button>
                 </form>
+                <div className="float-right absolute right-3"><ThemeToggle /></div>
             </nav>
+            
             </header>
          </>)}
         </div>
