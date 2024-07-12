@@ -1,5 +1,11 @@
+
 #WARNING 
 * this is a work in progress. The project is not yet ready for production or even for development.
+
+
+# license
+This software is licensed under the AGPLv3. You are free to use and modify this software for personal use. If you offer this software as a service, you must make your modifications available to your users under the same license.
+
 
 
 NextJS with shadcn/ui 
