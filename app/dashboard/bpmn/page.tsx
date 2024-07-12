@@ -11,6 +11,7 @@ import Loader from '@/components/custom/loader';
 import Panel from '@/components/custom/panel';
 //get session from auth
 import { getSession } from "@/app/actions";
+import "./bpmn.css";
 
 export default function Page() {
     const [prompt, setPrompt] = useState('');
