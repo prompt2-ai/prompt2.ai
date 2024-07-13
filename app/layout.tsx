@@ -5,6 +5,7 @@ import Menu from "@/components/custom/menu";
 import Footer from "@/components/custom/footer";
 import Sidebar from "@/components/custom/sidebar";
 import { ThemeProvider } from "@/components/theme-provider"
+import AuthProvider from "@/components/custom/authProvider";
 import "./globals.css";
 import './theme.css';
 
@@ -27,7 +28,7 @@ export default async function RootLayout({
 }>) {
   const session = await getSession(); 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className}>
       <ThemeProvider
             attribute="class"
@@ -35,6 +36,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+      <AuthProvider>
       <div className="shadow-2xl inset-y-0 min-h-7 sticky text-center bg-red-500 z-40"><strong>WARNING! this site is under heavy development.</strong></div>
       <div className="sticky top-0 z-50 border-b border-border/40 bg-black backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Menu session={session}/>
@@ -46,6 +48,7 @@ export default async function RootLayout({
         </div>
        </main>
        <Footer />
+        </AuthProvider>
        </ThemeProvider>
         </body>
     </html>
