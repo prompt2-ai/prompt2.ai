@@ -65,6 +65,14 @@ module.exports = {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
+      role: {
+        allowNull: false,
+        type: DataTypes.STRING(255),
+        defaultValue: 'user',
+        validate: {
+          isIn: [['user', 'subscriber', 'admin']]
+       }
+      },
       created_at: {
         allowNull: false,
         type: DataTypes.DATE,
