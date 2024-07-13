@@ -1,8 +1,17 @@
 'use strict';
+const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+
+    //get the user id from the users table where email is 'panagiotis@skarvelis.gr'
+    const user = await queryInterface.sequelize.query(
+      `SELECT id FROM users WHERE email = 'panagiotis@skarvelis.gr'`,
+      { type: queryInterface.sequelize.QueryTypes.SELECT }
+    );
+
+
     /**
      * Add seed commands here.
      *
@@ -14,9 +23,10 @@ module.exports = {
     */
     await queryInterface.bulkInsert('workflows', [
       {
+        id: uuidv4(),//UUID
         name: 'Order Processing',
         description: 'Depicts the process of receiving, evaluating, fulfilling, and closing customer orders',
-        user_id: '4ca66b66-758d-4b7e-8050-42494dd9407c',
+        user_id: user[0].id,
         workflow: `<?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="[invalid URL removed]" xmlns:bpmndi="[invalid URL removed]" xmlns:di="[invalid URL removed]" xmlns:dc="[invalid URL removed]" xmlns:xsi="[invalid URL removed]" id="Definitions_1" targetNamespace="[invalid URL removed]" exporter="Camunda Modeler" exporterVersion="4.12.0">
 <bpmn:process id="order-processing" name="Order Processing" isExecutable="true">
@@ -220,10 +230,14 @@ Consider alternative scenarios (partial order fulfillment, returns, etc.).
 Add data objects, pools, or lanes for clarity if needed.`,
         active: true,
         private: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        tokens_output: 10,
+        tokens_input: 5,
+        created_at: new Date(),
+        updated_at: new Date()
       }
-    ], {});
+    ], {
+     
+    });
 
 
   },

@@ -3,36 +3,77 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const DataTypes = Sequelize.DataTypes;
     await queryInterface.createTable('users', {
       id: {
         primaryKey: true,
         allowNull: false,
-        type: Sequelize.CHAR(36)
+        type: DataTypes.CHAR(36),
+        validate: {
+          isUUID: 4
+        }
       },
       name: {
         allowNull: false,
-        type: Sequelize.STRING(255)
+        type: DataTypes.STRING(255)
       },
       email: {
         unique: true,
         allowNull: false,
-        type: Sequelize.STRING(2048)
+        type: DataTypes.STRING(2048)
       },
       phone: {
         allowNull: true,
-        type: Sequelize.STRING(255)
+        type: DataTypes.STRING(255)
       },
       email_verified: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       phone_verified: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       image: {
         allowNull: true,
-        type: Sequelize.STRING(1024)
+        type: DataTypes.STRING(1024)
+      },
+      // google aistudio api key
+      api_key: {
+        allowNull: true,
+        type: DataTypes.STRING(255)
+      },
+      //add stripe fields here
+      stripe_customer_id: {
+        allowNull: true,
+        type: DataTypes.STRING(255)
+      },
+      stripe_subscription_id: {
+        allowNull: true,
+        type: DataTypes.STRING(255)
+      },
+      stripe_price_id: {
+        allowNull: true,
+        type: DataTypes.STRING(255)
+      },
+      stripe_current_period_end: {
+        allowNull: true,
+        type: DataTypes.DATE
+      },
+      is_active: {
+        allowNull: false,
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      },
+      created_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      updated_at: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

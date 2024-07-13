@@ -14,17 +14,73 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   workflows.init({
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    user_id: DataTypes.STRING(36),
-    workflow: DataTypes.TEXT,//Store BPMN XML as text
-    image: DataTypes.TEXT,//Store SVG image as text
-    prompt: DataTypes.TEXT,//Store prompt as text
-    active: DataTypes.BOOLEAN,
-    private: DataTypes.BOOLEAN
+    id: {
+      type: DataTypes.STRING(36),
+      primaryKey: true,
+      allowNull: false,
+      validate:{
+        isUUID: 4
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      allowNull: true,
+      type: DataTypes.TEXT
+    },
+    userId: { //foreign key to users table
+      allowNull: false,
+      foreignKey: true,
+      references: {
+        model: 'users',
+        key: 'id'
+      },
+      type: DataTypes.STRING(36)
+    },
+    workflow: { //workflow XML as text
+      allowNull: false,
+      type: DataTypes.TEXT
+    },
+    image: { //image base64 as text
+      allowNull: true,
+      type: DataTypes.TEXT
+    },      
+    prompt: {
+      allowNull: false,
+      type: DataTypes.TEXT
+    },
+    active: {
+      defaultValue: true,
+      type: DataTypes.BOOLEAN
+    },
+    private: {
+      defaultValue: false,
+      type: DataTypes.BOOLEAN
+    },
+    tokensInput: {
+      type: DataTypes.INTEGER,//the tokens required from Gemini for prompt
+      allowNull: true
+    },
+    tokensOutput: {
+       type: DataTypes.INTEGER,//the tokens required from Gemini for output
+       allowNull: true
+    },
+    createdAt: {
+      type:DataTypes.DATE,
+      defaultValue:DataTypes.NOW,
+      allowNull:true
+    },
+    updatedAt: {
+      type:DataTypes.DATE,
+      defaultValue:DataTypes.NOW,
+      allowNull:true
+    }
   }, {
     sequelize,
     modelName: 'workflows',
+    underscored: true //underscored: true uses snake_case for attributes
   });
   return workflows;
 };

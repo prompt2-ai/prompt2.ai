@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     const DataTypes = Sequelize.DataTypes;
-    await queryInterface.createTable('workflows', {
+    await queryInterface.createTable('tokens', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -11,14 +11,6 @@ module.exports = {
         validate:{
           isUUID: 4
         }
-      },
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING
-      },
-      description: {
-        allowNull: true,
-        type: DataTypes.TEXT
       },
       user_id: {
         allowNull: false,
@@ -29,33 +21,31 @@ module.exports = {
         },
         type: DataTypes.STRING(36)
       },
-      workflow: {
-        allowNull: false,
-        type: DataTypes.TEXT
+      type: {
+        type: DataTypes.STRING,
+        validate:{
+          isIn: {args: [['Gemini', 'ChatGPT']], msg: 'Invalid LLM type'}
+        },
+        defaultValue: 'Gemini'
       },
-      image: {
-        allowNull: true,
-        type: DataTypes.TEXT
+      value: {
+        type: DataTypes.INTEGER, //number of tokens
+        allowNull: false
       },
-      prompt: {
-        allowNull: false,
-        type: DataTypes.TEXT
+      purchased_at: {
+        type: DataTypes.DATE,
+        allowNull: false
       },
-      active: {
-        defaultValue: true,
-        type: DataTypes.BOOLEAN
+      source: {
+        type: DataTypes.STRING, //Comes from subscription or purchase
+        validate:{
+          isIn: {args: [['subscription', 'purchase']], msg: 'Invalid source'}
+        },
+        allowNull: false
       },
-      private: {
-        defaultValue: false,
-        type: DataTypes.BOOLEAN
-      },
-      tokens_input: {
-        type:DataTypes.INTEGER,
-        allowNull: true
-      },
-      tokens_output: {
-        type:DataTypes.INTEGER,
-        allowNull: true
+      expires: {
+        type: DataTypes.DATE, //sould expire after 1 month(?)
+        allowNull: false
       },
       created_at: {
         allowNull: false,
@@ -70,6 +60,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('workflows');
+    await queryInterface.dropTable('tokens');
   }
 };
