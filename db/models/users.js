@@ -76,6 +76,14 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       allowNull: true
     },
+    role: {
+      type:DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue:'user', //allow user,subscriber,admin
+      validate:{
+        isIn: [['user','subscriber','admin']]
+      }
+    },
     createdAt: {
       type:DataTypes.DATE,
       defaultValue:DataTypes.NOW,
