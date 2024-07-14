@@ -138,6 +138,14 @@ export const Menu = ({session}:any) => {
                     </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
+                    <Link href="/subscriptions" legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        {isLogged&&"Subscription"}
+                        {!isLogged&&"Pricing"}
+                      </NavigationMenuLink>
+                    </Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
                     <Link href="/documentation" legacyBehavior passHref>
                       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         Documentation
@@ -158,11 +166,14 @@ export const Menu = ({session}:any) => {
               </NavigationMenu>
               
               {isLogged==true ? (
-                <form action={logout} className="w-full">
-                  <button className="absolute right-16 text-right h-[48px] grow items-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600">
-                    <div className="md:block">Sign Out</div>
-                  </button>
-                </form>
+            <form action={logout} className="h-[48px]">
+            <Button variant="outline" className="top-2 absolute right-16 h-[48px] gap-2">
+            <Avatar>
+            <AvatarImage src={avatar} />
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
+            </Avatar><span>Sign Out</span>
+            </Button>
+          </form>
               ) : (
                 <Link href="/login" className="absolute right-16">Sign In</Link>
               )}
@@ -185,6 +196,10 @@ export const Menu = ({session}:any) => {
       <Link href="/documentation">Documentation</Link>
       </MenubarItem>
       <MenubarItem><Link href="/showcases">Showcases</Link></MenubarItem>
+      <MenubarSeparator />
+      <MenubarItem><Link href="/subscriptions">
+      {isLogged&&"Subscription"}
+      {!isLogged&&"Pricing"}</Link></MenubarItem>
       <MenubarSeparator />
       <MenubarItem><Link href="/dashboard" legacyBehavior passHref>Dashboard</Link></MenubarItem>
       <MenubarSeparator />
