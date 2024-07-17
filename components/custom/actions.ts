@@ -1,13 +1,17 @@
-import { signOut } from 'next-auth/react';
+'use server';
+import { signOut } from "@/auth";
+import { redirect } from 'next/navigation'
 
-export  const logout = async () => {
+export const logout = async () => {
    return await signOut(
         {
             redirect: true,
-            callbackUrl: '/',
+            redirectTo: '/',
         }
     );  
   }
 
 
-
+export const navigate = (url: string)=> {
+     redirect(url);
+}
