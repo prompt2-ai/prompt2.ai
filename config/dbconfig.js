@@ -1,12 +1,15 @@
+//call from command line: PRODUCTION=true npx sequelize-cli db:seed:all to seed the database on production
+
 let isOnBash = false;
 
 //read the .env file from ../.env.local if this script called from command line
 if (require.main.id==".") { //when called from sequelize-cli id is "."
-console.log('called from command line');
+console.log('called from command line with PRODUCTION=',process.env.PRODUCTION?'true':'false');
+const envfile=process.env.PRODUCTION?'.env.production.local':'.env.development.local';
 isOnBash = true;
 const fs = require('fs');
 const path = require('path');
-const envPath = path.resolve(__dirname, '../.env.local');
+const envPath = path.resolve(__dirname, '../', envfile);
 const env = fs.readFileSync(envPath, 'utf8');
 const envLines = env.split('\n');
 envLines.forEach((line) => {
