@@ -1,7 +1,7 @@
 let isOnBash = false;
 
 //read the .env file from ../.env.local if this script called from command line
-if (require.main.loaded) { //when called from sequelize-cli loaded is true
+if (require.main.id==".") { //when called from sequelize-cli id is "."
 console.log('called from command line');
 isOnBash = true;
 const fs = require('fs');
