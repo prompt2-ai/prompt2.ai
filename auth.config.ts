@@ -1,14 +1,12 @@
 //NEXTAUTH
 import type { NextAuthConfig } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
+//import Credentials from 'next-auth/providers/credentials';
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 
-//import db  from './db/models/index.js';
-
 //import Linkedin from "next-auth/providers/linkedin"
 //import Resend from "next-auth/providers/resend"
-
+/*
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
@@ -18,7 +16,7 @@ type User = {
   email: string;
   password: string;
 };
-
+*/
 /*
 function getUser(email: string): User | undefined {
   try {
@@ -48,7 +46,7 @@ export const authConfig = {
       from: "no-reply@prompt2.ai",
     }),
     */
-    Credentials({
+   /* Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
           .object({ email: z.string().email(), password: z.string().min(4) })
@@ -69,20 +67,30 @@ export const authConfig = {
         return null;
       },
     })
+      */
     
   ],
   callbacks: {
-    session({session, user}){
-      console.log('session callback', session, user);
+    session({session, token}) {
+      // Add user id to the session
+      session.user.id = token.sub!;
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      //const isOnHomePage = nextUrl.pathname === '/';
+      //if (isOnHomePage) return true;
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
+        //catch here the callbackUrl from query params and redirect to it
+        const callbackUrl = new URLSearchParams(nextUrl.search).get('callbackUrl');
+        if (callbackUrl) {
+          return Response.redirect(new URL(callbackUrl, nextUrl));
+        }
+        //or redirect to dashboard
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
       return true;
