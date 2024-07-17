@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useSession, signIn, signOut } from "next-auth/react";
 import Link from 'next/link';
 import {
   Table,
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/table"
 
 export default function Page() {
-
+  const { data: session, status } = useSession();
     return (
         <div>
             have a left side bar with the following links:
@@ -24,6 +25,7 @@ export default function Page() {
             image, name, description, date created, date modified, and actions
             
             <Table>
+  <h1> Welcome to your dashboard, {session?.user?.name}!</h1>            
   <TableCaption>A list of your recent invoices.</TableCaption>
   <TableHeader>
     <TableRow>
