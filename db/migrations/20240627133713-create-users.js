@@ -70,8 +70,16 @@ module.exports = {
         type: DataTypes.STRING(255),
         defaultValue: 'user',
         validate: {
-          isIn: [['user', 'subscriber', 'admin']]
+          isIn: [['user', 'subscriber', 'custom', 'admin']]
        }
+      },
+      plan: {
+        type:DataTypes.STRING(255),
+        allowNull: false,
+        defaultValue:'free', //allow free,monthly,yearly
+        validate:{
+          isIn: [['free','month','year']]
+        }
       },
       created_at: {
         allowNull: false,

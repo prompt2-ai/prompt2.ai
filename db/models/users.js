@@ -74,14 +74,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     isActive: {
       type:DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: false,
+      defaultValue: true
     },
     role: {
       type:DataTypes.STRING(255),
       allowNull: true,
       defaultValue:'user', //allow user,subscriber,admin
       validate:{
-        isIn: [['user','subscriber','admin']]
+        isIn: [['user','subscriber','custom','admin']]
+      }
+    },
+    plan: {
+      type:DataTypes.STRING(255),
+      allowNull: false,
+      defaultValue:'free', //allow free,month,yearly
+      validate:{
+        isIn: [['free','month','year']]
       }
     },
     createdAt: {
