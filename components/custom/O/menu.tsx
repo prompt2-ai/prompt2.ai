@@ -66,12 +66,7 @@ export const Menu = () => {
   }, [session]);
 
   return (
-      <>
         <div className="w-full">
-          
-          
-         {onDashboard==false ? (
-          <>
           <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
             <nav className="max-sm:hidden gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
@@ -230,34 +225,8 @@ export const Menu = () => {
 </Menubar>
             </nav>
           </header>
-          </>
-         ):(<>
-            <header className="max-sm:mt-3 mt-2 p-2 sticky items-center gap-4 bg-background/20 h-[48px] px-4 md:px-6">
-            <nav className="max-sm:hidden h-[48] gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
-            <Link
-                href="/O"
-                className="items-center gap-2 text-lg font-semibold md:text-base"
-              >
-                <Image src="/logo.svg" alt="P2?" width={40} height={40} />
-                <span className="sr-only">P2?</span>
-              </Link>
-              <Link href="/dashboard">Dashboard</Link>
-                  <Button 
-                  onClick={()=>signOut()}
-                  variant="outline" className="top-0 absolute right-16 h-[48px] gap-2">
-                  <Avatar>
-                  <AvatarImage src={avatar} />
-                  <AvatarFallback>{avatarFallback}</AvatarFallback>
-                  </Avatar><span>Sign Out</span>
-                  </Button>
 
-                <div className="top-1 float-right absolute right-3"><ThemeToggle /></div>
-            </nav>
-            
-            </header>
-         </>)}
         </div>
-      </>
     );
 }
 
