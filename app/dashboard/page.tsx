@@ -133,8 +133,8 @@ export default function Page() {
               preview the BPMN diagram of the workflow.
             </DialogDescription>
           </DialogHeader>
-          <div id={"bpmn-container-" + index} className="container overflow-hidden border rounded-md"></div>
-          {overflowMessage && <span className="mt-10 block text-sm font-light text-pretty text-gray-700">
+          <div id={"bpmn-container-" + index} className="container overflow-hidden border rounded-md bg-slate-50"></div>
+          {overflowMessage && <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
             The diagram is too large and does not fit within the container.
             Zoom in/out by holding the CTRL key and rolling the mouse wheel.
             Drag/Pan the diagram by holding the mouse left button and moving the mouse to move the diagram within the container.
