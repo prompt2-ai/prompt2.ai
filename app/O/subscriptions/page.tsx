@@ -27,7 +27,7 @@ export default function Subscriptions() {
   const handler = async (thePlan:any) => {
     //check if the user is logged in
     if (!session?.user) {
-      await signIn(undefined, { callbackUrl: `/subscriptions` });
+      await signIn(undefined, {redirect: true, redirectTo:"/O/subscriptions", callbackUrl: `/O/subscriptions` });
       return;
     }
     const stripe = await preparedStripe(); 
@@ -59,6 +59,7 @@ export default function Subscriptions() {
 
   return (
     <>
+    <div className="lg:container">
     <div>
       <h1 className="text-2xl font-bold mt-4">Choose your path.</h1>
       <Separator className="my-4" />
@@ -92,6 +93,7 @@ export default function Subscriptions() {
     </AccordionContent>
   </AccordionItem>  
 </Accordion>
+</div>
 </>
   );
 }

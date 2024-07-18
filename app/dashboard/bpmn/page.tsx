@@ -19,7 +19,7 @@ export default function Page() {
     const [lint, setLint] = useState({} as any);
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState('' as any);
-    const [xml, setXml] = useState('' as any);
+    const [xml, setXml] = useState('' as string);
     const [overflowMessage, setOverflowMessage] = useState(false);
     const [session, setSession] = useState<any>(null);
     //get session

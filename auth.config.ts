@@ -77,23 +77,21 @@ export const authConfig = {
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {
+      console.log("ON AUTHORIZED CALLBACK", auth, nextUrl);
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      //const isOnHomePage = nextUrl.pathname === '/';
-      //if (isOnHomePage) return true;
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
-      } else if (isLoggedIn) {
-        //catch here the callbackUrl from query params and redirect to it
-        const callbackUrl = new URLSearchParams(nextUrl.search).get('callbackUrl');
-        if (callbackUrl) {
-          return Response.redirect(new URL(callbackUrl, nextUrl));
-        }
-        //or redirect to dashboard
-        return Response.redirect(new URL('/dashboard', nextUrl));
       }
-      return true;
+      const isOnSubscription = nextUrl.pathname.startsWith('/O/');
+      if (isOnSubscription) {
+        if (isLoggedIn) return true;
+        return false; // Redirect unauthenticated users to login page
+      }
+      
+      //or redirect to dashboard
+      return Response.redirect(new URL('/dashboard', nextUrl));
     },
   },
 } satisfies NextAuthConfig;

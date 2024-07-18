@@ -3,9 +3,6 @@
 import withNextra from 'nextra'; //patched with https://github.com/shuding/nextra/pull/2460/files
 import {withNextVideo} from 'next-video/process';
 
-
-
-
 const withNextraConfig = withNextra({
     theme: 'nextra-theme-docs',
     themeConfig: './doc.theme.config.jsx'
@@ -26,7 +23,16 @@ const nextConfig = {
     },
   eslint: {  //TO remove this for production
       ignoreDuringBuilds: true,
-  } 
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/O',
+        permanent: true,
+      },
+    ]
+  }
 };
 
 

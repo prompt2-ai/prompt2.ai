@@ -247,7 +247,7 @@ export function ProductCard({
               </Alert>
 
               <Button variant="default"
-                onClick={async (e) => { await signIn(); }}
+                onClick={async (e) => { await signIn(undefined, {redirect: true, redirectTo:"/O/subscriptions", callbackUrl: "/O/subscriptions" }); }}
                 className='w-full'>
                 Sign in</Button>
             </>
@@ -273,7 +273,7 @@ export function ProductCard({
               Manage Your Subscription</Button>}
           {productId.startsWith("free") && status === "unauthenticated" &&
             <Button variant="default"
-              onClick={async (e) => { await signIn(undefined, { callbackUrl: "/dashboard", redirect: true }); }}
+              onClick={async (e) => { await signIn(undefined, {redirect: true, redirectTo:"/dashboard", callbackUrl: "/dashboard" }); }}
               className='w-full'>
               Sign in</Button>}
           {productId.startsWith("custom") && contatForm()}

@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       },
     ],
     success_url: process.env.NEXT_PUBLIC_WEBSITE_URL + `/thanks?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url:  process.env.NEXT_PUBLIC_WEBSITE_URL+ `/subscriptions`,
+    cancel_url:  process.env.NEXT_PUBLIC_WEBSITE_URL+ `/O/subscriptions`,
     subscription_data: {
       metadata: {
         //This meta is added to provide a manual way to check, 

@@ -30,13 +30,16 @@ import Image from 'next/image';
 import { cn } from "@/lib/utils"
 import { logout } from "@/components/custom/actions";
 import { Quote } from "lucide-react";
+import { useSession, signIn, signOut } from "next-auth/react"
 
-export const Menu = ({session}:any) => {
-
+export const Menu = () => {
+  const { data: session, status } = useSession();
   const [isLogged, setIsLogged] = useState(false);
   const [onDashboard, setOnDashboard] = useState(false);
   const [avatar, setAvatar] = useState("");
   const [avatarFallback, setAvatarFallback] = useState("");
+  
+  
   useEffect(() => {
     const run = async () => {
       setOnDashboard(window.location.pathname.includes("/dashboard"));
@@ -47,7 +50,7 @@ export const Menu = ({session}:any) => {
       } else {
         setIsLogged(true);
         if (s.user.image === null || s.user.image === undefined || s.user.image === "") {
-          const name = s.user.name.split(" ");
+          const name = (s&&s.user.name)?s.user.name.split(" ")||"":"";
           const nameLength = name.length;
           if (nameLength > 1) 
           setAvatarFallback(name[0][0] + name[1][0]);
@@ -56,7 +59,7 @@ export const Menu = ({session}:any) => {
           //keep JD for John Doe or Jane Doe
           else setAvatarFallback("JD");
         }
-        setAvatar(s.user.image);
+        setAvatar((s&&s.user.image)?s.user.image:"");
       }
     };
     run();
@@ -72,7 +75,7 @@ export const Menu = ({session}:any) => {
           <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
             <nav className="max-sm:hidden gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
               <Link
-                href="/"
+                href="/O"
                 className="items-center gap-2 text-lg font-semibold md:text-base"
               >
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
@@ -89,7 +92,7 @@ export const Menu = ({session}:any) => {
                           <NavigationMenuLink asChild>
                             <a
                               className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                              href="/"
+                              href="/O"
                             >
                               <Image
                                 src="/logo.svg"
@@ -131,14 +134,14 @@ export const Menu = ({session}:any) => {
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/showcases" legacyBehavior passHref>
+                    <Link href="/O/showcases" legacyBehavior passHref>
                       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         Showcases
                       </NavigationMenuLink>
                     </Link>
                   </NavigationMenuItem>
                   <NavigationMenuItem>
-                    <Link href="/subscriptions" legacyBehavior passHref>
+                    <Link href="/O/subscriptions" legacyBehavior passHref>
                       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         {isLogged&&"Subscription"}
                         {!isLogged&&"Pricing"}
@@ -155,7 +158,6 @@ export const Menu = ({session}:any) => {
                 {(isLogged==true&&onDashboard==false) ? (
                   <NavigationMenuItem>
                     <Link href="/dashboard" legacyBehavior passHref>
-                      
                       <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                         Dashboard
                       </NavigationMenuLink>
@@ -166,14 +168,14 @@ export const Menu = ({session}:any) => {
               </NavigationMenu>
               
               {isLogged==true ? (
-            <form action={logout} className="h-[48px]">
-            <Button variant="outline" className="top-2 absolute right-16 h-[48px] gap-2">
+            
+            <Button onClick={()=>signOut()} variant="outline" className="top-1 absolute right-16 h-[48px] gap-2">
             <Avatar>
             <AvatarImage src={avatar} />
             <AvatarFallback>{avatarFallback}</AvatarFallback>
             </Avatar><span>Sign Out</span>
             </Button>
-          </form>
+          
               ) : (
                 <Link href="/login" className="absolute right-16">Sign In</Link>
               )}
@@ -182,7 +184,7 @@ export const Menu = ({session}:any) => {
             <nav className="hidden w-full max-sm:block items-center gap-4">
              {/* puldown menu */}
              <Link
-                href="/"
+                href="/O"
                 className="mt-3 float-start"
               >
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
@@ -195,21 +197,23 @@ export const Menu = ({session}:any) => {
       <MenubarItem>
       <Link href="/documentation">Documentation</Link>
       </MenubarItem>
-      <MenubarItem><Link href="/showcases">Showcases</Link></MenubarItem>
+      <MenubarItem><Link href="/O/showcases">Showcases</Link></MenubarItem>
       <MenubarSeparator />
-      <MenubarItem><Link href="/subscriptions">
+      <MenubarItem><Link href="/O/subscriptions">
       {isLogged&&"Subscription"}
       {!isLogged&&"Pricing"}</Link></MenubarItem>
       <MenubarSeparator />
-      <MenubarItem><Link href="/dashboard" legacyBehavior passHref>Dashboard</Link></MenubarItem>
+      {isLogged&&<MenubarItem><Link href="/dashboard" legacyBehavior passHref>Dashboard</Link></MenubarItem>}
       <MenubarSeparator />
       {isLogged==true ? (
                 <MenubarItem>
-                <form action={logout}>
-                  <button className="absolute right-3 text-right h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+                
+                  <Button 
+                     onClick={()=>signOut()}
+                     className="absolute right-3 text-right h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
                     <div className="md:block">Sign Out</div>
-                  </button>
-                </form>
+                  </Button>
+                
                 </MenubarItem>
               ) : (
                 <MenubarItem>
@@ -228,25 +232,26 @@ export const Menu = ({session}:any) => {
           </header>
           </>
          ):(<>
-            <header className="max-sm:mt-3 p-2 sticky items-center gap-4 bg-background/20 px-4 md:px-6">
-            <nav className="max-sm:hidden h-[48]] gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
+            <header className="max-sm:mt-3 mt-2 p-2 sticky items-center gap-4 bg-background/20 h-[48px] px-4 md:px-6">
+            <nav className="max-sm:hidden h-[48] gap-6 text-lg font-medium md:flex md:flex-initial md:items-center md:gap-5 md:text-sm lg:gap-6">
             <Link
-                href="/"
+                href="/O"
                 className="items-center gap-2 text-lg font-semibold md:text-base"
               >
                 <Image src="/logo.svg" alt="P2?" width={40} height={40} />
                 <span className="sr-only">P2?</span>
               </Link>
               <Link href="/dashboard">Dashboard</Link>
-            <form action={logout} className="h-[48px]">
-                  <Button variant="outline" className="top-2 absolute right-16 h-[48px] gap-2">
+                  <Button 
+                  onClick={()=>signOut()}
+                  variant="outline" className="top-0 absolute right-16 h-[48px] gap-2">
                   <Avatar>
                   <AvatarImage src={avatar} />
                   <AvatarFallback>{avatarFallback}</AvatarFallback>
                   </Avatar><span>Sign Out</span>
                   </Button>
-                </form>
-                <div className="float-right absolute right-3"><ThemeToggle /></div>
+
+                <div className="top-1 float-right absolute right-3"><ThemeToggle /></div>
             </nav>
             
             </header>

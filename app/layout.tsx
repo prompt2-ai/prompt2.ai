@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { getSession } from "@/app/actions";
-import Menu from "@/components/custom/menu";
+import Menu from "@/components/custom/O/menu";
 import Footer from "@/components/custom/footer";
-import Sidebar from "@/components/custom/sidebar";
 import { ThemeProvider } from "@/components/theme-provider"
 import AuthProvider from "@/components/custom/authProvider";
 import "./globals.css";
@@ -37,18 +36,8 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
       <AuthProvider>
-      <div className="shadow-2xl inset-y-0 min-h-7 sticky text-center bg-red-500 z-40"><strong>WARNING! this site is under heavy development.</strong></div>
-      <div className="sticky top-0 z-50 border-b border-border/40 bg-black backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <Menu session={session}/>
-      </div>
-      <Sidebar session={session} className="hidden md:flex w-16 h-full bg-background/95 border-r border-border/40 p-4"/>
-      <main className="w-full lg:container">
-        <div className="flex flex-col lg:min-h-screen p-8">
           {children}
-        </div>
-       </main>
-       <Footer />
-        </AuthProvider>
+      </AuthProvider>
        </ThemeProvider>
         </body>
     </html>

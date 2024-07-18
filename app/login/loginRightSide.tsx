@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation"
+
 //import UserAuthForm from '@/app/login/form';
 import { signIn } from '@/auth';
 import { AuthError } from "next-auth";
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export default function LoginRightSide() {  
+export default function LoginRightSide({callbackUrl}: {callbackUrl: string}) {  
     return (
         <div className="sm:p-2 md:p-4 lg:p-8">
         <div className="mx-auto flex w-full flex-col justify-center items-center space-y-6">
@@ -22,7 +23,7 @@ export default function LoginRightSide() {
           action={async () => {
             "use server"
             try {
-              await signIn('github', { callbackUrl: '/dashboard' } );
+            await signIn('github', {redirect: true, redirectTo:callbackUrl,callbackUrl:callbackUrl } );
             } catch (error) {
               // Signin can fail for a number of reasons, such as the user
               // not existing, or the user not having the correct role.
@@ -62,7 +63,7 @@ export default function LoginRightSide() {
         <form action={async () => {
           "use server"
           try {
-            await signIn('google', { callbackUrl: '/dashboard' } );
+            await signIn('google', {redirect: true, redirectTo:callbackUrl, callbackUrl:callbackUrl } );
           } catch (error) {
             // Signin can fail for a number of reasons, such as the user
             // not existing, or the user not having the correct role.
@@ -101,7 +102,7 @@ export default function LoginRightSide() {
       <form action={async () => {
         "use server"
         try {
-          await signIn('linkedin', { callbackUrl: '/dashboard' } );
+          await signIn('linkedin', {redirect: true, redirectTo:"/dashboard",  callbackUrl: '/dashboard' } );
         } catch (error) {
           // Signin can fail for a number of reasons, such as the user
           // not existing, or the user not having the correct role.
@@ -132,7 +133,7 @@ export default function LoginRightSide() {
     <form action={async () => {
           "use server"
           try {
-            await signIn('apple', { callbackUrl: '/dashboard' } );
+            await signIn('apple', {redirect: true, redirectTo:"/dashboard", callbackUrl: '/dashboard' } );
           } catch (error) {
             // Signin can fail for a number of reasons, such as the user
             // not existing, or the user not having the correct role.
@@ -172,7 +173,7 @@ export default function LoginRightSide() {
             <form action={async () => {
               "use server"
               try {
-                await signIn('resend', { callbackUrl: '/dashboard' } );
+                await signIn('resend', {redirect: true, redirectTo:"/dashboard", callbackUrl: '/dashboard' } );
               } catch (error) {
                 // Signin can fail for a number of reasons, such as the user
                 // not existing, or the user not having the correct role.
@@ -212,14 +213,14 @@ export default function LoginRightSide() {
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link
-              href="/legal/terms"
+              href="/O/legal/terms"
               className="underline underline-offset-4 hover:text-primary"
             >
               Terms of Service
             </Link>{" "}
             and{" "}
             <Link
-              href="legal/privacy"
+              href="/O/legal/privacy"
               className="underline underline-offset-4 hover:text-primary"
             >
               Privacy Policy

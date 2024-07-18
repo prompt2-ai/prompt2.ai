@@ -3,13 +3,29 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import LoginLeftSide from './loginLeftSide';
 import LoginRightSide from './loginRightSide';
- 
-export default function LoginPage() {
+import { NextRequest } from "next/server";
+import { getSession } from "@/app/actions";
+import { redirect } from "next/navigation";
 
-  return (
+
+
+export default async function LoginPage(req:NextRequest & { searchParams?: {
+  callbackUrl:string
+} }) {
+const {callbackUrl} = req.searchParams?.callbackUrl ? req.searchParams : {callbackUrl:"/dashboard"};
+const session= await getSession();
+
+if (session) {
+   if (callbackUrl) {
+    redirect(callbackUrl);
+    return <div>Redirecting...</div>
+   }
+}
+
+return (
     <>
-    <div className="overflow-hidden md:rounded-[0.5rem] md:border bg-background md:shadow">
-      <div className="lg:container lg:relative lg:h-[800px] lg:flex-col lg:items-center lg:justify-center lg:justify-between lg:h-full sm:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="p-[30px] lg:container m-10 overflow-hidden md:rounded-[0.5rem] md:border bg-background md:shadow">
+      <div className="lg:relative lg:h-[800px] lg:flex-col lg:items-center lg:justify-center lg:justify-between lg:h-full sm:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="/login"
           className={cn(
@@ -20,7 +36,7 @@ export default function LoginPage() {
           Login
         </Link>
         <LoginLeftSide />
-        <LoginRightSide />
+        <LoginRightSide callbackUrl={callbackUrl} />
       </div>
       </div>
     </>
