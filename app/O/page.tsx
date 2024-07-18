@@ -26,7 +26,7 @@ export default function Home() {
      className="lg:border-2 md:border-8 md:border-black lg:border-white"/>
   </div>
 <div className="p-0 mt-8 lg:flex">
-<Card className="lg:w-1/3 lg:flex-inline mt-2 lg:mr-2">
+<Card className="lg:w-2/4 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
     <CardTitle>Start Free</CardTitle>
     <CardDescription>Just bring your tokens</CardDescription>
@@ -39,6 +39,7 @@ export default function Home() {
             buttonVariants({ variant: "default" }),"")} href="/documentation">Found out more!</Link></p>
   </CardFooter>
 </Card>
+{/*
 <Card className="lg:w-1/3 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
     <CardTitle>Get Inspiration</CardTitle>
@@ -48,11 +49,13 @@ export default function Home() {
     <p>You don't know how to start? Look at workflows made by other users to get inspiration and remix them to your needs. </p>
   </CardContent>
   <CardFooter>
+
   <p><Link className={cn(
             buttonVariants({ variant: "default" }),"")} href="/showcases">Showcases</Link></p>
   </CardFooter>
 </Card>
-<Card className="lg:w-1/3 lg:flex-inline mt-2">
+*/}
+<Card className="lg:w-2/4 lg:flex-inline mt-2">
   <CardHeader>
     <CardTitle>It's Easy</CardTitle>
     <CardDescription>It has never been easier to create BPMN2 workflows</CardDescription>

@@ -125,13 +125,13 @@ export const Menu = () => {
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
-              <NavigationMenuItem>
+              {/*<NavigationMenuItem>
                 <Link href="/O/showcases" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                     Showcases
                   </NavigationMenuLink>
                 </Link>
-              </NavigationMenuItem>
+              </NavigationMenuItem>*/}
               <NavigationMenuItem>
                 <Link href="/O/subscriptions" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -188,7 +188,7 @@ export const Menu = () => {
                 <MenubarItem>
                   <Link href="/documentation">Documentation</Link>
                 </MenubarItem>
-                <MenubarItem><Link href="/O/showcases">Showcases</Link></MenubarItem>
+               {/* <MenubarItem><Link href="/O/showcases">Showcases</Link></MenubarItem>*/}
                 <MenubarSeparator />
                 <MenubarItem><Link href="/O/subscriptions">
                   {isLogged && "Subscription"}
