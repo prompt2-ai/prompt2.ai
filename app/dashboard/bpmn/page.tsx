@@ -9,8 +9,8 @@ import { BpmnVisualization, FitType } from 'bpmn-visualization';
 import { prepareBPMN } from './actions';
 import Loader from '@/components/custom/loader';
 import Panel from '@/components/custom/panel';
-//get session from auth
-import { getSession } from "@/app/actions";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useSession } from "next-auth/react";
 import "./bpmn.css";
 
 export default function Page() {
@@ -21,23 +21,19 @@ export default function Page() {
     const [response, setResponse] = useState('' as any);
     const [xml, setXml] = useState('' as string);
     const [overflowMessage, setOverflowMessage] = useState(false);
-    const [session, setSession] = useState<any>(null);
-    //get session
+    const [haveApiKey, setHaveApiKey] = useState(true);
+    const { data: session, status } = useSession();
+
     useEffect(() => {
         const run = async () => {
-            const s = await getSession();
-            console.log('session', s);
-            if (s === undefined || s === null) {
-                setSession(null);
-                //redirect to login
-                window.location.href = '/login';
-                return;
+            if (session && session.user && session.user.apiKey !== '' && session.user.apiKey !== null) {
+                setHaveApiKey(true);
+            } else {
+                setHaveApiKey(false);
             }
-            //set session
-            setSession(s);
         };
         run();
-    }, []);
+    },[session]);
 
     useEffect(() => {
         const run = async () => {
@@ -59,8 +55,6 @@ export default function Page() {
             setLint(linter);
             console.log('lint', linter);
             updateWorkflow();
-
-
             setLoading(false);
         };
         run();
@@ -109,17 +103,24 @@ export default function Page() {
     return (
         <>
         {session && session.user && <h1 className="text-2xl font-semibold">Welcome {session.user.name}!</h1>}
-            {loading && <Loader></Loader>}
-
+            {(loading || status =="loading") && <Loader></Loader>}
+        {!haveApiKey && <Alert variant="destructive">
+           <AlertTitle>
+              Set your API key please
+           </AlertTitle>
+          <AlertDescription>
+            you are on a free plan, please set your API key on the profile page before starting to use the app.
+          </AlertDescription>
+          </Alert>} 
             <Panel className="mt-10">
                 <label className="block ">
-                    <span className="block text-sm font-medium text-slate-700">To create a workflow, please provide a specific prompt. {prompt!==""&&prompt.split(' ').length<4?"(at least 4 words)":""}</span>
+                    <span className="block text-sm font-medium text-slate-700 dark:text-white">To create a workflow, please provide a specific prompt. {prompt!==""&&prompt.split(' ').length<4?"(at least 4 words)":""}</span>
                     <Textarea className="mt-2" id="prompt" onChange={
                         (e) => setPrompt(e.target.value)
                     }
                         placeholder='Describe the workflow you want to create...'
                     ></Textarea>
-                    {Object.keys(lint).length > 0 && <span className="mt-10 block text-sm font-light text-pretty text-gray-700">
+                    {Object.keys(lint).length > 0 && <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                         Workflow created but with errors.
                         <br />
                         To reduce them make sure your request is about creating a workflow and give as much detail as possible.
@@ -129,11 +130,9 @@ export default function Page() {
                         Please note that general questions or unrelated requests cannot be answered.
                         <br />
                     </span>}
-                    {response && <span className="mt-10 block text-sm font-light text-pretty text-red-700">{response}</span>}
+                    {response && <span className="mt-10 block text-sm font-light text-pretty text-red-700 dark:text-red-400 ">{response}</span>}
                 </label>
-
-                <Button disabled={prompt === '' || prompt.split(' ').length < 3 || prompt==subPrompt} className="mt-10" onClick={() => setSubPrompt(prompt)}>Generate Workflow</Button>
-
+                <Button disabled={!haveApiKey || prompt === '' || prompt.split(' ').length < 3 || prompt==subPrompt} className="mt-10" onClick={() => setSubPrompt(prompt)}>Generate Workflow</Button>
                 {xml&&<Tabs defaultValue="workflow" className="mt-10 container">
                     <TabsList>
                         <TabsTrigger value="workflow" onClick={(_e:any) => {
@@ -148,14 +147,13 @@ export default function Page() {
                     </TabsList>
                     <TabsContent value="workflow">
                         <div id="bpmn-container" className="container overflow-hidden border rounded-md"></div>
-                        {overflowMessage&& <span className="mt-10 block text-sm font-light text-pretty text-gray-700">
+                        {overflowMessage&& <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                                                 The diagram is too large and does not fit within the container.
                                                 Zoom in/out by holding the CTRL key and rolling the mouse wheel.
                                                 Drag/Pan the diagram by holding the mouse left button and moving the mouse to move the diagram within the container.
                                                 On touch screen (mobile/tablet), use two fingers to zoom or pan the diagram.
                                             </span>
                         }
-                        
                     </TabsContent>
                     {Object.keys(lint).length > 0 && <TabsContent value="errors">
                         {Object.keys(lint).length > 0 && Object.keys(lint).map((key: any) => {
@@ -165,7 +163,6 @@ export default function Page() {
                                     <h2 className="font-semibold">{key}</h2>
                                     <ul>
                                         {lint[key].map((item: any) => {
-
                                             return <li className={item.category==='error'?"text-red-950":""} key={key+"-"+"-"+item.message+"-"+count++}>{item.message}<sub className='text-gray-300'>&nbsp;({item.id})</sub></li>;
                                         })}
                                     </ul>
