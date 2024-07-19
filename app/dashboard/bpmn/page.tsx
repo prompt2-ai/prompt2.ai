@@ -10,12 +10,30 @@ import { prepareBPMN } from './actions';
 import Loader from '@/components/custom/loader';
 import Panel from '@/components/custom/panel';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { useSession } from "next-auth/react";
+import { SaveIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import "./bpmn.css";
+
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogClose,
+  } from "@/components/ui/dialog"
+
 
 export default function Page() {
     const [prompt, setPrompt] = useState('');
     const [subPrompt, setSubPrompt] = useState('');
+
     const [lint, setLint] = useState({} as any);
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState('' as any);
@@ -23,6 +41,7 @@ export default function Page() {
     const [overflowMessage, setOverflowMessage] = useState(false);
     const [haveApiKey, setHaveApiKey] = useState(true);
     const { data: session, status } = useSession();
+    const router = useRouter();
 
     useEffect(() => {
         const run = async () => {
@@ -100,6 +119,99 @@ export default function Page() {
         updateWorkflow();
     }, [xml]);
 
+
+    const SaveBPMN = () => {
+        const [workflowName, setWorkflowName] = useState('');
+        
+        useEffect(() => {
+            const name = xml.match(/name="([^"]*)"/);
+            if (name && name.length > 1) {
+                setWorkflowName(name[1]);
+            }
+        }, []);
+
+        return (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button onClick={()=> {}} variant="default" className="float-right mb-2"><SaveIcon />&nbsp;Save this workflow</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] md:max-w-[95%] md:w-full">
+              <DialogHeader>
+                <DialogTitle>Save AI generated BPMN</DialogTitle>
+                <DialogDescription>
+                You can save the BPMN diagram to your account after reviewing it. 
+                Subsequently, you can download the saved diagram as a file from your dashboard.
+                </DialogDescription>
+              </DialogHeader>
+              
+                <div className="m-5">
+                <Label htmlFor="save-bpmn" className='m-4'>Name</Label>
+                    <Input 
+                       type="text" 
+                       id="save-bpmn" 
+                       placeholder="Enter the name of the workflow" 
+                       onChange={(e) => {
+                        e.preventDefault();
+                        setWorkflowName(e.target.value);
+                       }}
+                       value={workflowName}
+                       />
+                </div>
+
+              <DialogFooter>
+                <Button 
+                    type="submit" 
+                    variant="default"
+                    disabled={workflowName==''}
+                    onClick={async () => {
+                        setLoading(true);
+                        //wait 1 second to make sure the diagram is loaded, and show the funcy loader
+                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                        await fetch('/api/workflows', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                prompt: prompt,
+                                exclusive: false, //TODO switch on UI to make it private for subscribers
+                                workflow: xml,
+                                name: workflowName,
+                                description: "AI generated workflow",//May be added later
+                                tokensInput: "1", //TODO get from gemini response
+                                tokensOutput:"1" //TODO get from gemini response
+                            }),
+                        }).catch((error) => {
+                            console.error('Error:', error);
+                        }).finally(() => {
+                            console.log('Workflow saved');
+                            //redirect to dashboard using nextjs router
+                            
+                            router.push('/dashboard');
+
+                        }
+                        );
+                    }}
+                    
+                    >
+                    Save
+                </Button>
+                <DialogClose asChild>
+                  <Button type="button" variant="destructive">
+                    Cancel
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        )
+      }
+
+
+
+
+
+
     return (
         <>
         {session && session.user && <h1 className="text-2xl font-semibold">Welcome {session.user.name}!</h1>}
@@ -146,6 +258,7 @@ export default function Page() {
                         {Object.keys(lint).length > 0 && <TabsTrigger value="errors">Errors</TabsTrigger>}
                     </TabsList>
                     <TabsContent value="workflow">
+                        <SaveBPMN />
                         <div id="bpmn-container" className="container overflow-hidden border rounded-md"></div>
                         {overflowMessage&& <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                                                 The diagram is too large and does not fit within the container.
