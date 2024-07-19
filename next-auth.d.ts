@@ -5,6 +5,7 @@ import { JWT } from "next-auth/jwt"
 interface CustomUser {
   stripeCustomerId?: string;
   apiKey?: string;
+  plan?: string;
   role?: string;
   id?: string;
 }

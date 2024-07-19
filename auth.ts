@@ -18,7 +18,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const user = await db.User.findOne({ where: { email: session.user.email } }) as any;//TODO: fix this any
       session.user.id = token.sub!;
       session.user.role = user?user.role:"user";
+      session.user.plan = user?user.plan:"free";
       session.user.stripeCustomerId = user?user.stripeCustomerId:"";
+      session.user.apiKey = user?user.apiKey:"";
       return session;
     }
   },
