@@ -24,15 +24,15 @@ interface User {
   "id": string;
   "name": string;
   "email": string;
-  "phone": string | null;
-  "emailVerified": boolean | null;
-  "phoneVerified": boolean | null;
-  "image": string | null;
-  "apiKey": string | null;
-  "stripeCustomerId": string | null;
-  "stripeSubscriptionId": string | null;
-  "stripePriceId": string | null;
-  "stripeCurrentPeriodEnd": Date | null;
+  "phone": string ;
+  "emailVerified": boolean;
+  "phoneVerified": boolean;
+  "image": string;
+  "apiKey": string;
+  "stripeCustomerId": string;
+  "stripeSubscriptionId": string;
+  "stripePriceId": string;
+  "stripeCurrentPeriodEnd": Date;
   "isActive": boolean;
   "role": "admin" | "user" | "subscriber";
   "plan": "month" | "year" | "free";
@@ -53,7 +53,6 @@ export default function Profile() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: useMemo(() => {
-      console.log("User has changed");
       return user;
     }, [user]) as z.infer<typeof formSchema>,
   });
@@ -63,7 +62,13 @@ export default function Profile() {
       await fetch("/api/profile")
         .then((res) => res.json())
         .then((data) => {
-          console.log(data.user);
+        //convert any null value on the user to empty string
+        Object.keys(data.user).forEach((key) => {
+          if (data.user[key] === null) {
+            data.user[key] = "";
+          }
+        });
+
           setUser(data.user);
           form.reset(data.user);
         });
@@ -82,7 +87,6 @@ export default function Profile() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUser(data.user);
         form.reset(data.user);
         //reload the page, needed to set the changes in the session

@@ -55,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: true,
       type: DataTypes.BOOLEAN
     },
-    private: {
+    exclusive: { //private
       defaultValue: false,
       type: DataTypes.BOOLEAN
     },
@@ -86,6 +86,10 @@ module.exports = (sequelize, DataTypes) => {
     remixWorkflows: { //array of workflow ids that are remixes of this workflow
       type: DataTypes.JSON,
       defaultValue: [],
+      allowNull: true
+    },
+    remixFrom: { //workflow id that this workflow is a remix of
+      type: DataTypes.STRING(36),
       allowNull: true
     },
     createdAt: {
