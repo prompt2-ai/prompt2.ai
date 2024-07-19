@@ -67,6 +67,27 @@ module.exports = (sequelize, DataTypes) => {
        type: DataTypes.INTEGER,//the tokens required from Gemini for output
        allowNull: true
     },
+    likes: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    dislikes: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    downloads: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    views: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    remixWorkflows: { //array of workflow ids that are remixes of this workflow
+      type: DataTypes.JSON,
+      defaultValue: [],
+      allowNull: true
+    },
     createdAt: {
       type:DataTypes.DATE,
       defaultValue:DataTypes.NOW,

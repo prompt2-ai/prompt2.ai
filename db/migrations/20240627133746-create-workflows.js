@@ -57,6 +57,27 @@ module.exports = {
         type:DataTypes.INTEGER,
         allowNull: true
       },
+      likes: {
+        type:DataTypes.INTEGER,
+        allowNull: true
+      },
+      dislikes: {
+        type:DataTypes.INTEGER,
+        allowNull: true
+      },
+      downloads: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      views: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      remix_workflows: {
+        type: DataTypes.JSON,
+        defaultValue: [],
+        allowNull: true
+      },
       created_at: {
         allowNull: false,
         type: DataTypes.DATE,
