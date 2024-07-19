@@ -34,11 +34,12 @@ import {
 
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Toggle } from "@/components/ui/toggle"
 
-import {CirclePlusIcon} from "lucide-react";
+import {CirclePlusIcon,WorkflowIcon,FileDownIcon,LockIcon,LockOpenIcon} from "lucide-react";
 
 
-type workflow = {
+type Workflow = {
   id: string;
   name: string;
   description: string;
@@ -54,7 +55,7 @@ type workflow = {
   updatedAt: Date;
 }
 
-type workflows = workflow[];
+type Workflows = Workflow[];
 
 
 
@@ -63,8 +64,42 @@ type workflows = workflow[];
 
 export default function Page() {
   const { data: session, status } = useSession();
-  const [workflows, setWorkflows] = useState([] as workflows);
+  const [workflows, setWorkflows] = useState([] as Workflows);
   const [overflowMessage, setOverflowMessage] = useState(false);
+
+
+// Item component that manages its own toggle state
+const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
+  const [isToggled, setIsToggled] = useState(workflow.private);
+  return (
+    <Toggle
+    className='mr-2'  
+    disabled={(session&&session?.user.role === 'user')? true : false} 
+    defaultPressed={workflow.private} 
+    onPressedChange={(pressed) => {
+      console.log('pressed', pressed);
+      setIsToggled(pressed);
+      fetch("/api/workflows", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: workflow.id, private: pressed }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+
+     }}                    
+    >
+   {isToggled?(<LockIcon />):(<LockOpenIcon />)}
+</Toggle>
+  );
+};
+
+
+
 
   useEffect(() => {
     //fetch the workflows of the user from api /api/workflows
@@ -121,10 +156,9 @@ export default function Page() {
       <Dialog>
         <DialogTrigger asChild>
           <Button onClick={() => {
-
             updateWorkflow(bpmnxml, index);
           }
-          } variant="default" className="w-full">view</Button>
+          } variant="default" className="w-1/3"><WorkflowIcon /> view</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-[95%] md:w-full">
           <DialogHeader>
@@ -193,7 +227,25 @@ export default function Page() {
                   </Tooltip>
                 </TooltipProvider>
               </TableCell>
-              <TableCell className="text-right"><code>{previewBPMN(workflow.workflow, index)}</code></TableCell>
+              <TableCell className="text-right gap-6 m-5">
+
+              <ToogleWorkflowItem workflow={workflow} />
+              <Button
+                  onClick={() => {
+                    //download the bpmn file from content of workflow.workflow
+                    const element = document.createElement("a");
+                    const file = new Blob([workflow.workflow], { type: 'text/plain' });
+                    element.href = URL.createObjectURL(file);
+                    element.download = workflow.name + ".bpmn";
+                    document.body.appendChild(element); // Required for this to work in FireFox
+                    element.click();
+                  }} 
+                  variant="default" className="mr-2 w-1/3">
+                <FileDownIcon />
+                </Button>
+              
+              {previewBPMN(workflow.workflow, index)}
+              </TableCell>
             </TableRow>))
           }
         </TableBody>
