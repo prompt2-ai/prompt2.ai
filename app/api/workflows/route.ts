@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db";
 import { auth } from "@/auth"
-
+import { v4 as uuidv4 } from 'uuid'
 
 
 export async function GET(request: NextRequest) {
@@ -76,7 +76,6 @@ export async function PUT(request: NextRequest) {
   }
   const { id, ...attributes } = await request.json();
   const workflow: Workflow | null = await db.Workflows.findByPk(id) as Workflow;
-  console.log(attributes);
 
   if (!workflow) {
     return NextResponse.json(
@@ -108,4 +107,48 @@ export async function PUT(request: NextRequest) {
     { status: 200 }
   );
   
+}
+
+
+
+export async function POST(request: NextRequest) {
+  //create a new workflow
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "no-access",
+          message: "You are not signed in.",
+        },
+      },
+      { status: 401 }
+    );
+  }
+  const { name, description, workflow, image, prompt, active, exclusive, tokensInput, tokensOutput } = await request.json();
+  const newWorkflow = await db.Workflows.create({
+    id:uuidv4(),
+    name,
+    description: description || "",
+    userId: session.user.id,
+    workflow,
+    image: image || "",
+    prompt,
+    active: active || true,
+    exclusive: exclusive || false,
+    tokensInput,
+    tokensOutput,
+    likes: 0,
+    dislikes: 0,
+    downloads: 0,
+    views: 0,
+    remixWorkflows: 0,
+    remixFrom: "",
+  });
+  return NextResponse.json(
+    {
+      newWorkflow,
+    },
+    { status: 200 }
+  );
 }
