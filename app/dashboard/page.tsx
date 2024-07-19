@@ -48,7 +48,7 @@ type Workflow = {
   image: string;
   prompt: string;
   active: boolean;
-  private: boolean;
+  exclusive: boolean;
   tokensInput: number;
   tokensOutput: number;
   createdAt: Date;
@@ -70,12 +70,12 @@ export default function Page() {
 
 // Item component that manages its own toggle state
 const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
-  const [isToggled, setIsToggled] = useState(workflow.private);
+  const [isToggled, setIsToggled] = useState(workflow.exclusive);
   return (
     <Toggle
     className='mr-2'  
     disabled={(session&&session?.user.role === 'user')? true : false} 
-    defaultPressed={workflow.private} 
+    defaultPressed={workflow.exclusive} 
     onPressedChange={(pressed) => {
       console.log('pressed', pressed);
       setIsToggled(pressed);
@@ -84,7 +84,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: workflow.id, private: pressed }),
+        body: JSON.stringify({ id: workflow.id, exclusive: pressed }),
       })
         .then((res) => res.json())
         .then((data) => {

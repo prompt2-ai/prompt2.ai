@@ -201,7 +201,7 @@ If desired, include error handling and exception flows.
 Consider alternative scenarios (partial order fulfillment, returns, etc.).
 Add data objects, pools, or lanes for clarity if needed.`,
         active: true,
-        private: false,
+        exclusive: false,
         tokens_output: 10,
         tokens_input: 5,
         created_at: new Date(),

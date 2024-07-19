@@ -45,7 +45,7 @@ module.exports = {
         defaultValue: true,
         type: DataTypes.BOOLEAN
       },
-      private: {
+      exclusive: { //private
         defaultValue: false,
         type: DataTypes.BOOLEAN
       },
@@ -76,6 +76,10 @@ module.exports = {
       remix_workflows: {
         type: DataTypes.JSON,
         defaultValue: [],
+        allowNull: true
+      },
+      remix_from: {
+        type: DataTypes.STRING(36),
         allowNull: true
       },
       created_at: {
