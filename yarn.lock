@@ -746,6 +746,11 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.2.tgz#d8bae93ac8b815b2bd7a98078cf91e2724ef11e5"
   integrity sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==
 
+"@google/generative-ai@^0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@google/generative-ai/-/generative-ai-0.15.0.tgz#5df2455235a59b16d874f3cfae2bcb7ed7478b6d"
+  integrity sha512-zs37judcTYFJf1U7tnuqnh7gdzF6dcWj9pNRxjA5JTONRoiQ0htrRdbefRFiewOIfXwhun5t9hbd2ray7812eQ==
+
 "@headlessui/react@^1.7.17":
   version "1.7.19"
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.19.tgz#91c78cf5fcb254f4a0ebe96936d48421caf75f40"
