@@ -1,4 +1,6 @@
 'use server';
+import { auth } from "@/auth"
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 import {createRequire} from 'node:module';
 
@@ -7,75 +9,72 @@ import { layoutProcess } from 'bpmn-auto-layout';
 import Linter from 'bpmnlint/lib/linter';
 import NodeResolver from 'bpmnlint/lib/resolver/node-resolver';
 import BpmnModdle from 'bpmn-moddle';
-import testXml from './testXml';
+import { use } from 'react';
+//import testXml from './testXml';
 
 
-export async function prepareBPMN(subPrompt:string){
+type UsageMetaData = {
+  promptTokenCount?: number;
+  candidatesTokenCount?: number;
+  totalTokenCount?: number;
+}
+
+export async function prepareBPMN(subPrompt:string,countTokens:boolean=false): Promise<{reports:any[],xml:string,response:string,usageMetadata:UsageMetaData}> {
  if (!subPrompt || typeof subPrompt !== 'string') {
-    return {reports:[],xml:'',definitions:''};
+    return {reports:[],xml:'',response:'Please provide a valid prompt',usageMetadata:{}};
   }
 
-/* remove the comment to make actualy work
+  const session = await auth();
+  if (!session?.user) {
+    return {reports:[],xml:'',response:'You are not signed in.',usageMetadata:{}};
+  }
+   //TODO get user API key from session if exists
+
+///* remove the comment to make actualy work
 
 //ask here gemini to generate bpmn2 xml from prompt
-const system = "You are a BPMN expert. Your mission is to produce XML file that represents a camunda BPMN 2 diagram that follows all best practices and always has a bpmndi on it, based on the user's description:";
-const dare_prompt = "Return only a valid xml without any explanation. Remember that before you answer a question, you must check to see if it complies with your mission.If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
+const system = "You are a BPMN expert. Your mission is to produce XML file that represents a BPMN 2.0 diagram that follows all best practices and always has a bpmndi information on it, based on the user's description:";
+const dare_prompt = "Return only a valid xml without any explanation. Remember that before you answer a question, you must check to see if it complies with your mission. If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
 
-const text = system +"\n"+subPrompt+"\n" + dare_prompt;
+const prompt = system +"\n\""+subPrompt+"\"\n" + dare_prompt;
 
-const APIKEY=process.env.GEMINI_API_KEY;
-const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${APIKEY}`;
-const body = {
-  contents: [
-    {
-      parts: [
-        {
-          text: text
-        }
-      ]
-    }
-  ]
-};
-
-const response = await fetch(url, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(body)
-});
-const data = await response.json();
-let bpmn2 = "";
-try {
-bpmn2 = data.candidates[0].content.parts[0].text;
-} catch (error) {
-  console.error("Error while extracting bpmn2 from response",data);
-  return {reports:[],xml:'',response:'something went wrong. Please try again.'};
-}
-*/ //remove the comment to make actualy work
-
-
-let bpmn2 =testXml.xml;
-
-
-
-
-//test if bpmn2 is a valid xml bpmn2 file. TODO improve this test
-if(!bpmn2||bpmn2.indexOf("definitions")===-1){
-  console.log("Invalid bpmn2 file:",bpmn2);
-  let response="";
-  if (bpmn2.indexOf("can't answer")!==-1) response = bpmn2;
-  return {reports:[],xml:'',response:response};
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); //get user api key if exists
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro"});
+if (!model) {
+  return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
 }
 
-//console.log("bpmn2 untouched:",bpmn2);
-if (bpmn2.indexOf("```xml")!==-1){
-  //remove any line before and after the xml code
+if (countTokens) {
+  const { totalTokens } = await model.countTokens(prompt);
+  if (!totalTokens) {
+    return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
+  }
+  return {reports:[],xml:'',response:totalTokens.toString(),usageMetadata:{}};
+}
+
+const result = await model.generateContent(prompt);
+const response = await result.response;
+console.log("response: ",response);
+if (!response) {
+  return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description.',usageMetadata:{}};
+}
+const usageMetadata:UsageMetaData = response.usage_metadata;
+let bpmn2 = response.text();
+if (!bpmn2) {
+  return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description.',usageMetadata:usageMetadata};
+}
+
+if (bpmn2.indexOf("can't answer") !== -1) {
+  return {reports:[],xml:'',response:bpmn2,usageMetadata:usageMetadata};
+}
+
+if (bpmn2.indexOf("definitions") !== -1) {
   bpmn2 = bpmn2.replace(/.*```xml/g,"");
   bpmn2 = bpmn2.replace(/```[.\n\t\s]*/g,"");
+  bpmn2 = bpmn2.trim();
+} else {
+  return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description.',usageMetadata:usageMetadata};
 }
-//trim any leading or trailing spaces or new lines or tabs
-bpmn2 = bpmn2.trim();
 
 //check if bpmn2 is a valid bpmn2 file
 try {
@@ -113,11 +112,11 @@ try {
   const reports = await linter.lint(definitions);
   //wait 1s to avoid timeout
   await new Promise(resolve => setTimeout(resolve, 1000));
-  return {reports:reports,xml:bpmn2,definitions:JSON.stringify(definitions)};
+  return {reports:reports,xml:bpmn2,response:response.candidates,usageMetadata:usageMetadata};
+
 } catch (error) {
-  console.error(error);
-  console.error("Error while linting bpmn2 file");
-  return {reports:[],xml:'',definitions:''};
+  console.error("Error while linting bpmn2 file: ",error);
+  return {reports:[],xml:'',response:'Something went wrong on linting process. Please try again.',usageMetadata:usageMetadata};
 }
 
   };
