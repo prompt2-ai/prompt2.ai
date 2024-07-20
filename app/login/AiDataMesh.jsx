@@ -85,19 +85,17 @@ function AiDataMesh() {
 
             const bpmnSymbolGeometry = new THREE.PlaneGeometry(0.5, 0.5); // Adjust size as needed
             const svgMesh = new THREE.Mesh(bpmnSymbolGeometry, bpmnSymbolMaterial);
-            
+
             svgMesh.position.copy(node.position);
             svgMesh.position.z += 1.2;
             //set width and height of svg by copy the node width and height
             svgMesh.scale.set(1.2, 1.2, 1.2);
-            
 
             //svgMesh.renderOrder = 0;
             svgMeshes[i] = svgMesh;
             scene.add(svgMesh);
           }
         };
-
 
         // Animation Loop
         function updateNodes() {
@@ -115,7 +113,6 @@ function AiDataMesh() {
             node.position.y += deltaY;
             node.position.z += deltaZ;
 
-
             // Border collision detection and response
             if (node.position.x - node.radius < -sceneSize.width / 2 || node.position.x + node.radius > sceneSize.width / 2) {
               node.velocity.x *= -1;
@@ -128,13 +125,9 @@ function AiDataMesh() {
               node.velocity.z *= -1;
             }
 
+            svgMesh.position.copy(node.position);
+            svgMesh.position.z += 1.2;
 
-
-
-   svgMesh.position.copy(node.position);
-  svgMesh.position.z += 1.2;
-   
-            
           });
 
           renderer.render(scene, camera);
