@@ -36,15 +36,22 @@ import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Toggle } from "@/components/ui/toggle"
 
-import {CirclePlusIcon,WorkflowIcon,FileDownIcon,LockIcon,LockOpenIcon} from "lucide-react";
+import {
+    CirclePlusIcon,
+    WorkflowIcon,
+    FileDownIcon,
+    LockIcon,
+    LockOpenIcon,
+    Trash2Icon
+} from "lucide-react";
 
 
-type Workflow = {
+type Workflow = { //TODO set type on external file
   id: string;
   name: string;
   description: string;
   userId: string;
-  workflow: string;
+  workflow: string; 
   image: string;
   prompt: string;
   active: boolean;
@@ -56,10 +63,6 @@ type Workflow = {
 }
 
 type Workflows = Workflow[];
-
-
-
-
 
 
 export default function Page() {
@@ -97,9 +100,6 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
 </Toggle>
   );
 };
-
-
-
 
   useEffect(() => {
     //fetch the workflows of the user from api /api/workflows
@@ -188,9 +188,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
     )
   }
 
-
   return (
-
     <div className='p-8'>
       {session && <h1> Welcome to your dashboard, {session?.user?.name}!</h1>}
       <Link
@@ -230,6 +228,27 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
               <TableCell className="text-right gap-6 m-5">
 
               <ToogleWorkflowItem workflow={workflow} />
+              <Button 
+                  onClick={() => {
+                    const isConfirmed = window.confirm("Are you sure you want to delete this workflow?");
+                    if (isConfirmed) {
+                    //delete the workflow
+                    fetch("/api/workflows", {
+                      method: "DELETE",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ id: workflow.id }),
+                    })
+                      .then((res) => res.json())
+                      .then((data) => {
+                        console.log(data);
+                        //remove the workflow from the list
+                        setWorkflows(workflows.filter((w) => w.id !== workflow.id));
+                      });
+                      }
+                    }}
+                  variant="destructive"className="mr-2" ><Trash2Icon /></Button>
               <Button
                   onClick={() => {
                     //download the bpmn file from content of workflow.workflow
@@ -240,7 +259,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
                     document.body.appendChild(element); // Required for this to work in FireFox
                     element.click();
                   }} 
-                  variant="default" className="mr-2 w-1/3">
+                  variant="default" className="mr-2">
                 <FileDownIcon />
                 </Button>
               

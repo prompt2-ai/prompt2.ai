@@ -4,6 +4,24 @@ import db from "@/db";
 import { auth } from "@/auth"
 import { v4 as uuidv4 } from 'uuid'
 
+type Workflow = { //TODO set type on external file
+  id: string;
+  name: string;
+  description: string;
+  userId: string;
+  workflow: string;
+  image: string;
+  prompt: string;
+  active: boolean;
+  private: boolean;
+  tokensInput: number;
+  tokensOutput: number;
+  createdAt: Date;
+  updatedAt: Date;
+  update: (attributes: Partial<Workflow>) => Promise<void>;
+  destroy: () => Promise<void>;
+} | null;
+
 
 export async function GET(request: NextRequest) {
     const session = await auth();
@@ -43,22 +61,6 @@ export async function GET(request: NextRequest) {
     );
 }
 
-type Workflow = {
-  id: string;
-  name: string;
-  description: string;
-  userId: string;
-  workflow: string;
-  image: string;
-  prompt: string;
-  active: boolean;
-  private: boolean;
-  tokensInput: number;
-  tokensOutput: number;
-  createdAt: Date;
-  updatedAt: Date;
-  update: (attributes: Partial<Workflow>) => Promise<void>;
-} | null;
 
 export async function PUT(request: NextRequest) {
   //upade the workflow with attributes given in the body
@@ -148,6 +150,54 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(
     {
       newWorkflow,
+    },
+    { status: 200 }
+  );
+}
+
+export async function DELETE (request: NextRequest) {
+  //delete the workflow with the given id
+  const session = await auth();
+  if (!session?.user) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "no-access",
+          message: "You are not signed in.",
+        },
+      },
+      { status: 401 }
+    );
+  }
+  const { id } = await request.json();
+  const workflow: Workflow | null = await db.Workflows.findByPk(id) as Workflow;
+
+  if (!workflow) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "not-found",
+          message: "Workflow not found.",
+        },
+      },
+      { status: 404 }
+    );
+  }
+  if (workflow.userId !== session.user.id) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "no-access",
+          message: "You are not authorized to delete this workflow.",
+        },
+      },
+      { status: 403 }
+    );
+  }
+  await workflow.destroy();
+  return NextResponse.json(
+    {
+      workflow,
     },
     { status: 200 }
   );
