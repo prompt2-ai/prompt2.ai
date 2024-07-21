@@ -7,7 +7,7 @@ import Stripe from 'stripe';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  debug: true,
+  debug: false,
   adapter: SequelizeAdapter(db.sequelize),
   session: {
      strategy:'jwt', //to be able to run on edge midleware we cant use database to store session

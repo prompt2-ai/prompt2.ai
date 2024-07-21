@@ -31,7 +31,7 @@ module.exports = {
     dialectOptions: {
       connectTimeout: 1000
     },
-    logging: console.log// for enable set console.log not true,
+    logging: false//console.log// for enable set console.log not true,
   },
   test: {
     username: process.env.MARIADB_USER,
@@ -41,7 +41,7 @@ module.exports = {
     port: process.env.MARIADB_PORT,
     dialect: 'mariadb',
     dialectOptions: {},
-    logging: console.log// for enable set console.log not true,
+    logging: false//console.log// for enable set console.log not true,
   },
   production: {
     username: process.env.MARIADB_USER,
@@ -51,6 +51,6 @@ module.exports = {
     port: process.env.MARIADB_PORT,
     dialect: 'mariadb',
     dialectOptions: {},
-    logging: console.log// for enable set console.log not true,
+    logging: false//console.log// for enable set console.log not true,
   }
 };

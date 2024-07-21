@@ -77,7 +77,7 @@ export const authConfig = {
       return session;
     },
     authorized({ auth, request: { nextUrl } }) {
-      console.log("ON AUTHORIZED CALLBACK", auth, nextUrl);
+      //console.log("ON AUTHORIZED CALLBACK", auth, nextUrl);
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       if (isOnDashboard) {
