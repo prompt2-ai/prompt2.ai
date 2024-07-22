@@ -31,7 +31,7 @@ module.exports = {
     dialectOptions: {
       connectTimeout: 1000
     },
-    logging: false//console.log// for enable set console.log not true,
+    logging: console.log// for enable set console.log not true,to disable set false
   },
   test: {
     username: process.env.MARIADB_USER,
