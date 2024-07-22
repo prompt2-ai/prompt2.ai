@@ -1,6 +1,7 @@
 'use server';
 import { auth } from "@/auth"
 import db from "@/db";
+import { Op } from '@sequelize/core';
 import { v4 as uuidv4 } from 'uuid'
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -80,6 +81,42 @@ savedPromptId = savedPrompt.get('id');
 
 /* if the user is a subscriber, check if does have enough tokens before we send the prompt to the AI model */
 
+if (session.user.role==="subscriber" && process.env.GEMINI_API_KEY===apiKey) {
+  const paidTokens = await db.Tokens.sum('value',{
+    where: {
+        userId: session.user.id,
+        expires: {
+            [Op.gte]: new Date(),
+        },
+    },
+});
+
+const oldestCreatedTokenDate = await db.Tokens.min('createdAt',{
+    where: {
+        userId: session.user.id,
+        expires: {
+            [Op.gte]: new Date(),
+        },
+    },
+});
+
+const usedTokens = await db.Prompts.sum('total_token_count',{
+    where: {
+      userId: session.user.id, // Filtering by user ID
+      spendAt: {
+        [Op.lte]: new Date(), // spendAt is less than or equal to the current date
+      },
+      createdAt: {
+        [Op.gte]: oldestCreatedTokenDate, // createdAt is greater than or equal to the oldest token creation date
+      },
+    }
+  });
+const availableTokens = (paidTokens||0) - (usedTokens||0);
+if (availableTokens < totalTokens) {
+  return {reports:[],xml:'',response:'Sorry, you do not have enough tokens to use this feature.',usageMetadata:{}};
+}
+}
+
 
 
 
@@ -121,7 +158,7 @@ if (response.candidates && response.candidates.length > 0) {
  }
   if (response.candidates[0].finishReason === 'RECITATION') {
     console.error("Error while generating content: ",response.candidates[0],prompt);
-    return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description. You sould be more specific on your prompt.',usageMetadata:usageMetadata};
+    return {reports:[],xml:'',response:'Sorry, We got an RECITATION error from LLM. Try slightly modifying your prompt.',usageMetadata:usageMetadata};
   }
   if (response.candidates[0].finishReason === 'ERROR') {
     console.error("Error while generating content: ",response.candidates[0].error,prompt);
@@ -142,10 +179,12 @@ try {
 }
 
 if (!bpmn2) {
+  console.error("Error while getting bpmn2 from response: ",response);
   return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description.',usageMetadata:usageMetadata};
 }
 
 if (bpmn2.indexOf("can't answer") !== -1) {
+  console.error("Error while getting bpmn2 from response, can't answer: ",bpmn2);
   return {reports:[],xml:'',response:bpmn2,usageMetadata:usageMetadata};
 }
 
@@ -198,7 +237,7 @@ try {
 
 } catch (error) {
   console.error("Error while linting bpmn2 file: ",error);
-  return {reports:[],xml:'',response:'Something went wrong on linting process. Please try again.',usageMetadata:usageMetadata};
+  return {reports:[],xml:'',response:'Something went wrong on the linting process. Please try again.',usageMetadata:usageMetadata};
 }
 
   };
