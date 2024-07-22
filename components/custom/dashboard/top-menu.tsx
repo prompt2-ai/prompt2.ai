@@ -11,7 +11,11 @@ export const Menu = () => {
   const { data: session, status } = useSession();
   const [avatar, setAvatar] = useState("");
   const [avatarFallback, setAvatarFallback] = useState("");
-
+  const [tokens, setTokens] = useState({
+    paidTokens: 0,
+    usedTokens: 0,
+    availableTokens: 0
+  });
   useEffect(() => {
     const run = async () => {
       const s = session;
@@ -21,13 +25,26 @@ export const Menu = () => {
           const name = (s && s.user.name) ? s.user.name.split(" ") || "" : "";
           const nameLength = name.length;
           if (nameLength > 1)
-            setAvatarFallback(name[0][0] + name[1][0]);
+        setAvatarFallback(name[0][0] + name[1][0]);
           else if (nameLength > 0)
-            setAvatarFallback(name[0][0]);
+        setAvatarFallback(name[0][0]);
           //keep JD for John Doe or Jane Doe
           else setAvatarFallback("JD");
         }
         setAvatar((s && s.user.image) ? s.user.image : "");
+        //fetch tokens from /api/tokens that returns {"paidTokens":0,"usedTokens":0,"availableTokens":0}
+        const fetchTokens = async () => {
+          try {
+        const res = await fetch("/api/tokens");
+        const data = await res.json();
+        setTokens(data);
+          } catch (error) {
+        console.error("Error fetching tokens", error);
+          }
+        };
+        fetchTokens();
+        const interval = setInterval(fetchTokens, 60000); // Refresh tokens every 1 minute
+        return () => clearInterval(interval); // Clean up the interval when component unmounts
       }
     };
     run();
@@ -43,6 +60,10 @@ export const Menu = () => {
               <Link className="lg:hidden" href="/O/profile">Profile</Link>
               <Link className="lg:hidden" href="/O/subscriptions">Subscription</Link>
               <Link href="/dashboard">Dashboard</Link>
+              <div className="hidden lg:inline-block">
+                Tokens: {tokens.availableTokens} / {tokens.paidTokens}
+              </div>
+
               <Button
                 onClick={() => signOut()}
                 variant="outline" className="top-0 absolute right-16 h-[48px] gap-2">
