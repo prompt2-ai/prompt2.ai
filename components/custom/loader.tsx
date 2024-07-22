@@ -3,12 +3,17 @@
  * and show a loader in the center of the screen.
  */
 
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import './Loader.css';
 
 export const Loader = () => {
+  const [isChrome,setIsChrome] = useState(false);
+  useEffect(() => {
+    setIsChrome(navigator.userAgent.indexOf("Chrome") !== -1);
+  },[]);
+  
   return (
-    navigator.userAgent.indexOf("Chrome") !== -1 ? (
+    isChrome ? (
       <iframe src="/loader.html" className="loader" title="loader" />
     ) : (
       <div className="simpleLoaderWrapper" >
