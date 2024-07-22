@@ -158,7 +158,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
           <Button onClick={() => {
             updateWorkflow(bpmnxml, index);
           }
-          } variant="default" className="w-1/3"><WorkflowIcon /> view</Button>
+          } variant="default"><WorkflowIcon /><span className='hidden lg:inline-block'>view</span></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-[95%] md:w-full">
           <DialogHeader>
@@ -225,7 +225,8 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
                   </Tooltip>
                 </TooltipProvider>
               </TableCell>
-              <TableCell className="text-right gap-6 m-5">
+
+              <TableCell className="p-0">
 
               <ToogleWorkflowItem workflow={workflow} />
               <Button 
