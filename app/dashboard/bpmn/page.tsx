@@ -53,7 +53,7 @@ export default function Page() {
     const [xml, setXml] = useState('' as string);
     const [overflowMessage, setOverflowMessage] = useState(false);
     const [haveApiKey, setHaveApiKey] = useState(true);
-    const [tokensEstimation, setTokensEstimation] = useState("");
+    const [tokensEstimation, setTokensEstimation] = useState(0);
     const [usageMetadata, setUsageMetadata] = useState({} as any);
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -62,7 +62,7 @@ export default function Page() {
         const run = async () => {
             const prep = await prepareBPMN(prompt, true);
             const tokens = prep.response;
-            setTokensEstimation(tokens);
+            setTokensEstimation(isNaN(Number(tokens))?0:Number(tokens));
         }
         run();
     }, [prompt]);
@@ -257,13 +257,16 @@ export default function Page() {
                         (e) => setPrompt(e.target.value)
                     }
                         placeholder='Describe the workflow you want to create...'
-                    ></Textarea>
-                    {tokensEstimation && <span className="mt-2 block text-sm font-light text-pretty text-gray-700 dark:text-white">
+                    ></Textarea> 
+                    {tokensEstimation>0 && <span className="mt-2 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                         Prompt Tokens estimation: {tokensEstimation} <TooltipProvider>
                             <Tooltip>
                                 <TooltipTrigger><CircleHelpIcon className="inline-block hover:text-red-500" /></TooltipTrigger>
                                 <TooltipContent>
-                                    <p>The AI model's token usage for creating the BPMN diagram is unpredictable.The given tokens estimation applies solely to the prompt.</p>
+                                    <p>The AI model's token usage for creating the BPMN diagram is unpredictable.<br />
+                                    The given tokens estimation applies solely to the prompt.<br />
+                                    The maximum token limit for the AI model is 128,000 tokens.
+                                    </p>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
@@ -277,7 +280,7 @@ export default function Page() {
                     {response && <span className="mt-10 block text-sm font-light text-pretty text-red-700 dark:text-red-400 ">{response}</span>}
                 </label>
                 <Button
-                    disabled={!haveApiKey || prompt === '' || prompt.split(' ').length < 3 || prompt == subPrompt}
+                    disabled={!haveApiKey || prompt === '' || prompt.split(' ').length < 3 || prompt == subPrompt || tokensEstimation>127999}
                     className="mt-10"
                     onClick={() => setSubPrompt(prompt)}>Generate Workflow</Button>
                 {xml && <Tabs defaultValue="workflow" className="mt-10 container">
