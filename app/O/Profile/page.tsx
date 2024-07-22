@@ -33,6 +33,7 @@ interface User {
   "stripeSubscriptionId": string;
   "stripePriceId": string;
   "stripeCurrentPeriodEnd": Date;
+  "stripeCurrentPeriodStart": Date;
   "isActive": boolean;
   "role": "admin" | "user" | "subscriber";
   "plan": "month" | "year" | "free";
