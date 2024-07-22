@@ -294,7 +294,7 @@ export default function Page() {
                     <TabsContent value="workflow">
                         {usageMetadata?.totalTokenCount&&<span id="totalTokenCount" className='float-left'>Total tokens spend {usageMetadata?.totalTokenCount}</span>}
                         <SaveBPMN />
-                        <div id="bpmn-container" className="container overflow-hidden border rounded-md bg-slate-50"></div>
+                        <div id="bpmn-container" className="p-6 container overflow-hidden border rounded-md bg-slate-50"></div>
                         {overflowMessage && <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                             The diagram is too large and does not fit within the container.
                             Zoom in/out by holding the CTRL key and rolling the mouse wheel.
@@ -363,11 +363,18 @@ export default function Page() {
 
                     <AccordionItem value="Can prompt2 generate wrong workflows?">
                         <AccordionTrigger>The generated workflow is always correct?</AccordionTrigger>
-                        <AccordionContent>
-                            Prompt2.ai it leverages the latest advancements in natural language processing powered by Google Gemini LLM pro.
-                            However, it's important to remember that prompt2 is still under development, and the generated workflows might not always be perfect.
-                            Since prompt2 relies on Google Gemini LLM pro, occasional errors may occur in the generated workflow due to the inherent limitations of the AI model.
-                            We are constantly improving prompt2 based on your usage, and we recommend carefully reviewing the generated BPMN chart before using it in your processes.
+                        <AccordionContent>                          
+Prompt2.ai has powered by Google Gemini LLM Pro thats why leverages the latest advancements in natural language processing. <br />
+However, it's important to be aware of the following:<br />
+Continuously Improving: Prompt 2 is still improve it's function, so generated workflows may not always be perfect. 
+  We are constantly working to improve Prompt2 based on your feedback. 
+  Please review generated BPMN charts carefully before using them.<br />
+Potential Errors: Due to the limitations of the AI model, occasional errors may occur in the generated workflows, outside of our control.<br />
+Formatting Issues: In some cases, the underlying LLM model may produce poorly formatted workflows, resulting in the message: "Something went wrong on the linting process. Please try again."<br />
+RECITATION Errors: Sometimes, the model may not produce any workflow, even with a correct prompt. This is due to a RECITATION error. In this case, try slightly modifying your prompt.<br />
+For further guidance, please refer to the examples in the documentation.<br />
+<br />
+Thank you for your understanding and cooperation as we continue to enhance Prompt2.ai!<br />
                         </AccordionContent>
                     </AccordionItem>
 
@@ -388,6 +395,23 @@ export default function Page() {
                         </AccordionContent>
                     </AccordionItem>
 
+                    {session?.user.role==="subscriber"&&<AccordionItem value="How can i get more tokens?">
+                        <AccordionTrigger>How can i get more tokens?</AccordionTrigger>
+                        <AccordionContent>
+                          You can purchase tokens separately to increase your usage limit.
+                        </AccordionContent>
+                    </AccordionItem>}
+
+                   <AccordionItem value="I've got errors in my workflow, what should I do?">
+                        <AccordionTrigger>I've got errors in my workflow, what should I do?</AccordionTrigger>
+                        <AccordionContent>
+                            If you encounter errors in your workflow, please review the prompt you provided to ensure it clearly describes the steps of the workflow process.
+                            If you have general questions or unrelated requests, we won't be able to address them here.
+                            To help us generate an accurate diagram, make sure your request is related to the workflow process.
+                            Need some inspiration? Check out the examples in our FAQ section.
+                        </AccordionContent>
+                    </AccordionItem> 
+                   
                 </Accordion>
             </Panel>
         </>
