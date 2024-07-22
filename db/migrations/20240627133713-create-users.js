@@ -56,6 +56,10 @@ module.exports = {
         allowNull: true,
         type: DataTypes.STRING(255)
       },
+      stripe_current_period_start: {
+        allowNull: true,
+        type: DataTypes.DATE
+      },
       stripe_current_period_end: {
         allowNull: true,
         type: DataTypes.DATE

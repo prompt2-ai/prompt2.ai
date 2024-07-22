@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class tokens extends Model {
+  class prompts extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  tokens.init({
+  prompts.init({
     id: {
       type: DataTypes.STRING(36),
       primaryKey: true,
@@ -31,35 +31,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       type: DataTypes.STRING(36)
     },
-    type: {
-      type: DataTypes.STRING,
-      validate:{
-        isIn: {args: [['Gemini', 'ChatGPT']], msg: 'Invalid LLM type'}
-      },
-      defaultValue: 'Gemini'
-    },
-    value: {
-      type: DataTypes.INTEGER, //number of tokens
-      allowNull: false
-    },
-    purchasedAt: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    source: {
-      type: DataTypes.STRING, //Comes from subscription or purchase
-      validate:{
-        isIn: {args: [['subscription', 'purchase']], msg: 'Invalid source'}
-      },
-      allowNull: false
-    },
-    validFrom: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    expires: {
-      type: DataTypes.DATE, //sould expire after 1 month(?)
-      allowNull: false
+    prompt: DataTypes.TEXT,
+    promptTokenCount: DataTypes.INTEGER,
+    candidatesTokenCount: DataTypes.INTEGER,
+    totalTokenCount: DataTypes.INTEGER,
+    spendAt: {
+      type:DataTypes.DATE,
+      defaultValue:DataTypes.NOW,
+      allowNull:false
     },
     createdAt: {
       type:DataTypes.DATE,
@@ -71,11 +50,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue:DataTypes.NOW,
       allowNull:true
     }
-
   }, {
     sequelize,
-    modelName: 'tokens',
+    modelName: 'prompts',
     underscored: true //underscored: true uses snake_case for attributes
   });
-  return tokens;
+  return prompts;
 };

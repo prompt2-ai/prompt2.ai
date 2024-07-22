@@ -43,6 +43,10 @@ module.exports = {
         },
         allowNull: false
       },
+      valid_from: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
       expires: {
         type: DataTypes.DATE, //sould expire after 1 month(?)
         allowNull: false

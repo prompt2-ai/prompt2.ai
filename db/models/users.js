@@ -68,6 +68,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.STRING(255),
       allowNull: true
     },
+    stripeCurrentPeriodStart: {
+      type:DataTypes.DATE,
+      allowNull: true
+    },
     stripeCurrentPeriodEnd: {
       type:DataTypes.DATE,
       allowNull: true
