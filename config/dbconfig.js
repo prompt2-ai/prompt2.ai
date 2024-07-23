@@ -26,7 +26,7 @@ module.exports = {
     password: process.env.MARIADB_PASSWORD,
     database: process.env.MARIADB_DATABASE,
     host: isOnBash?"localhost":process.env.MARIADB_HOST,
-    port: process.env.MARIADB_PORT,
+    port: isOnBash?"3336":process.env.MARIADB_PORT,
     dialect: 'mariadb',
     dialectOptions: {
       connectTimeout: 1000
