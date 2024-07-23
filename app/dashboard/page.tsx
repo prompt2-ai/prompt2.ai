@@ -233,7 +233,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
         </TableHeader>
         <TableBody>
 
-          {workflows.map((workflow, index) => (
+          {workflows&&workflows.map((workflow, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{workflow.name} </TableCell>
               <TableCell>
