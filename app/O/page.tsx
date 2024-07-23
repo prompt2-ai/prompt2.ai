@@ -20,7 +20,7 @@ export default function Home() {
 <main  className="lg:container w-full p-8">
   <div id="frontHeader" className="z-10 md:flex items-center justify-center lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8">
      <Player 
-     src="https://prompt2.ai/headerVideo.mp4" 
+     src="/headerVideo.mp4" 
      poster={HeaderImage.src}
      blurDataURL={HeaderImage.blurDataURL}
      className="lg:border-2 md:border-8 md:border-black lg:border-white"/>
@@ -57,7 +57,7 @@ export default function Home() {
 */}
 <Card className="lg:w-2/4 lg:flex-inline mt-2">
   <CardHeader>
-    <CardTitle>It's Easy</CardTitle>
+    <CardTitle>It&apos;s Easy</CardTitle>
     <CardDescription>It has never been easier to create BPMN2 workflows</CardDescription>
   </CardHeader>
   <CardContent>
