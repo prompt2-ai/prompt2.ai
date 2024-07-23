@@ -7,11 +7,13 @@ import { NextRequest } from "next/server";
 import { getSession } from "@/app/actions";
 import { redirect } from "next/navigation";
 
-
-
-export default async function LoginPage(req:NextRequest & { searchParams?: {
+type LoginProps = NextRequest& {
+  searchParams?: {
   callbackUrl:string
-} }) {
+  }
+}
+
+export default async function LoginPage(req:any) {//using LoginProps returns type error
 const {callbackUrl} = req.searchParams?.callbackUrl ? req.searchParams : {callbackUrl:"/dashboard"};
 const session= await getSession();
 
