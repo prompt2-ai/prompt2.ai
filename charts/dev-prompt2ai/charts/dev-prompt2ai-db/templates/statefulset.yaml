@@ -1,0 +1,76 @@
+{{- $fullname := include "dev-prompt2ai-db.fullname" . }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $fullname }}
+  labels:
+    {{- include "dev-prompt2ai-db.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  serviceName: {{ $fullname }}
+  selector:
+    matchLabels:
+      {{- include "dev-prompt2ai-db.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+      labels:
+        {{- include "dev-prompt2ai-db.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "dev-prompt2ai-db.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: sql
+              containerPort: 3306
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - healthcheck.sh --connect --innodb_initialized
+          readinessProbe:
+            exec:
+              command:
+                - bash
+                - -c
+                - healthcheck.sh --connect --innodb_initialized
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: {{ $fullname }}
+            - mountPath: /tmp
+              name: tmp-volume
+            - mountPath: /var/run/mysqld
+              name: tmp-volume
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.settings.prompt2Secrets }}
+                  key: {{ "MARIADB_ROOT_PASSWORD" }}
+            - name: MARIADB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.settings.prompt2Secrets }}
+                  key: {{ "MARIADB_DATABASE" }}
+            - name: MARIADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.settings.prompt2Secrets }}
+                  key: {{ "MARIADB_USER" }}
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.settings.prompt2Secrets }}
+                  key: {{ "MARIADB_PASSWORD" }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+{{- with .Values.storage }}
+        - name: {{ $fullname }}
+          persistentVolumeClaim:
+            claimName: {{ $fullname }}
+{{- end }}

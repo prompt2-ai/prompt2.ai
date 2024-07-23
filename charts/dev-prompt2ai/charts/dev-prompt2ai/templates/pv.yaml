@@ -1,0 +1,18 @@
+{{- if .Values.storage.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "dev-prompt2ai.fullname" . }}-app-pv
+  labels:
+    app.kubernetes.io/name: dev-prompt2ai
+    app.kubernetes.io/instance: dev-prompt2ai
+    app: dev-prompt2ai
+spec:
+  storageClassName: {{ include "dev-prompt2ai.fullname" . }}-app-pv
+  capacity:
+    storage: "10Gi"
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: {{ .Values.storage.localPath }}
+{{- end }}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "dev-prompt2ai-db.fullname" . }}
+  labels:
+    {{- include "dev-prompt2ai-db.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.storage }}
+  accessModes:
+    {{- toYaml .accessModes | nindent 4 }}
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .requestedSize }}
+  {{- end }}  
