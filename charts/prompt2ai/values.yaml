@@ -109,5 +109,5 @@ prompt2ai-db:
       - ReadWriteOnce
 
     ## Keep a created Persistent volume claim when uninstalling the helm chart (only for option useDeployment: true)
-    keepPvc: false
+    keepPvc: true
 
