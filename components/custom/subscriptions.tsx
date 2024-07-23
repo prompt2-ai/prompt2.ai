@@ -253,10 +253,20 @@ export function ProductCard({
             </>
           }
           {productId.startsWith("price_") && status === "authenticated" && session.user.role === "user" &&
-            <Button variant="destructive"
+            <>
+            <Button disabled=
+              {(process.env.NEXT_PUBLIC_WEBSITE_URL 
+                && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes("dev"))?true:false}
+              variant="destructive"
               onClick={async (e) => { handler({ productId, type, price }) }}
               className='w-full'>
-              Select</Button>}
+              Select</Button>
+              {(process.env.NEXT_PUBLIC_WEBSITE_URL 
+                && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes("dev"))&&<Label className="text-right">
+                Soon available
+              </Label>}
+              </>
+              }
 
           {productId.startsWith("price_") && status === "authenticated" && session.user.role === "subscriber" &&
             <Button variant="destructive"

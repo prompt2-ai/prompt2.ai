@@ -8,6 +8,7 @@
     animation: gradient 5s ease infinite;
     background-size: 400% 400%;
 }
+
 /* For first page header background */
 @keyframes gradient {
     0% {
