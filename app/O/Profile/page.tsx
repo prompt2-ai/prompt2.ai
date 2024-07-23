@@ -75,7 +75,7 @@ export default function Profile() {
         });
     }
     run();
-  }, []);
+  }, [form]);
 
   //form submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
