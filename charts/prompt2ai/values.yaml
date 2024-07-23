@@ -77,8 +77,7 @@ prompt2ai:
   affinity: {}
 
   storage:
-    enabled: true
-    localPath: /root/ordinary.seaman.cloud/webSites/prompt2.ai
+    enabled: false
 
 prompt2ai-db:
   service:

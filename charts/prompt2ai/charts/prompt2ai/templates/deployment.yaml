@@ -32,10 +32,7 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.storage.enabled }}
-          command: ["npm", "run", "dev"]
-          {{- end }}          
+          imagePullPolicy: {{ .Values.image.pullPolicy }}         
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -66,18 +63,7 @@ spec:
             successThreshold: 1
             timeoutSeconds: 30
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- if .Values.storage.enabled }}
-          volumeMounts:
-            - name: {{ include "prompt2ai.fullname" . }}-app
-              mountPath: /app
-          {{- end }}
-      {{- if .Values.storage.enabled }}
-      volumes:
-        - name: {{ include "prompt2ai.fullname" . }}-app
-          persistentVolumeClaim:
-            claimName: {{ include "prompt2ai.fullname" . }}-app-pv-claim
-      {{- end }}            
+            {{- toYaml .Values.resources | nindent 12 }}           
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
