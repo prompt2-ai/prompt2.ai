@@ -1,8 +1,9 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import Link from 'next/link';
-import { BpmnVisualization, FitType } from 'bpmn-visualization';
+
+
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -45,6 +46,18 @@ import {
     Trash2Icon
 } from "lucide-react";
 
+import { BpmnVisualization,FitType } from 'bpmn-visualization';
+
+/** @internal */
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Since we are overriding an existing interface in the global scope, it is not possible to convert it to a type.
+  interface Window {
+    mxForceIncludes: boolean;
+    mxLoadResources: boolean;
+    mxLoadStylesheets: boolean;
+    mxResourceExtension: string;
+  }
+}
 
 type Workflow = { //TODO set type on external file
   id: string;
@@ -112,7 +125,13 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
     , []);
 
   const updateWorkflow = (bpmnxml: string, index: number) => {
-    setTimeout(() => {
+    "use client";   
+    //ensure that we are on browser and window exists
+            if (typeof window === 'undefined') {
+              return;
+          }
+    setTimeout(async () => {
+       "use client";
       //if xml is empty, return
       if (!bpmnxml) {
         console.log('xml is empty');
@@ -131,18 +150,20 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
           svg[0].remove();
         }
         bpmnContainer.innerHTML = '';//just in case
+       
+        if (typeof window !== 'undefined') {
         // load the new diagram
         const bpmnVisualization = new BpmnVisualization({
           container: 'bpmn-container-' + index, navigation: {
             enabled: true
           }
         });
-
-        // load the new diagram 
         bpmnVisualization.load(bpmnxml, { fit: { type: FitType.Center } });
         if (bpmnContainer.clientHeight < bpmnContainer.scrollHeight || bpmnContainer.clientWidth < bpmnContainer.scrollWidth) {
           setOverflowMessage(true);
         }
+      }
+
       } else {
         console.log('bpmnContainer not found');
         return;
@@ -231,6 +252,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
               <ToogleWorkflowItem workflow={workflow} />
               <Button 
                   onClick={() => {
+                    "use client";
                     const isConfirmed = window.confirm("Are you sure you want to delete this workflow?");
                     if (isConfirmed) {
                     //delete the workflow

@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BpmnVisualization, FitType } from 'bpmn-visualization';
 import { prepareBPMN } from './actions';
 import Loader from '@/components/custom/loader';
 import Panel from '@/components/custom/panel';
@@ -41,6 +40,8 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
+
+import { BpmnVisualization, FitType } from 'bpmn-visualization';
 
 export default function Page() {
     const [prompt, setPrompt] = useState('');
@@ -108,6 +109,10 @@ export default function Page() {
     }, [subPrompt]);
 
     const updateWorkflow = () => {
+        //ensure that we are on browser and window exists
+        if (typeof window === 'undefined') {
+            return;
+        }
         setTimeout(() => {
             //if xml is empty, return
             if (!xml) {
@@ -126,18 +131,22 @@ export default function Page() {
                     svg[0].remove();
                 }
                 bpmnContainer.innerHTML = '';//just in case
-                // load the new diagram
+             
+                if (typeof window !== 'undefined') {
+                 // load the new diagram
                 const bpmnVisualization = new BpmnVisualization({
                     container: 'bpmn-container', navigation: {
                         enabled: true
                     }
                 });
 
+                
                 // load the new diagram 
                 bpmnVisualization.load(xml, { fit: { type: FitType.Center } });
                 if (bpmnContainer.clientHeight < bpmnContainer.scrollHeight || bpmnContainer.clientWidth < bpmnContainer.scrollWidth) {
                     setOverflowMessage(true);
                 }
+            }
             } else {
                 console.log('bpmnContainer not found');
                 return;
