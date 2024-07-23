@@ -64,6 +64,9 @@ export default function Profile() {
         .then((res) => res.json())
         .then((data) => {
         //convert any null value on the user to empty string
+        if (data.user === null) {
+          data.user = {};
+        }
         Object.keys(data.user).forEach((key) => {
           if (data.user[key] === null) {
             data.user[key] = "";
