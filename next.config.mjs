@@ -17,7 +17,7 @@ const nextConfig = {
       mdxRs: true,
       // once this makes it into a release: https://github.com/vercel/next.js/pull/51755
       serverActions: {
-        allowedOrigins: ['prompt2.ai', '*.prompt2.ai'],
+        allowedOrigins: ['prompt2.ai', 'dev.prompt2.ai'],
       },
       //   serverActionsBodySizeLimit: '5mb',
     },
