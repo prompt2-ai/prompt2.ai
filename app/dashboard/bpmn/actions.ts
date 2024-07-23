@@ -41,8 +41,8 @@ const apiKey = session.user.apiKey || session.user.role==="subscriber"?process.e
   }
 
 //ask here gemini to generate bpmn2 xml from prompt
-const system = "You are a BPMN expert. Your mission is to produce XML file that represents a BPMN 2.0 diagram, based on the user prompt.";
-const dare_prompt = "Return only a valid XML without any explanation.If needed, do not add any statements or commentary to the contents of the source xml document, though you should rephrase them a bit to avoid recitation errors. Keep the original code intact, but change variable names to avoid recitation errors. Remember that before you answer a question, you must check to see if it complies with your mission. If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
+const system = "You are a BPMN expert. Your mission is to produce XML file that represents a BPMN 2.0 workflow along with BPMNDI information in it, based on the user prompt.";
+const dare_prompt = "Return only a valid XML without any explanation. Do not add any statements or commentary to the contents of the source xml, though you should rephrase them a bit to avoid recitation errors. Remember that before you answer a question, you must check to see if it complies with your mission. If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
 
 const prompt = system +"\n\nprompt:"+subPrompt+".\n\n" + dare_prompt;
 
@@ -198,14 +198,15 @@ if (bpmn2.indexOf("definitions") !== -1) {
 }
 
 //check if bpmn2 is a valid bpmn2 file
+//also change bpmndi layout of the bpmn2 file
 try {
-  const _layoutedDiagramXML = await layoutProcess(bpmn2); //TODO removes any bpmndi,
-  //ive leave it here to catch possible xml errors
-
+  const bpmn2WithoutBpmndi = bpmn2.replace(/<bpmndi:.*<\/bpmndi:.*>/g,"");
+  const layoutedDiagramXML = await layoutProcess(bpmn2WithoutBpmndi); //regenerate the bpmndi,also catch possible xml errors
+  
   const moddle = new BpmnModdle();
   const {
     rootElement: definitions
-  } = await moddle.fromXML(bpmn2);
+  } = await moddle.fromXML(layoutedDiagramXML);
 
   const config = {
     config: {
@@ -229,14 +230,15 @@ try {
   };
   
   const linter = new Linter(config);
-
   const reports = await linter.lint(definitions);
+  //TODO auto correct some of the errors like Element is missing label/name (StartEvent_1)
+
   //wait 1s to avoid timeout
   await new Promise(resolve => setTimeout(resolve, 1000));
-  return {reports:reports,xml:bpmn2,response:response.candidates,usageMetadata:usageMetadata};
+  return {reports:reports,xml:layoutedDiagramXML,response:response.candidates,usageMetadata:usageMetadata};
 
 } catch (error) {
-  console.error("Error while linting bpmn2 file: ",error);
+  console.error("Error while linting layoutedDiagramXML file: ",error);
   return {reports:[],xml:'',response:'Something went wrong on the linting process. Please try again.',usageMetadata:usageMetadata};
 }
 
