@@ -4,7 +4,7 @@
                 <h2 className="mt-10 text-2xl font-bold">Effective Date: June 5, 2024</h2>
                 <h2 className="text-2xl font-bold">Last Updated: June 5, 2024</h2>
 
-                <p className="text-base">Please read these Terms & Conditions ("Terms") carefully before using Promp2.io ("we," "us," or "our") website and services (collectively, the "Services"). By using our Services, you agree to be bound by these Terms. If you do not agree to these Terms, you may not use our Services.</p>
+                <p className="text-base">Please read these Terms & Conditions ("Terms") carefully before using Promp2.ai ("we," "us," or "our") website and services (collectively, the "Services"). By using our Services, you agree to be bound by these Terms. If you do not agree to these Terms, you may not use our Services.</p>
 
                 <h3 className="text-lg font-bold mt-4">1. Account Creation and Use</h3>
 
@@ -26,7 +26,7 @@
 
                 <h3 className="text-lg font-bold mt-4">3. Intellectual Property</h3>
 
-                <p className="text-base">3.1. All content included on our Services, such as text, graphics, logos, images, data compilations, and software, is the property of Promp2.io or its licensors and is protected by copyright and other intellectual property laws.</p>
+                <p className="text-base">3.1. All content included on our Services, such as text, graphics, logos, images, data compilations, and software, is the property of Promp2.ai or its licensors and is protected by copyright and other intellectual property laws.</p>
 
                 <p className="text-base">3.2. You may not modify, publish, transmit, participate in the transfer or sale, create derivative works, or in any way exploit any of the content, in whole or in part, found on our Services.</p>
 
@@ -42,11 +42,11 @@
 
                 <h3 className="text-lg font-bold mt-4">5. Limitation of Liability</h3>
 
-                <p className="text-base">5.1. In no event shall Promp2.io, its affiliates, or their respective officers, directors, employees, agents, licensors, or service providers be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to damages for loss of profits, goodwill, use, data, or other intangible losses, resulting from the use or inability to use our Services.</p>
+                <p className="text-base">5.1. In no event shall Promp2.ai, its affiliates, or their respective officers, directors, employees, agents, licensors, or service providers be liable for any direct, indirect, incidental, special, consequential, or exemplary damages, including but not limited to damages for loss of profits, goodwill, use, data, or other intangible losses, resulting from the use or inability to use our Services.</p>
 
                 <h3 className="text-lg font-bold mt-4">6. Indemnification</h3>
 
-                <p className="text-base">You agree to indemnify, defend, and hold harmless Promp2.io, its affiliates, and their respective officers, directors, employees, agents, licensors, and service providers from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of our Services.</p>
+                <p className="text-base">You agree to indemnify, defend, and hold harmless Promp2.ai, its affiliates, and their respective officers, directors, employees, agents, licensors, and service providers from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of our Services.</p>
 
                 <h3 className="text-lg font-bold mt-4">7. Governing Law and Dispute Resolution</h3>
 

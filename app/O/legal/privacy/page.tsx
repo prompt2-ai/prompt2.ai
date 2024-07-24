@@ -6,7 +6,7 @@ const Page = () => {
             <h2 className="mt-10 text-2xl font-bold mb-4">Last Updated: June 5, 2024</h2>
 
             <p className="mb-4">
-                This Privacy Policy describes how promp2.io ("we", "us" or "our") collects, uses, and shares information about you when you use our website (the "Site") and our services (the "Services").
+                This Privacy Policy describes how promp2.ai ("we", "us" or "our") collects, uses, and shares information about you when you use our website (the "Site") and our services (the "Services").
             </p>
 
             <h3 className="text-xl font-bold mb-2">Information We Collect</h3>
