@@ -93,29 +93,23 @@ export const Menu = () => {
                             height={120}
                           />
                           <div className="mb-2 mt-4 text-lg font-medium">
-                            Workflows for your bussiness
+                            BPMN 2.0 Workflows for your bussiness
                           </div>
                           <p className="text-sm leading-tight text-muted-foreground">
-                            Create workflows, automate tasks, and build integrations,
-                            forms, surveys, and quizzes. Collect responses in a
-                            database. Send automated emails. Create a chatbot.
-                            And so much more....
+                          Traditionally, creating BPMN diagrams required specialized software and technical expertise.
+                          But now, you can generate workflow diagrams effortlessly.
                           </p>
                         </a>
                       </NavigationMenuLink>
                     </li>
                     <li className="row-span-1 col-span-1">
-                      <ListItem href="/dashboard#bpmn" title="BPMN2">
-                        Convert your text prompts into BPMN2 workflows.
+                      <ListItem href="/dashboard" title="BPMN 2.0">
+                        Convert your text prompts into BPMN 2.0 workflows.
                       </ListItem>
                       <p className="p-6"><Quote className="w-6 h-6 inline-block" />
-                        &nbsp;Effortlessly enabling visual representations of various business
-                        processes. These intuitive services eliminate the need for
-                        programming expertise, guiding users through diagram creation
-                        and enabling seamless workflow automation
-                        for optimized operations.</p>
-
-                      {/*                         <ListItem href="/dashboard#forms" title="Forms">
+                        &nbsp; Simply provide a text description of your process, and Prompt2.ai's AI-powered engine will automatically create a professional-looking BPMN diagram for you.
+                      </p>
+                      {/* <ListItem href="/dashboard#forms" title="Forms">
                           Create forms, surveys, and quizzes.
                         </ListItem>
                         <ListItem href="/dashboard#dmn" title="DMN">
