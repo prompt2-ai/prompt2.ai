@@ -1,5 +1,5 @@
 "use client";
-import HeaderImage from "@/public/header.jpg";
+import HeaderImage from "@/public/prompt2ai-Thumbnail.jpg";
 import Player from 'next-video/player';
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button"
@@ -19,7 +19,7 @@ export default function Home() {
 <main  className="lg:container w-full p-8">
   <div id="frontHeader" className="w-full min-h-[500px] z-10 md:flex items-center justify-center lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8">
      <Player 
-     src={process.env.NEXT_PUBLIC_WEBSITE_URL+"/headerVideo.mp4"}
+     src={process.env.NEXT_PUBLIC_WEBSITE_URL+"/prompt2ai.mp4"}
      poster={HeaderImage.src}
      blurDataURL={HeaderImage.blurDataURL}
      className="lg:border-2 md:border-8 md:border-black lg:border-white"/>
