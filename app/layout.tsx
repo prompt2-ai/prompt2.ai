@@ -12,11 +12,11 @@ import './theme.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "prompt to workflow, form, and decision tables.",
-  description: "be ready to prompt soon...",
+  title: "prompt to BPMN 2.0 workflow",
+  description: "Streamline Your BPMN 2.0 Workflows with AI",
   robots: { //remove this line to allow indexing
-    index: false,
-    follow: false  
+    index: true,
+    follow: true  
   },
   };
 
