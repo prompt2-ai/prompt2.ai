@@ -37,6 +37,9 @@ type Product = {
   footer: string;
   hasChangeButton: boolean;
 };
+const STRIPE_MONTHLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_PRICE_ID;
+const STRIPE_YEARLY_PRICE_ID = process.env.NEXT_PUBLIC_STRIPE_YEARLY_PRICE_ID;
+
 
 const products: Product[] = [
   {
@@ -71,7 +74,7 @@ const products: Product[] = [
     type: "subscription",
     currencySymbol: "€",
     price: ["16,30", "15.4/month (charged yearly)"],
-    productId: ["price_1PcNDyLbLfwOIQUBoZ7zvVfB", "price_1Pc9Q4LbLfwOIQUBZ76i1JlK"],
+    productId: [STRIPE_MONTHLY_PRICE_ID!, STRIPE_YEARLY_PRICE_ID!],
     features: [[
       "Tokens: 100K",
       "Bring your tokens: optional",
@@ -236,7 +239,7 @@ export function ProductCard({
       <CardFooter dangerouslySetInnerHTML={{ __html: product.footer }} />
       <CardFooter>
         <>
-          {productId.startsWith("price_") && status === "unauthenticated" &&
+          {productId && productId.startsWith("price_") && status === "unauthenticated" &&
             <>
               <Alert className="w-full mx-2">
                 <RocketIcon className="h-4 w-4" />
@@ -252,23 +255,15 @@ export function ProductCard({
                 Sign in</Button>
             </>
           }
-          {productId.startsWith("price_") && status === "authenticated" && session.user.role === "user" &&
-            <>
-            <Button disabled=
-              {(process.env.NEXT_PUBLIC_WEBSITE_URL 
-                && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes("dev"))?true:false}
+          {productId && productId.startsWith("price_") && status === "authenticated" && session.user.role === "user" &&
+            <Button 
               variant="destructive"
               onClick={async (e) => { handler({ productId, type, price }) }}
               className='w-full'>
               Select</Button>
-              {(process.env.NEXT_PUBLIC_WEBSITE_URL 
-                && !process.env.NEXT_PUBLIC_WEBSITE_URL.includes("dev"))&&<Label className="text-right">
-                Soon available
-              </Label>}
-              </>
-              }
+          }
 
-          {productId.startsWith("price_") && status === "authenticated" && session.user.role === "subscriber" &&
+          {productId && productId.startsWith("price_") && status === "authenticated" && session.user.role === "subscriber" &&
             <Button variant="destructive"
               onClick={async (e) => {
                 e.preventDefault();
@@ -281,12 +276,12 @@ export function ProductCard({
               }}
               className='w-full'>
               Manage Your Subscription</Button>}
-          {productId.startsWith("free") && status === "unauthenticated" &&
+          {productId && productId.startsWith("free") && status === "unauthenticated" &&
             <Button variant="default"
               onClick={async (e) => { await signIn(undefined, {redirect: true, redirectTo:"/dashboard", callbackUrl: "/dashboard" }); }}
               className='w-full'>
               Sign in</Button>}
-          {productId.startsWith("custom") && contatForm()}
+          {productId && productId.startsWith("custom") && contatForm()}
         </>
       </CardFooter>
     </Card>
