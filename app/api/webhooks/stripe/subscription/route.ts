@@ -16,7 +16,12 @@ const createSubscription = async (subscription: Stripe.Subscription) => {
 
            const user = await db.User.findOne({ where: { stripeCustomerId:subscription.customer as string } });
            //add tokens to user, 100K tokens for monthly, 1M tokens for yearly
-           const tokens = plan === "month" ? 100000 : 1000000;
+           //detect here if we are on dev or prod and set tokens accordingly
+           let tokens = plan === "month" ? 100000 : 1000000;  
+           if (process.env.NEXT_PUBLIC_WEBSITE_URL==="https://dev.prompt2.ai") {
+              tokens = plan === "month" ? 5000 : 5000
+           }
+           
            try {
              await db.Tokens.create( //updatedAt,createdAt added by sequelize
                {
