@@ -58,12 +58,15 @@ export default function Page() {
     const router = useRouter();
 
     useEffect(() => {
-        const run = async () => {
+        const debounceTimeout = setTimeout(async () => {
             const prep = await prepareBPMN(prompt, true);
             const tokens = prep.response;
-            setTokensEstimation(isNaN(Number(tokens))?0:Number(tokens));
-        }
-        run();
+            setTokensEstimation(isNaN(Number(tokens)) ? 0 : Number(tokens));
+        }, 500);
+
+        return () => {
+            clearTimeout(debounceTimeout);
+        };
     }, [prompt]);
 
     useEffect(() => {
