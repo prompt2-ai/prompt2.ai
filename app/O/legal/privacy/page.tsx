@@ -86,7 +86,7 @@ const Page = () => {
             <h3 className="text-xl font-bold mb-2">Contact Us</h3>
 
             <p className="mb-4">
-                If you have any questions about this Privacy Policy, please contact us at [email protected]
+                If you have any questions about this Privacy Policy, please contact us.
             </p>
         </>
     );
