@@ -222,7 +222,7 @@ export function ProductCard({
               selectedType.setType("yearly");
               selectedPlan.setPlan(productId);
             }}>
-            Yearly
+            Annually
           </Button>
         </div>
         }
