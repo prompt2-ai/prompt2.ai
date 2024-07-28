@@ -154,9 +154,8 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
         if (typeof window !== 'undefined') {
         // load the new diagram
         const bpmnVisualization = new BpmnVisualization({
-          container: 'bpmn-container-' + index, navigation: {
-            enabled: true
-          }
+          container: 'bpmn-container-' + index, 
+          navigation: {   enabled: true }
         });
         bpmnVisualization.load(bpmnxml, { fit: { type: FitType.Center } });
         if (bpmnContainer.clientHeight < bpmnContainer.scrollHeight || bpmnContainer.clientWidth < bpmnContainer.scrollWidth) {
