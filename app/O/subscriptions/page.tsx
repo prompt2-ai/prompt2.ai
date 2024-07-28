@@ -74,7 +74,7 @@ export default function Subscriptions() {
     <AccordionContent>
     {status!=="authenticated" && <>You have to login first, to be able to select the Standard Plan subscription <Button onClick={()=>signIn()}>Sign in</Button></>}
     {status==="authenticated" && <>You can select the Standard Plan from the pricing table above,
-    choose "monthly" or "yearly" and press the "Select" button to redirect to the payment page.</>}
+    choose "monthly" or "annual" and press the "Select" button to redirect to the payment page.</>}
     </AccordionContent>
   </AccordionItem>}
   <AccordionItem value="What means 'Bring your tokens'?">

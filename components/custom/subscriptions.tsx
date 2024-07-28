@@ -73,7 +73,7 @@ const products: Product[] = [
     name: "Standard Plan (Recomented)",
     type: "subscription",
     currencySymbol: "€",
-    price: ["16,30", "15.4/month (charged yearly)"],
+    price: ["16,30", "15.4/month (Charged annually)"],
     productId: [STRIPE_MONTHLY_PRICE_ID!, STRIPE_YEARLY_PRICE_ID!],
     features: [[
       "Tokens: 100K",
