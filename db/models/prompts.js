@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       type: DataTypes.STRING(36)
     },
+    userPrompt: DataTypes.TEXT,
     prompt: DataTypes.TEXT,
     promptTokenCount: DataTypes.INTEGER,
     candidatesTokenCount: DataTypes.INTEGER,

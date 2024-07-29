@@ -21,6 +21,9 @@ module.exports = {
         },
         type: DataTypes.STRING(36)
       },
+      user_prompt: {
+        type: DataTypes.TEXT
+      },
       prompt: {
         type: DataTypes.TEXT
       },
