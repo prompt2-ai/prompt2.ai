@@ -2,7 +2,7 @@
 
 let isOnBash = false;
 
-//read the .env file from ../.env.local if this script called from command line
+//read the env variables from ../.env.xxx.local if this script called from command line
 if (require.main.id==".") { //when called from sequelize-cli id is "."
 console.log('called from command line with PRODUCTION=',process.env.PRODUCTION?'true':'false');
 const envfile=process.env.PRODUCTION?'.env.production.local':'.env.development.local';
@@ -17,7 +17,8 @@ envLines.forEach((line) => {
   process.env[key] = value;
 });
 } else {
-console.log('required as module');
+// do nothing
+//console.log('required as module');
 }
 
 module.exports = {
@@ -31,7 +32,7 @@ module.exports = {
     dialectOptions: {
       connectTimeout: 1000
     },
-    logging: console.log// for enable set console.log not true,to disable set false
+    logging: false// for enable set console.log NOT true,to disable set false
   },
   test: {
     username: process.env.MARIADB_USER,
