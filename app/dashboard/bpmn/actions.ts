@@ -67,6 +67,7 @@ try {
 const savedPrompt = await db.Prompts.create({
   id:uuidv4(),
   userId: session.user.id,
+  userPrompt: subPrompt,
   prompt: prompt,
   promptTokenCount: Number(totalTokens),
   candidatesTokenCount: 0,
