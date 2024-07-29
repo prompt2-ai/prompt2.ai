@@ -31,6 +31,11 @@ kubectl create secret generic prompt2ai-sercets --from-env-file=.env.production.
 microk8s.helm3 install prompt2ai ./charts/prompt2ai/
 microk8s.helm3 install dev-prompt2ai ./charts/dev-prompt2ai/
 ```
+## upgrade helm chart
+```bash
+microk8s.helm3 upgrade prompt2ai ./charts/prompt2ai/
+microk8s.helm3 upgrade dev-prompt2ai ./charts/dev-prompt2ai/
+```
 # remove helm chart
 ```bash
 microk8s.helm3 uninstall prompt2ai
