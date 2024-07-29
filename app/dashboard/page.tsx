@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import Link from 'next/link';
+import ZoomControls  from '@/components/custom/bpmn-visualization/zoomControlers';
 
 
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,9 @@ import {
     Trash2Icon
 } from "lucide-react";
 
+import type { FitOptions } from 'bpmn-visualization';
 import { BpmnVisualization,FitType } from 'bpmn-visualization';
+
 
 /** @internal */
 declare global {
@@ -82,6 +85,8 @@ export default function Page() {
   const { data: session, status } = useSession();
   const [workflows, setWorkflows] = useState([] as Workflows);
   const [overflowMessage, setOverflowMessage] = useState(false);
+  const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
+  const [fitOptions, setFitOptions] = useState<FitOptions>();
 
 
 // Item component that manages its own toggle state
@@ -127,9 +132,9 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
   const updateWorkflow = (bpmnxml: string, index: number) => {
     "use client";   
     //ensure that we are on browser and window exists
-            if (typeof window === 'undefined') {
+    if (typeof window === 'undefined') {
               return;
-          }
+    }
     setTimeout(async () => {
        "use client";
       //if xml is empty, return
@@ -153,14 +158,19 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
        
         if (typeof window !== 'undefined') {
         // load the new diagram
-        const bpmnVisualization = new BpmnVisualization({
+        const local_bpmnVisualization = new BpmnVisualization({
           container: 'bpmn-container-' + index, 
           navigation: {   enabled: true }
         });
-        bpmnVisualization.load(bpmnxml, { fit: { type: FitType.Center } });
+        const local_fitOptions: FitOptions = { type: FitType.Center, margin: 20 };
+        local_bpmnVisualization.load(bpmnxml, { fit: local_fitOptions });
+        
         if (bpmnContainer.clientHeight < bpmnContainer.scrollHeight || bpmnContainer.clientWidth < bpmnContainer.scrollWidth) {
           setOverflowMessage(true);
         }
+        setBpmnVisualization(local_bpmnVisualization);
+        setFitOptions(local_fitOptions);
+      
       }
 
       } else {
@@ -195,8 +205,8 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
             On touch screen (mobile/tablet), use two fingers to zoom or pan the diagram.
           </span>
           }
-
-          <DialogFooter>
+        <ZoomControls bpmnVisualization={bpmnVisualization} fitOptions={fitOptions} />
+         <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="secondary">
                 Close
