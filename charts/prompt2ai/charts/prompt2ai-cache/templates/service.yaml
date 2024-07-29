@@ -1,0 +1,22 @@
+# While RESP is technically non-TCP specific, 
+# the protocol is used exclusively with TCP connections 
+# in the context of Redis.
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "prompt2ai-cache.fullname" . }}
+  labels:
+    {{- include "prompt2ai-cache.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379  
+      protocol: TCP
+      name: redis
+    - port: 8001
+      targetPort: 8001
+      protocol: TCP
+      name: redis-insight
+  selector:
+    {{- include "prompt2ai-cache.selectorLabels" . | nindent 4 }}

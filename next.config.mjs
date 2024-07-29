@@ -3,12 +3,21 @@
 import withNextra from 'nextra'; //patched with https://github.com/shuding/nextra/pull/2460/files
 import {withNextVideo} from 'next-video/process';
 
+const getCacheHandler=()=>{
+  if (process.env.NODE_ENV === 'production') {
+    const module ='/app/cache-handler.mjs';
+    return module;
+  }
+  return undefined;
+}
+
 const withNextraConfig = withNextra({
     theme: 'nextra-theme-docs',
     themeConfig: './doc.theme.config.jsx'
 });
 
 const nextConfig = {
+    cacheHandler: getCacheHandler(),
     distDir: './.next', // Nextra supports custom `nextConfig.distDir`
     reactStrictMode: true,
     pageExtensions: ["ts", "tsx", "mdx"],

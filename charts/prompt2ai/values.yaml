@@ -112,3 +112,12 @@ prompt2ai-db:
     ## Keep a created Persistent volume claim when uninstalling the helm chart (only for option useDeployment: true)
     keepPvc: true
 
+prompt2ai-cache:
+  ## redis based cache for prompt2ai
+  image:
+    repository: "redis/redis-stack"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+
+

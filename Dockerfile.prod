@@ -7,7 +7,12 @@ RUN rm -rf node_modules .next
 # Use the final image for running the app
 FROM node:20
 WORKDIR /app
+ARG GIT_HASH=unknown
+ARG REDIS_URL=redis://localhost:6379
+ENV GIT_HASH=$GIT_HASH
+ENV REDIS_URL=$REDIS_URL
 COPY --from=builder /app .
+RUN yarn add sharp --ignore-engines
 RUN yarn install
 RUN yarn build
 EXPOSE 3000
