@@ -55,6 +55,7 @@ CacheHandler.onCreation(async () => {
       keyPrefix: 'prefix:',
       timeoutMs: 1000,
     });
+    console.info('Using Redis handler.');
   } else {
     // Fallback to LRU handler if Redis client is not available.
     // The application will still work, but the cache will be in memory only and not shared.
