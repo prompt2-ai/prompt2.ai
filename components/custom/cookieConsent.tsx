@@ -3,15 +3,22 @@ import Link from "next/link";
 import { getLocalStorage, setLocalStorage } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
-
 export default function CookieBanner() {
 const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
-
+const [is_eu, setIsEU] = useState<boolean>(false);
   useEffect(() => {
     if (cookieConsent !== null) return;
     const storedCookieConsent = getLocalStorage("cookie_consent", false);
     setCookieConsent(storedCookieConsent);
-  }, []);
+    if (!storedCookieConsent) {
+      const getGeoData = async () => {
+      const geodataResponse = await fetch("/api/geoip");
+      const geodata = await geodataResponse.json();
+      if (geodata.country.is_in_european_union) setIsEU(true);
+    }
+    getGeoData();
+    }
+    }, []);
 
   useEffect(() => {
         // set some delay to show the cookie banner
@@ -21,8 +28,7 @@ const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
 }, [cookieConsent]);
 
   return <>
-    
-    { (cookieConsent!=null&&!cookieConsent)&&<>
+    {(is_eu&&cookieConsent!=null&&!cookieConsent)&&<>
       <div className={`${
         cookieConsent? "hidden"
           : "flex  flex-col fixed inset-x-0 bottom-0 z-20  justify-between gap-x-8 gap-y-4 bg-white p-6 ring-1 ring-gray-900/10 md:flex-row md:items-center lg:px-8 xs:block"
@@ -34,7 +40,6 @@ const [cookieConsent, setCookieConsent] = useState<boolean | null>(null);
           cookie policy
         </Link>
       </p>
-
 
       <div className="flex gap-2">
         <div className="mr-16 flex flex-none items-center gap-x-5">
