@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { getSession } from "@/app/actions";
-import Menu from "@/components/custom/O/menu";
-import Footer from "@/components/custom/footer";
 import { ThemeProvider } from "@/components/theme-provider"
 import AuthProvider from "@/components/custom/authProvider";
+import CookieBanner from "@/components/custom/cookieConsent";
 import "./globals.css";
 import './theme.css';
-
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +35,7 @@ export default async function RootLayout({
           >
       <AuthProvider>
           {children}
+          <CookieBanner />
       </AuthProvider>
        </ThemeProvider>
         </body>
