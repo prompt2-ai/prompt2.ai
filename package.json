@@ -37,6 +37,7 @@
     "bpmnlint": "^10.2.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "ga-gtag": "^1.2.0",
     "lucide-react": "^0.379.0",
     "mariadb": "^3.3.1",
     "mysql2": "^3.10.1",
@@ -81,6 +82,18 @@
     "nextra-theme-docs": {
       "injected": true
     }
+  },
+  "supportedArchitectures": {
+    "os": [
+      "linux"
+    ],
+    "cpu": [
+      "x64",
+      "arm64"
+    ],
+    "libc": [
+      "glibc"
+    ]
   },
   "license": "MIT"
 }
