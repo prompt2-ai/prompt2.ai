@@ -99,7 +99,6 @@ export default function LoginRightSide({callbackUrl}: {callbackUrl: string}) {
 
       <form action={async (e) => {
           "use server"
-          console.log("EEEEEEEEE",e);
           try {
             await signIn('apple', {redirect: true, redirectTo:callbackUrl, callbackUrl:callbackUrl } );
           } catch (error) {
