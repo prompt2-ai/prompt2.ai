@@ -48,7 +48,8 @@ import {
 } from "lucide-react";
 
 import type { FitOptions } from 'bpmn-visualization';
-import { BpmnVisualization,FitType } from 'bpmn-visualization';
+import type { Workflow, Workflows } from '@/types/workflow';
+import { BpmnVisualization, FitType } from 'bpmn-visualization';
 
 
 /** @internal */
@@ -61,25 +62,6 @@ declare global {
     mxResourceExtension: string;
   }
 }
-
-type Workflow = { //TODO set type on external file
-  id: string;
-  name: string;
-  description: string;
-  userId: string;
-  workflow: string; 
-  image: string;
-  prompt: string;
-  active: boolean;
-  exclusive: boolean;
-  tokensInput: number;
-  tokensOutput: number;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-type Workflows = Workflow[];
-
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -100,7 +82,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
     onPressedChange={(pressed) => {
       console.log('pressed', pressed);
       setIsToggled(pressed);
-      fetch("/api/workflows", {
+      fetch("/api/workflows/mine", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -121,7 +103,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
 
   useEffect(() => {
     //fetch the workflows of the user from api /api/workflows
-    fetch("/api/workflows")
+    fetch("/api/workflows/mine")
       .then((res) => res.json())
       .then((data) => {
         setWorkflows(data.workflows);
@@ -265,7 +247,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
                     const isConfirmed = window.confirm("Are you sure you want to delete this workflow?");
                     if (isConfirmed) {
                     //delete the workflow
-                    fetch("/api/workflows", {
+                    fetch("/api/workflows/mine", {
                       method: "DELETE",
                       headers: {
                         "Content-Type": "application/json",
