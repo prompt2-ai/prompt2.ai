@@ -1,5 +1,6 @@
 'use strict';
 import{ Sequelize,DataTypes,Options } from "sequelize"
+import { Op } from '@sequelize/core';
 import {production,test,development} from "../config/dbconfig.js"
 
 import UserModel  from "@/db/models/users"
@@ -17,7 +18,8 @@ export const db = {
     Tokens: Tokens(sequelize, DataTypes),
     Prompts: Prompts(sequelize, DataTypes),
     sequelize: sequelize,
-    Sequelize: Sequelize
+    Sequelize: Sequelize,
+    Op: Op
 }
 
 export default db;
