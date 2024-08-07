@@ -1,30 +1,60 @@
 // get workflows of the user from db and return them
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/db";
+
 import { auth } from "@/auth"
 import { v4 as uuidv4 } from 'uuid'
+import type { Workflow } from "@/types/workflow";
 
-type Workflow = { //TODO set type on external file
-  id: string;
-  name: string;
-  description: string;
-  userId: string;
-  workflow: string;
-  image: string;
-  prompt: string;
-  active: boolean;
-  private: boolean;
-  tokensInput: number;
-  tokensOutput: number;
-  createdAt: Date;
-  updatedAt: Date;
+type DBWorkflow = Workflow & { 
   update: (attributes: Partial<Workflow>) => Promise<void>;
   destroy: () => Promise<void>;
 } | null;
 
-
 export async function GET(request: NextRequest) {
-    const session = await auth();
+  let workflows:DBWorkflow[]= [null];
+
+  let page = parseInt(request.nextUrl.searchParams.get("page") || "1");
+  let limit = parseInt(request.nextUrl.searchParams.get("limit") || "10");
+  let order = request.nextUrl.searchParams.get("order") || "createdAt";
+  if (!["createdAt", "likes", "dislikes", "downloads", "views","tokensInput","tokensOutput"].includes(order)) {
+    order = "createdAt";
+  }
+  let direction = request.nextUrl.searchParams.get("direction") || "DESC";
+  if (!["ASC", "DESC"].includes(direction)) {
+    direction = "DESC";
+  }
+  let search = request.nextUrl.searchParams.get("search") || "";
+  //sanitize search input string
+  search = search.replace(/[^a-zA-Z0-9 ]/g, "");
+
+  if (isNaN(page)) page = 1;
+  if (isNaN(limit)) limit = 10;
+  if (limit > 100) limit = 100; // prevent abuse
+
+  //get all public workflows
+  if (request.nextUrl.pathname === "/api/workflows/all") {
+    
+    let where:any = {
+        exclusive: false,
+        active: true,
+       }
+    if (search) {
+      where = {
+        ...where,
+        name: {[db.Op.like]: `%${search}%`}
+      }
+    }
+       workflows = await db.Workflows.findAll(
+        {
+            where: where,
+            limit: limit,
+            offset: (page - 1) * limit,
+            order: [[order, direction]],
+        }
+    ) as unknown as DBWorkflow[];
+  } else { //get all workflows of the user
+  const session = await auth();
     if (!session?.user) {
       return NextResponse.json(
         {
@@ -36,22 +66,20 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       );
     }
-    let page = parseInt(request.nextUrl.searchParams.get("page") || "1");
-    let limit = parseInt(request.nextUrl.searchParams.get("limit") || "10");
-    if (isNaN(page)) page = 1;
-    if (isNaN(limit)) limit = 10;
-    if (limit > 100) limit = 100; // prevent abuse
-
-    const workflows = await db.Workflows.findAll(
+   workflows = await db.Workflows.findAll(
         {
             where: {
                 userId: session.user.id,
+                active: true,
             },
             limit: limit,
             offset: (page - 1) * limit,
+            order: [[order, direction]],
         }
-    );
-    return NextResponse.json(
+    ) as unknown as DBWorkflow[];
+  }
+  //return the workflows
+  return NextResponse.json(
         {
             workflows
         },
@@ -77,7 +105,7 @@ export async function PUT(request: NextRequest) {
     );
   }
   const { id, ...attributes } = await request.json();
-  const workflow: Workflow | null = await db.Workflows.findByPk(id) as Workflow;
+  const workflow: DBWorkflow = await db.Workflows.findByPk(id) as DBWorkflow;
 
   if (!workflow) {
     return NextResponse.json(
@@ -170,7 +198,7 @@ export async function DELETE (request: NextRequest) {
     );
   }
   const { id } = await request.json();
-  const workflow: Workflow | null = await db.Workflows.findByPk(id) as Workflow;
+  const workflow: DBWorkflow = await db.Workflows.findByPk(id) as DBWorkflow;
 
   if (!workflow) {
     return NextResponse.json(
