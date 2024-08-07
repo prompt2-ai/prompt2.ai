@@ -21,10 +21,11 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
+    const id = uuidv4();
     await queryInterface.bulkInsert('workflows', [
       {
-        id: uuidv4(),//UUID
-        name: 'Order Processing',
+        id: id,//UUID
+        name: 'Order Processing - ' + id,
         description: 'Depicts the process of receiving, evaluating, fulfilling, and closing customer orders',
         user_id: user[0].id,
         workflow: `<?xml version="1.0" encoding="UTF-8"?>
@@ -167,6 +168,7 @@ module.exports = {
       </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>
   </bpmn2:definitions>`,
+        image: null,
         prompt: `Workflow Name: Order Processing
 
 Objective: Design a BPMN workflow that depicts the process of receiving, evaluating, fulfilling, and closing customer orders.
@@ -202,8 +204,14 @@ Consider alternative scenarios (partial order fulfillment, returns, etc.).
 Add data objects, pools, or lanes for clarity if needed.`,
         active: true,
         exclusive: false,
-        tokens_output: 10,
         tokens_input: 5,
+        tokens_output: 10,
+        likes: 0,
+        dislikes: 0,
+        downloads: 0,
+        views: 0,
+        remix_workflows: null,
+        remix_from: null,
         created_at: new Date(),
         updated_at: new Date()
       }
