@@ -32,9 +32,34 @@ export async function GET(request: NextRequest) {
   if (isNaN(limit)) limit = 10;
   if (limit > 100) limit = 100; // prevent abuse
 
-  //get all public workflows
+  if (request.nextUrl.pathname === "/api/workflows/all/count") {
+    //get the total number of workflows
+    let where:any = {
+        exclusive: false,
+        active: true,
+       }   
+    if (search) {
+      where = {
+        ...where,
+        name: {[db.Op.like]: `%${search}%`}
+      }
+    }
+    const count = await db.Workflows.count(
+        {
+            where: where,
+        }
+    );
+    const totalPages = Math.ceil(count / limit);
+    return NextResponse.json(
+        {
+            totalPages
+        },
+        {
+            status: 200
+        }
+   );
+  } else
   if (request.nextUrl.pathname === "/api/workflows/all") {
-    
     let where:any = {
         exclusive: false,
         active: true,
@@ -53,7 +78,9 @@ export async function GET(request: NextRequest) {
             order: [[order, direction]],
         }
     ) as unknown as DBWorkflow[];
-  } else { //get all workflows of the user
+  }
+  else 
+  { //get all workflows of the user
   const session = await auth();
     if (!session?.user) {
       return NextResponse.json(
@@ -78,6 +105,8 @@ export async function GET(request: NextRequest) {
         }
     ) as unknown as DBWorkflow[];
   }
+
+  
   //return the workflows
   return NextResponse.json(
         {

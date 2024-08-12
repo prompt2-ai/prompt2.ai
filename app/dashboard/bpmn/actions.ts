@@ -12,10 +12,7 @@ import { layoutProcess } from 'bpmn-auto-layout';
 import Linter from 'bpmnlint/lib/linter';
 import NodeResolver from 'bpmnlint/lib/resolver/node-resolver';
 import BpmnModdle from 'bpmn-moddle';
-
-
-
-//import testXml from './testXml';
+import { error } from "node:console";
 
 
 type UsageMetaData = {
@@ -26,7 +23,7 @@ type UsageMetaData = {
 
 export async function prepareBPMN(subPrompt:string,countTokens:boolean=false): Promise<{reports:any[],xml:string,response:string,usageMetadata:UsageMetaData}> {
  if (!subPrompt || typeof subPrompt !== 'string') {
-    return {reports:[],xml:'',response:'Please provide a valid prompt',usageMetadata:{}};
+    return {reports:[],xml:'',response:'0',usageMetadata:{}};
   }
 
   const session = await auth();
@@ -35,8 +32,8 @@ export async function prepareBPMN(subPrompt:string,countTokens:boolean=false): P
   }
 
 //get user API key from session if exists
-const apiKey = session.user.apiKey || session.user.role==="subscriber"?process.env.GEMINI_API_KEY:"";
-  if (!apiKey) {
+const apiKey = session.user.apiKey?session.user.apiKey:session.user.role==="subscriber"?process.env.GEMINI_API_KEY:"";
+if (!apiKey) {
     return {reports:[],xml:'',response:'You need a valid API key to use this feature.',usageMetadata:{}};
   }
 
@@ -46,19 +43,33 @@ const dare_prompt = "Return only a valid XML without any explanation. Do not add
 
 const prompt = system +"\n\nprompt:"+subPrompt+".\n\n" + dare_prompt;
 
-const genAI = new GoogleGenerativeAI(apiKey); //get user api key if exists
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro"});
+let model;
+try {
+ const genAI = new GoogleGenerativeAI(apiKey); //get user api key if exists
+ model = genAI.getGenerativeModel({ model: "gemini-1.5-pro"});
+} catch (error) {
+  console.error("Error while getting the AI model: ",error);
+  return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
+}
 if (!model) {
   return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
 }
 
-const { totalTokens } = await model.countTokens(prompt);
-if (!totalTokens) {
-  return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
-}
+let totalTokens = 0;
+try {
+  const countTokensResponse = await model.countTokens(prompt);
+  totalTokens = countTokensResponse.totalTokens;
+  if (!totalTokens) {
+    console.error("Error while counting tokens response: ",countTokensResponse);
+  return {reports:[],xml:'',response:"0",usageMetadata:{}};
+  }
 //if countTokens is true, we only count the tokens and return the total number of tokens
 if (countTokens) {
   return {reports:[],xml:'',response:totalTokens.toString(),usageMetadata:{}};
+}
+} catch (error:any) {
+  console.error("Error while counting tokens: ",error.errorDetails[0].reason);
+  return {reports:[],xml:'',response:error.errorDetails[0].reason,usageMetadata:{}};
 }
 
 let savedPromptId;
@@ -131,7 +142,6 @@ response = await result.response;
   return {reports:[],xml:'',response:'Sorry, we have a problem with the AI model. Please try again later.',usageMetadata:{}};
 }
 
-console.log("response: ",response);
 if (!response) {
   return {reports:[],xml:'',response:'Sorry, I can\'t answer that question. I can only produce BPMN files based on your description.',usageMetadata:{}};
 }

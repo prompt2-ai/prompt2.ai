@@ -55,6 +55,7 @@ const ZoomControls = ({ bpmnVisualization,fitOptions }: { bpmnVisualization: any
   }
 
   return <>
+  <div className='absolute top-0 right-0 m-5'>
     <Button
       className="sideButton float-left"
       variant="secondary"
@@ -79,6 +80,7 @@ const ZoomControls = ({ bpmnVisualization,fitOptions }: { bpmnVisualization: any
     >
         -
     </Button>
+  </div>
   </>;
 
 };

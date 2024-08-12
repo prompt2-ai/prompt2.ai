@@ -69,6 +69,7 @@ export default function Page() {
   const [overflowMessage, setOverflowMessage] = useState(false);
   const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
   const [fitOptions, setFitOptions] = useState<FitOptions>();
+  const [showControls, setShowControls] = useState(false);
 
 
 // Item component that manages its own toggle state
@@ -113,12 +114,14 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
 
   const updateWorkflow = (bpmnxml: string, index: number) => {
     "use client";   
+    setShowControls(false);
     //ensure that we are on browser and window exists
     if (typeof window === 'undefined') {
               return;
     }
     setTimeout(async () => {
        "use client";
+      
       //if xml is empty, return
       if (!bpmnxml) {
         console.log('xml is empty');
@@ -136,7 +139,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
         if (svg.length > 0) {
           svg[0].remove();
         }
-        bpmnContainer.innerHTML = '';//just in case
+        //bpmnContainer.innerHTML = '';//just in case
        
         if (typeof window !== 'undefined') {
         // load the new diagram
@@ -152,7 +155,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
         }
         setBpmnVisualization(local_bpmnVisualization);
         setFitOptions(local_fitOptions);
-      
+        setShowControls(true);
       }
 
       } else {
@@ -179,15 +182,17 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
               preview the BPMN diagram of the workflow.
             </DialogDescription>
           </DialogHeader>
-          <div id={"bpmn-container-" + index} className="p-6 container overflow-hidden border rounded-md bg-slate-50"></div>
-          {overflowMessage && <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
+          <div id={"bpmn-container-" + index} className="h-96 container overflow-hidden border rounded-md bg-slate-50">
+          {showControls&&<ZoomControls bpmnVisualization={bpmnVisualization} fitOptions={fitOptions} />}
+          </div>
+          {overflowMessage && <span className="mt-10 block text-xs font-light text-pretty text-gray-700 dark:text-white">
             The diagram is too large and does not fit within the container.
             Zoom in/out by holding the CTRL key and rolling the mouse wheel.
             Drag/Pan the diagram by holding the mouse left button and moving the mouse to move the diagram within the container.
             On touch screen (mobile/tablet), use two fingers to zoom or pan the diagram.
           </span>
           }
-        <ZoomControls bpmnVisualization={bpmnVisualization} fitOptions={fitOptions} />
+
          <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="secondary">

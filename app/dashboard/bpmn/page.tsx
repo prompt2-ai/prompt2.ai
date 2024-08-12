@@ -16,6 +16,8 @@ import { useSession } from "next-auth/react";
 import { SaveIcon, CircleHelpIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
+
+
 import {
     Dialog,
     DialogContent,
@@ -41,7 +43,10 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 
-import { BpmnVisualization, FitType } from 'bpmn-visualization';
+import { BpmnVisualization,FitType } from 'bpmn-visualization';
+import type { FitOptions } from 'bpmn-visualization';
+import ZoomControls  from '@/components/custom/bpmn-visualization/zoomControlers';
+
 
 export default function Page() {
     const [prompt, setPrompt] = useState('');
@@ -54,6 +59,11 @@ export default function Page() {
     const [haveApiKey, setHaveApiKey] = useState(true);
     const [tokensEstimation, setTokensEstimation] = useState(0);
     const [usageMetadata, setUsageMetadata] = useState({} as any);
+    const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
+    const [fitOptions, setFitOptions] = useState<FitOptions>();
+    const [showControls, setShowControls] = useState(false);
+    const [invalidApiKey, setInvalidApiKey] = useState("");
+
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -61,6 +71,13 @@ export default function Page() {
         const debounceTimeout = setTimeout(async () => {
             const prep = await prepareBPMN(prompt, true);
             const tokens = prep.response;
+            if (isNaN(Number(tokens))) {
+                setTokensEstimation(0);
+                if (tokens ==="API_KEY_INVALID")
+                setInvalidApiKey("Invalid API key. Please check your API key in your profile settings.");
+                else setInvalidApiKey(tokens);
+                return;
+            }
             setTokensEstimation(isNaN(Number(tokens)) ? 0 : Number(tokens));
         }, 500);
 
@@ -112,10 +129,12 @@ export default function Page() {
     }, [subPrompt]);
 
     const updateWorkflow = () => {
+        
         //ensure that we are on browser and window exists
         if (typeof window === 'undefined') {
             return;
         }
+        setShowControls(false);
         setTimeout(() => {
             //if xml is empty, return
             if (!xml) {
@@ -133,22 +152,26 @@ export default function Page() {
                 if (svg.length > 0) {
                     svg[0].remove();
                 }
-                bpmnContainer.innerHTML = '';//just in case
+                //bpmnContainer.innerHTML = '';//just in case
              
                 if (typeof window !== 'undefined') {
                  // load the new diagram
-                const bpmnVisualization = new BpmnVisualization({
+                const local_bpmnVisualization = new BpmnVisualization({
                     container: 'bpmn-container', navigation: {
                         enabled: true
                     }
                 });
 
-                
-                // load the new diagram 
-                bpmnVisualization.load(xml, { fit: { type: FitType.Center } });
+
+                const local_fitOptions: FitOptions = { type: FitType.Center, margin: 20 };
+                local_bpmnVisualization.load(xml, { fit: local_fitOptions });
                 if (bpmnContainer.clientHeight < bpmnContainer.scrollHeight || bpmnContainer.clientWidth < bpmnContainer.scrollWidth) {
                     setOverflowMessage(true);
                 }
+                setBpmnVisualization(local_bpmnVisualization);
+                setFitOptions(local_fitOptions);
+                setShowControls(true);
+
             }
             } else {
                 console.log('bpmnContainer not found');
@@ -250,6 +273,14 @@ export default function Page() {
         <>
             {session && session.user && <h1 className="text-2xl font-semibold">Welcome {session.user.name}!</h1>}
             {(loading || status == "loading") && <Loader></Loader>}
+            {invalidApiKey && <Alert variant="destructive">
+                <AlertTitle>
+                    Error
+                </AlertTitle>
+                <AlertDescription>
+                    {invalidApiKey}
+                </AlertDescription>
+            </Alert>}
             {!haveApiKey && <Alert variant="destructive">
                 <AlertTitle>
                     Set your API key please.
@@ -306,7 +337,9 @@ export default function Page() {
                     <TabsContent value="workflow">
                         {usageMetadata?.totalTokenCount&&<span id="totalTokenCount" className='float-left'>Total tokens spend {usageMetadata?.totalTokenCount}</span>}
                         <SaveBPMN />
-                        <div id="bpmn-container" className="p-6 container overflow-hidden border rounded-md bg-slate-50"></div>
+                        <div id="bpmn-container" className="h-screen container overflow-hidden border rounded-md bg-slate-50">
+                        {showControls&&<ZoomControls bpmnVisualization={bpmnVisualization} fitOptions={fitOptions} />}
+                        </div>
                         {overflowMessage && <span className="mt-10 block text-sm font-light text-pretty text-gray-700 dark:text-white">
                             The diagram is too large and does not fit within the container.
                             Zoom in/out by holding the CTRL key and rolling the mouse wheel.
@@ -334,8 +367,8 @@ export default function Page() {
                 <h1 className="text-2xl font-bold mt-4">FAQ</h1>
                 <Accordion type="single" collapsible>
 
-                    <AccordionItem value="Im stuct, how can bussiness process be described?">
-                        <AccordionTrigger>Im stuct, how can bussiness process be described?</AccordionTrigger>
+                    <AccordionItem value="Im stuck, how can bussiness process be described?">
+                        <AccordionTrigger>Im stuck, how can bussiness process be described?</AccordionTrigger>
                         <AccordionContent>
                             Here are some business workflow examples, formatted as prompts for AI-powered BPMN 2.0 diagram generation:<br />
                             <br />
