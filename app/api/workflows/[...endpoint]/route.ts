@@ -59,6 +59,38 @@ export async function GET(request: NextRequest) {
         }
    );
   } else
+  if (request.nextUrl.pathname === "/api/workflows/mine/count") {
+    //get the total number of workflows of the user
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "no-access",
+            message: "You are not signed in.",
+          },
+        },
+        { status: 401 }
+      );
+    }
+    const count = await db.Workflows.count(
+        {
+            where: {
+                userId: session.user.id,
+                active: true,
+            },
+        }
+    );
+    const totalPages = Math.ceil(count / limit);
+    return NextResponse.json(
+        {
+            totalPages
+        },
+        {
+            status: 200
+        }
+    );
+  } else
   if (request.nextUrl.pathname === "/api/workflows/all") {
     let where:any = {
         exclusive: false,

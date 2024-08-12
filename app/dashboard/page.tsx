@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import Link from 'next/link';
 import ZoomControls  from '@/components/custom/bpmn-visualization/zoomControlers';
-
+import Pagination from "@/components/custom/pagination";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -70,7 +70,8 @@ export default function Page() {
   const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
   const [fitOptions, setFitOptions] = useState<FitOptions>();
   const [showControls, setShowControls] = useState(false);
-
+  const [page, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
 // Item component that manages its own toggle state
 const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
@@ -102,15 +103,23 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
   );
 };
 
-  useEffect(() => {
+useEffect(() => {
+  //fetch the workflows
+  fetch("/api/workflows/mine/count")
+    .then((res) => res.json())
+    .then((data) => {
+      setTotalPages(data.totalPages);
+    });
+},[]);
+
+useEffect(() => {
     //fetch the workflows of the user from api /api/workflows
-    fetch("/api/workflows/mine")
+    fetch("/api/workflows/mine?page=" + page)
       .then((res) => res.json())
       .then((data) => {
         setWorkflows(data.workflows);
       });
-  }
-    , []);
+  },[page]);
 
   const updateWorkflow = (bpmnxml: string, index: number) => {
     "use client";   
@@ -288,6 +297,7 @@ const ToogleWorkflowItem = ({ workflow }: {workflow:Workflow}) => {
           }
         </TableBody>
       </Table>
+      <Pagination totalPages={totalPages} currentPage={page} setCurrentPage={setCurrentPage} />
     </div>
   );
 }
