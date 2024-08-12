@@ -231,7 +231,7 @@ export default function Page() {
                                 setLoading(true);
                                 //wait 1 second to make sure the diagram is loaded, and show the funcy loader
                                 await new Promise((resolve) => setTimeout(resolve, 1500));
-                                await fetch('/api/workflows', {
+                                await fetch('/api/workflows/mine', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
