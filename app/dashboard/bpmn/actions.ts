@@ -1,19 +1,16 @@
 'use server';
 import { auth } from "@/auth"
 import db from "@/db";
-import { Op } from '@sequelize/core';
 import { v4 as uuidv4 } from 'uuid'
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-import {createRequire} from 'node:module';
+import { createRequire } from 'node:module';
 
 import { layoutProcess } from 'bpmn-auto-layout';
 
 import Linter from 'bpmnlint/lib/linter';
 import NodeResolver from 'bpmnlint/lib/resolver/node-resolver';
 import BpmnModdle from 'bpmn-moddle';
-import { error } from "node:console";
-
 
 type UsageMetaData = {
   promptTokenCount?: number;
@@ -75,7 +72,7 @@ if (countTokens) {
 let savedPromptId;
 try {
 /* Save the prompt to the database*/
-const savedPrompt = await db.Prompts.create({
+const savedPrompt = await db.Prompts.create(/* webpackIgnore: true */{
   id:uuidv4(),
   userId: session.user.id,
   userPrompt: subPrompt,
@@ -98,7 +95,7 @@ if (session.user.role==="subscriber" && process.env.GEMINI_API_KEY===apiKey) {
     where: {
         userId: session.user.id,
         expires: {
-            [Op.gte]: new Date(),
+            [db.Op.gte]: new Date(),
         },
     },
 });
@@ -107,7 +104,7 @@ const oldestCreatedTokenDate = await db.Tokens.min('createdAt',{
     where: {
         userId: session.user.id,
         expires: {
-            [Op.gte]: new Date(),
+            [db.Op.gte]: new Date(),
         },
     },
 });
@@ -116,10 +113,10 @@ const usedTokens = await db.Prompts.sum('total_token_count',{
     where: {
       userId: session.user.id, // Filtering by user ID
       spendAt: {
-        [Op.lte]: new Date(), // spendAt is less than or equal to the current date
+        [db.Op.lte]: new Date(), // spendAt is less than or equal to the current date
       },
       createdAt: {
-        [Op.gte]: oldestCreatedTokenDate, // createdAt is greater than or equal to the oldest token creation date
+        [db.Op.gte]: oldestCreatedTokenDate, // createdAt is greater than or equal to the oldest token creation date
       },
     }
   });

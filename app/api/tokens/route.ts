@@ -1,6 +1,5 @@
 // get available tokens for the user
 import { NextResponse } from "next/server";
-import { Op } from '@sequelize/core';
 import db from "@/db";
 import { auth } from "@/auth"
 
@@ -24,7 +23,7 @@ const paidTokens = await db.Tokens.sum('value',{
     where: {
         userId: session.user.id,
         expires: {
-            [Op.gte]: new Date(),
+            [db.Op.gte]: new Date(),
         },
     },
 });
@@ -33,7 +32,7 @@ const oldestCreatedTokenDate = await db.Tokens.min('createdAt',{
     where: {
         userId: session.user.id,
         expires: {
-            [Op.gte]: new Date(),
+            [db.Op.gte]: new Date(),
         },
     },
 });
@@ -42,10 +41,10 @@ const usedTokens = await db.Prompts.sum('total_token_count',{
     where: {
       userId: session.user.id, // Filtering by user ID
       spendAt: {
-        [Op.lte]: new Date(), // spendAt is less than or equal to the current date
+        [db.Op.lte]: new Date(), // spendAt is less than or equal to the current date
       },
       createdAt: {
-        [Op.gte]: oldestCreatedTokenDate, // createdAt is greater than or equal to the oldest token creation date
+        [db.Op.gte]: oldestCreatedTokenDate, // createdAt is greater than or equal to the oldest token creation date
       },
     }
   });
