@@ -57,6 +57,10 @@ module.exports = {
         type:DataTypes.INTEGER,
         allowNull: true
       },
+      tokens_total: {
+        type:DataTypes.INTEGER,
+        allowNull: true
+      },
       likes: {
         type:DataTypes.INTEGER,
         allowNull: true

@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
        type: DataTypes.INTEGER,//the tokens required from Gemini for output
        allowNull: true
     },
+    tokensTotal: {
+      type: DataTypes.INTEGER,//the tokens required from Gemini for total
+      allowNull: true
+    },
     likes: {
       type: DataTypes.INTEGER,
       allowNull: true
