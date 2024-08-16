@@ -22,7 +22,7 @@ const nextConfig = {
     reactStrictMode: true,
     pageExtensions: ["ts", "tsx", "mdx"],
     experimental: {
-      serverComponentsExternalPackages: ['sequelize', 'sequelize-typescript'],
+      serverComponentsExternalPackages: ['sequelize','mysql2'],
       mdxRs: true,
       // once this makes it into a release: https://github.com/vercel/next.js/pull/51755
       serverActions: {
