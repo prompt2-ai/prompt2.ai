@@ -56,8 +56,10 @@ export default function Showcases() {
 
   return (
     <div>
+      <h1 className='text-xl'>Business Operations Compendium</h1>
       <div className="hidden items-start justify-center gap-6 rounded-lg p-8 md:grid lg:grid-cols-2 xl:grid-cols-3">
-        {workflows.map((workflow: Workflow) => (
+        {workflows.map((workflow: Workflow) => (<>
+
           <MasonryWallBrick>
             <Card>
               <CardHeader>
@@ -72,10 +74,12 @@ export default function Showcases() {
               </CardFooter>
             </Card>
           </MasonryWallBrick>
+        </>
         ))
         }
       </div>
       <Pagination totalPages={totalPages} currentPage={page} setCurrentPage={setCurrentPage} />
     </div>
+  
   );
 }
