@@ -40,7 +40,6 @@ export const Menu = () => {
   useEffect(() => {
     const run = async () => {
       const s = session;
-      console.log("SESSION", s);
       if (s === undefined || s === null) {
         setIsLogged(false);
       } else {
