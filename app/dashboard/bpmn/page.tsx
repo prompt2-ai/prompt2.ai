@@ -60,6 +60,7 @@ export default function Page() {
     const [tokensEstimation, setTokensEstimation] = useState(0);
     const [usageMetadata, setUsageMetadata] = useState({} as any);
     const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
+    const [bpmnSvg, setBpmnSvg] = useState<string>();
     const [fitOptions, setFitOptions] = useState<FitOptions>();
     const [showControls, setShowControls] = useState(false);
     const [invalidApiKey, setInvalidApiKey] = useState("");
@@ -169,6 +170,7 @@ export default function Page() {
                     setOverflowMessage(true);
                 }
                 setBpmnVisualization(local_bpmnVisualization);
+                setBpmnSvg(local_bpmnVisualization.graph.container.innerHTML);
                 setFitOptions(local_fitOptions);
                 setShowControls(true);
 
@@ -241,9 +243,11 @@ export default function Page() {
                                         exclusive: false, //TODO switch on UI to make it private for subscribers
                                         workflow: xml,
                                         name: workflowName,
+                                        image: bpmnSvg,
                                         description: "AI generated workflow",//May be added later
-                                        tokensInput: "1", //TODO get from gemini response
-                                        tokensOutput: "1" //TODO get from gemini response
+                                        tokensInput: ""+usageMetadata?.promptTokenCount,
+                                        tokensOutput: ""+usageMetadata?.candidatesTokenCount,
+                                        tokensTotal: ""+usageMetadata?.totalTokenCount
                                     }),
                                 }).catch((error) => {
                                     console.error('Error:', error);
