@@ -188,6 +188,28 @@ export default function Page() {
 
     const SaveBPMN = () => {
         const [workflowName, setWorkflowName] = useState('');
+        const [previewSVG, setPreviewSVG] = useState('');
+
+        const genSVG = () => {
+            setPreviewSVG('');
+            setTimeout(() => {
+                if (typeof window !== 'undefined') {
+                    const previewbpmnContainer = document.getElementById('preview-bpmn-container');
+                    if (previewbpmnContainer) {
+                        // clear the container  
+                        previewbpmnContainer.innerHTML = '';//just in case
+                    // load the new diagram
+                   const preview_bpmnVisualization = new BpmnVisualization({
+                       container: 'preview-bpmn-container', navigation: {
+                           enabled: false
+                       }
+                   });
+        
+                   const preview_fitOptions: FitOptions = { type: FitType.Center, margin: 10 };
+                   preview_bpmnVisualization.load(xml, { fit: preview_fitOptions });
+                setPreviewSVG(""+preview_bpmnVisualization.graph.container.innerHTML);
+                }}}, 1000);
+        }
 
         useEffect(() => {
             const name = xml.match(/name="([^"]*)"/);
@@ -199,7 +221,9 @@ export default function Page() {
         return (
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button onClick={() => { }} variant="default" className="float-right mb-2"><SaveIcon />&nbsp;Save this workflow</Button>
+                    <Button onClick={() => {
+                        genSVG();
+                     }} variant="default" className="float-right mb-2"><SaveIcon />&nbsp;Save this workflow</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px] md:max-w-[95%] md:w-full">
                     <DialogHeader>
@@ -209,7 +233,8 @@ export default function Page() {
                             Subsequently, you can download the saved diagram as a file from your dashboard.
                         </DialogDescription>
                     </DialogHeader>
-
+                
+                    <div id="preview-bpmn-container" className='overflow-hidden border rounded-md bg-slate-50' style={{width:"450px",height:"300px"}}></div>
                     <div className="m-5">
                         <Label htmlFor="save-bpmn" className='m-4'>Name</Label>
                         <Input
@@ -228,7 +253,7 @@ export default function Page() {
                         <Button
                             type="submit"
                             variant="default"
-                            disabled={workflowName == ''}
+                            disabled={workflowName == ''||previewSVG==''}
                             onClick={async () => {
                                 setLoading(true);
                                 //wait 1 second to make sure the diagram is loaded, and show the funcy loader
@@ -243,7 +268,7 @@ export default function Page() {
                                         exclusive: false, //TODO switch on UI to make it private for subscribers
                                         workflow: xml,
                                         name: workflowName,
-                                        image: bpmnSvg,
+                                        image: previewSVG,
                                         description: "AI generated workflow",//May be added later
                                         tokensInput: ""+usageMetadata?.promptTokenCount,
                                         tokensOutput: ""+usageMetadata?.candidatesTokenCount,
