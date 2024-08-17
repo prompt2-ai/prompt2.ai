@@ -36,7 +36,7 @@ if (!apiKey) {
 
 //ask here gemini to generate bpmn2 xml from prompt
 const system = "You are a BPMN expert. Your mission is to produce XML file that represents a BPMN 2.0 workflow along with BPMNDI information in it, based on the user prompt.";
-const dare_prompt = "Return only a valid XML without any explanation. Do not add any statements or commentary to the contents of the source xml, though you should rephrase them a bit to avoid recitation errors. Remember that before you answer a question, you must check to see if it complies with your mission. If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
+const dare_prompt = "Return only a valid XML without any explanation.**Ensure the generated XML is unique and avoids repetitive patterns or structures.If you detect any repetitive patterns in the generated XML, attempt to restructure or rephrase elements to ensure originality.** Do not add any statements or commentary to the contents of the source xml, though you should rephrase them a bit to avoid recitation errors. Remember that before you answer a question, you must check to see if it complies with your mission. If not, you can say: Sorry, I can't answer that question. I can only produce BPMN files based on your description.";
 
 const prompt = system +"\n\nprompt:"+subPrompt+".\n\n" + dare_prompt;
 
