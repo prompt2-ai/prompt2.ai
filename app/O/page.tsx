@@ -3,6 +3,7 @@ import HeaderImage from "@/public/prompt2ai-Thumbnail.jpg";
 import Player from 'next-video/player';
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 
 import {
@@ -15,15 +16,18 @@ import {
 } from "@/components/ui/card"
 
 export default function Home() {
+  console.log("HeaderImage",HeaderImage);
   return (
 <main  className="lg:container w-full p-8">
-  <div id="frontHeader" className="w-full min-h-[500px] z-10 md:flex items-center justify-center lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8">
+  
+  <Skeleton id="frontHeader" className="hidden h-auto w-full z-10 md:flex items-center justify-center lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8">
      <Player 
      src={process.env.NEXT_PUBLIC_WEBSITE_URL+"/prompt2ai.mp4"}
      poster={HeaderImage.src}
      blurDataURL={HeaderImage.blurDataURL}
      className="lg:border-2 md:border-8 md:border-black lg:border-white"/>
-  </div>
+  </Skeleton>
+  <h1 className="md:hidden text-4xl lg:text-6xl font-bold text-center mt-8">Create BPMN2 Workflows with Plain English</h1>
 <div className="p-0 mt-8 lg:flex">
 <Card className="lg:w-2/4 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
