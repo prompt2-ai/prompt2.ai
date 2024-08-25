@@ -17,16 +17,18 @@ import {
 
 export default function Home() {
   return (
-<main  className="lg:container w-full p-8">
-  
-  <Skeleton id="frontHeader" className="hidden lg:min-h-[782px] w-full z-10 md:flex items-center justify-center lg:bg-gradient-to-b from-orange-300 to-orange-700 lg:shadow-2xl lg:p-8">
-     <Player 
+<main className="lg:container w-full p-8">
+  <Skeleton id="frontHeader" 
+  className="hidden lg:grid min-h-[780px] rounded w-full z-10 items-center justify-center bg-gradient-to-b from-orange-300 to-orange-700 shadow-2xl p-8">  
+  <Player 
      src={process.env.NEXT_PUBLIC_WEBSITE_URL+"/prompt2ai.mp4"}
      poster={HeaderImage.src}
      blurDataURL={HeaderImage.blurDataURL}
-     className="lg:min-h-[714px] lg:border-2 md:border-8 md:border-black lg:border-white"/>
+     className="w-full h-full"
+     >
+  </Player>
   </Skeleton>
-  <h1 className="md:hidden text-4xl lg:text-6xl font-bold text-center mt-8">Create BPMN2 Workflows with Plain English</h1>
+<h1 className="lg:hidden text-4xl font-bold text-center mt-8">Create BPMN2 Workflows with Plain English</h1>
 <div className="p-0 mt-8 lg:flex">
 <Card className="lg:w-2/4 lg:flex-inline mt-2 lg:mr-2">
   <CardHeader>
