@@ -1,8 +1,7 @@
 'use client';
 /* a simple custom BPMN2 viewer on browser canvas (not using bpmnjs)*/
-import React, { use, useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
