@@ -1,6 +1,6 @@
 'use client';
 /* a simple custom BPMN2 viewer on browser canvas (not using bpmnjs)*/
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Textarea } from '@/components/ui/textarea';
@@ -60,13 +60,32 @@ export default function Page() {
     const [tokensEstimation, setTokensEstimation] = useState(0);
     const [usageMetadata, setUsageMetadata] = useState({} as any);
     const [bpmnVisualization, setBpmnVisualization] = useState<BpmnVisualization>();
-    const [bpmnSvg, setBpmnSvg] = useState<string>();
     const [fitOptions, setFitOptions] = useState<FitOptions>();
     const [showControls, setShowControls] = useState(false);
     const [invalidApiKey, setInvalidApiKey] = useState("");
 
     const { data: session, status } = useSession();
     const router = useRouter();
+
+   useEffect(() => {
+    //if there is a workflow id in the query, load the workflow
+    const urlParams = new URLSearchParams(window.location.search);
+    const workflowId = urlParams.get('workflowId');
+    console.log('workflowId', workflowId);
+    if (workflowId) {
+        //fetch the workflow
+        fetch("/api/workflows/" + workflowId)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('data', data);
+                if (data.workflow) {
+                    setSubPrompt(data.workflow.prompt);
+                    setXml(data.workflow.workflow);
+                }
+            });
+    }
+   }, []);
+
 
     useEffect(() => {
         const debounceTimeout = setTimeout(async () => {
@@ -109,7 +128,6 @@ export default function Page() {
             setResponse('');
             setLoading(true);
             const prep = await prepareBPMN(subPrompt);
-            console.log('prep', prep);
             const xml = prep.xml;
             const usage = prep.usageMetadata;
             setUsageMetadata(usage);
@@ -170,7 +188,6 @@ export default function Page() {
                     setOverflowMessage(true);
                 }
                 setBpmnVisualization(local_bpmnVisualization);
-                setBpmnSvg(local_bpmnVisualization.graph.container.innerHTML);
                 setFitOptions(local_fitOptions);
                 setShowControls(true);
 

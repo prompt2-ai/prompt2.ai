@@ -20,6 +20,15 @@ module.exports = {
         allowNull: true,
         type: DataTypes.TEXT
       },
+      category: {
+        allowNull: true,
+        type: DataTypes.STRING //one of Core processes, Support processes, Long-tail processes, Strategic processes, Management processes
+      },
+      tags: {
+        allowNull: true,
+        type: DataTypes.JSON, //array of tags
+        defaultValue: [],
+      },
       user_id: {
         allowNull: false,
         foreignKey: true,

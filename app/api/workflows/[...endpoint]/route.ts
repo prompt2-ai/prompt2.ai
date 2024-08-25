@@ -221,6 +221,8 @@ export async function POST(request: NextRequest) {
     id:uuidv4(),
     name,
     description: description || "",
+    category:"",
+    tags:[],
     userId: session.user.id,
     workflow,
     image: image || "",
@@ -233,7 +235,7 @@ export async function POST(request: NextRequest) {
     dislikes: 0,
     downloads: 0,
     views: 0,
-    remixWorkflows: 0,
+    remixWorkflows: [],
     remixFrom: "",
   });
   return NextResponse.json(
