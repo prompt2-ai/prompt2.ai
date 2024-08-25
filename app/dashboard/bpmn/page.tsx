@@ -158,7 +158,7 @@ export default function Page() {
             if (!xml) {
                 return;
             }
-            //if xmn is not a valid bpmn2 file, return
+            //if xml is not a valid bpmn2 file, return
             if (xml.indexOf("definitions") === -1) {
                 return;
             }
