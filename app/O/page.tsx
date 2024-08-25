@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/card"
 
 export default function Home() {
-  console.log("HeaderImage",HeaderImage);
   return (
 <main  className="lg:container w-full p-8">
   
