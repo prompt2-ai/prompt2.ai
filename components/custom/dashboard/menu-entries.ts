@@ -54,9 +54,9 @@ import {
         groupLabel: "Settings",
         menus: [
           {
-            href: "/O/Profile",
+            href: "/O/profile",
             label: "Profile",
-            active: pathname.includes("/O/Profile"),
+            active: pathname.includes("/O/profile"),
             icon: Users,
             submenus: []
           },
