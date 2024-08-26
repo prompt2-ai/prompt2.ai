@@ -182,7 +182,7 @@ useEffect(() => {
           <Button onClick={() => {
             updateWorkflow(bpmnxml, index);
           }
-          } variant="default"><WorkflowIcon /><span className='hidden lg:inline-block'>view</span></Button>
+          } variant="default" className='mb-10'><WorkflowIcon /><span className='hidden lg:inline-block'>view</span></Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] md:max-w-[95%] md:w-full">
           <DialogHeader>
@@ -239,7 +239,7 @@ useEffect(() => {
         <TableBody>
 
           {workflows&&workflows.map((workflow, index) => (
-            <TableRow key={index}>
+            <TableRow key={index} className='mb-2 h-fill'>
               <TableCell className="font-medium">{workflow.name} </TableCell>
               <TableCell>
                 <TooltipProvider>
@@ -276,7 +276,7 @@ useEffect(() => {
                       });
                       }
                     }}
-                  variant="destructive"className="mr-2" ><Trash2Icon /></Button>
+                  variant="destructive"className="mr-2 mb-2" ><Trash2Icon /></Button>
               <Button
                   onClick={() => {
                     //download the bpmn file from content of workflow.workflow
@@ -287,7 +287,7 @@ useEffect(() => {
                     document.body.appendChild(element); // Required for this to work in FireFox
                     element.click();
                   }} 
-                  variant="default" className="mr-2">
+                  variant="default" className="mr-2 mb-2">
                 <FileDownIcon />
                 </Button>
               
