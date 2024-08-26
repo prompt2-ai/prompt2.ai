@@ -181,7 +181,7 @@ export const Menu = () => {
             <Image src="/logo.svg" alt="P2?" width={40} height={40} />
             <span className="sr-only">P2?</span>
           </Link>
-          <Menubar className="float-end">
+          <Menubar className="float-end mr-12">
             <MenubarMenu>
               <MenubarTrigger>|||</MenubarTrigger>
               <MenubarContent>
@@ -215,9 +215,10 @@ export const Menu = () => {
                     </Link>
                   </MenubarItem>
                 )}
-                <div className="float-right absolute right-3"><ThemeToggle /></div>
+                
               </MenubarContent>
             </MenubarMenu>
+            <div className="float-right absolute right-3"><ThemeToggle /></div>
           </Menubar>
         </nav>
       </header>
