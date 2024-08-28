@@ -164,7 +164,7 @@ export const Menu = () => {
               <Avatar>
                 <AvatarImage src={avatar} />
                 <AvatarFallback>{avatarFallback}</AvatarFallback>
-              </Avatar><span>Sign Out</span>
+              </Avatar><span className="text-black">Sign Out</span>
             </Button>
           ) : (
             <Link href="/login" className="absolute right-16">Sign In</Link>
@@ -202,7 +202,7 @@ export const Menu = () => {
                     <Button
                       onClick={() => signOut()}
                       className="right-3 h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                      <div className="md:block">Sign Out</div>
+                      <div className="md:block text-black">Sign Out</div>
                     </Button>
 
                   </MenubarItem>
