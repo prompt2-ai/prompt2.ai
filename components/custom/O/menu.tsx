@@ -164,7 +164,7 @@ export const Menu = () => {
               <Avatar>
                 <AvatarImage src={avatar} />
                 <AvatarFallback>{avatarFallback}</AvatarFallback>
-              </Avatar><span className="text-black">Sign Out</span>
+              </Avatar><span>Sign Out</span>
             </Button>
           ) : (
             <Link href="/login" className="absolute right-16">Sign In</Link>

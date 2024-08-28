@@ -85,7 +85,7 @@ export const Menu = () => {
                 <Avatar>
                   <AvatarImage src={avatar} />
                   <AvatarFallback>{avatarFallback}</AvatarFallback>
-                </Avatar><span className="text-black">Sign Out</span>
+                </Avatar><span>Sign Out</span>
               </Button>
               <div className="top-1 float-right absolute right-3"><ThemeToggle /></div>
             </nav>
