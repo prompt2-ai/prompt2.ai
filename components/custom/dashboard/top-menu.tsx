@@ -6,6 +6,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react"
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+
 export const Menu = () => {
 
   const { data: session, status } = useSession();
@@ -56,11 +66,18 @@ export const Menu = () => {
         {status=="authenticated" && (<>
           <header className="max-sm:mt-3 mt-2 p-2 sticky items-center gap-4 bg-background/20 h-[48px] px-4 md:px-6">
             <nav className="h-[48] text-lg font-medium flex flex-initial items-center gap-4 md:gap-5 md:text-sm lg:gap-6">
-              <Link className="lg:hidden" href="/O">Home</Link>
-              <Link className="lg:hidden" href="/O/profile">Profile</Link>
-              <Link className="lg:hidden" href="/O/subscriptions">Subscription</Link>
-              <Link href="/dashboard">Dashboard</Link>
-              <div className="hidden lg:inline-block">
+<div className="lg:hidden">          
+  <DropdownMenu >
+  <DropdownMenuTrigger>|||</DropdownMenuTrigger>
+  <DropdownMenuContent className="m-5 lg:hidden">
+    <DropdownMenuItem><Link href="/O">Home</Link></DropdownMenuItem>
+    <DropdownMenuItem><Link href="/O/profile">Profile</Link></DropdownMenuItem>
+    <DropdownMenuItem><Link href="/O/subscriptions">Subscription</Link></DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</div>
+              
+              <div className="hidden md:inline-block">
                 Tokens: {tokens.availableTokens} / {tokens.paidTokens}
               </div>
 
