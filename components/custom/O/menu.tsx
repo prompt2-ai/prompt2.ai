@@ -210,7 +210,7 @@ export const Menu = () => {
                   <MenubarItem>
                     <Link href="/login" legacyBehavior passHref>
                       <a className="right-3 text-center text-black h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
-                        <div className="md:block">Sign In</div>
+                        <div className="md:block text-black">Sign In</div>
                       </a>
                     </Link>
                   </MenubarItem>
