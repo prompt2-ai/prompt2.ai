@@ -5,10 +5,10 @@ import { Ellipsis, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { dashboardMenuEntries } from "@/components/custom/dashboard/menu-entries";
+import { dashboardMenuEntries } from "@/components/custom/dashboard/sidebar-menu-entries";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MobileSideBarTogglerButton } from "@/components/custom/dashboard/mobile-menu-toggle";
+import { MobileSideBarSubMenuTogglerButton } from "@/components/custom/dashboard/sidebar-submenu-toggle";
 import {
   Tooltip,
   TooltipTrigger,
@@ -91,7 +91,7 @@ export function Menu({ isOpen }: MenuProps) {
                     </div>
                   ) : (
                     <div className="w-full" key={index}>
-                      <MobileSideBarTogglerButton
+                      <MobileSideBarSubMenuTogglerButton
                         icon={Icon}
                         label={label}
                         active={active}

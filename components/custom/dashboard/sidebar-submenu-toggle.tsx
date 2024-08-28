@@ -33,7 +33,7 @@ type Submenu = {
   active: boolean;
 };
 
-interface MobileSideBarTogglerButtonProps {
+interface MobileSideBarSubMenuTogglerButtonProps {
   icon: LucideIcon;
   label: string;
   active: boolean;
@@ -41,13 +41,13 @@ interface MobileSideBarTogglerButtonProps {
   isOpen: boolean | undefined;
 }
 
-export function MobileSideBarTogglerButton({
+export function MobileSideBarSubMenuTogglerButton({
   icon: Icon,
   label,
   active,
   submenus,
   isOpen
-}: MobileSideBarTogglerButtonProps) {
+}: MobileSideBarSubMenuTogglerButtonProps) {
   const isSubmenuActive = submenus.some((submenu) => submenu.active);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
 

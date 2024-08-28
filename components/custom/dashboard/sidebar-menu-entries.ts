@@ -39,7 +39,18 @@ import {
             label: "Home",
             active: pathname.includes("/O"),
             icon: Circle,
-            submenus: []
+            submenus: [
+              {
+                href: "/about",
+                label: "About",
+                active: pathname.includes("/O")
+              },
+              {
+                href: "/documentation",
+                label: "Documentation",
+                active: pathname.includes("/O")
+              }
+            ]
           },
           {
             href: "/dashboard",

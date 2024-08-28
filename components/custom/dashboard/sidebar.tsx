@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { cn } from "@/lib/utils";
 import { useStateStore,leftSidebarSwitch } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
-import { Menu } from "@/components/custom/dashboard/menu";
+import { Menu } from "@/components/custom/dashboard/sidebar-menu";
 
 import { SidebarToggle } from "@/components/custom/dashboard/sidebar-toggle";
 
