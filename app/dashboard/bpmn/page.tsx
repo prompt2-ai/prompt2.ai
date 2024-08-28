@@ -410,10 +410,10 @@ export default function Page() {
                 </Tabs>}
                 <hr className='mt-4'/>
                 <h1 className="text-2xl font-bold mt-4">FAQ</h1>
-                <Accordion type="single" collapsible>
+                <Accordion type="single" collapsible className='text-pretty text-left'>
 
                     <AccordionItem value="Im stuck, how can bussiness process be described?">
-                        <AccordionTrigger>Im stuck, how can bussiness process be described?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>Im stuck, how can bussiness process be described?</AccordionTrigger>
                         <AccordionContent>
                             Here are some business workflow examples, formatted as prompts for AI-powered BPMN 2.0 diagram generation:<br />
                             <br />
@@ -452,7 +452,7 @@ export default function Page() {
                     </AccordionItem>
 
                     <AccordionItem value="Can prompt2 generate wrong workflows?">
-                        <AccordionTrigger>The generated workflow is always correct?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>The generated workflow is always correct?</AccordionTrigger>
                         <AccordionContent>                          
 Prompt2.ai has powered by Google Gemini LLM Pro thats why leverages the latest advancements in natural language processing. <br />
 However, it's important to be aware of the following:<br />
@@ -469,7 +469,7 @@ Thank you for your understanding and cooperation as we continue to enhance Promp
                     </AccordionItem>
 
                     <AccordionItem value="How can i download the generated workflow?">
-                        <AccordionTrigger>How can i download the generated workflow?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>How can i download the generated workflow?</AccordionTrigger>
                         <AccordionContent>
                             You can save the BPMN diagram to your account after reviewing it.
                             Subsequently, you can download the saved diagram as a file from your dashboard.
@@ -477,7 +477,7 @@ Thank you for your understanding and cooperation as we continue to enhance Promp
                     </AccordionItem>
 
                     <AccordionItem value="How long it is take to generate workflow?">
-                        <AccordionTrigger>How long it is take to generate workflow?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>How long it is take to generate workflow?</AccordionTrigger>
                         <AccordionContent>
                         The AI model is capable of generating workflows rapidly, often within seconds. 
                         However, the time required can vary depending on the complexity of the desired workflow and the clarity of the input provided. 
@@ -486,14 +486,14 @@ Thank you for your understanding and cooperation as we continue to enhance Promp
                     </AccordionItem>
 
                     {session?.user.role==="subscriber"&&<AccordionItem value="How can i get more tokens?">
-                        <AccordionTrigger>How can i get more tokens?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>How can i get more tokens?</AccordionTrigger>
                         <AccordionContent>
                           You can purchase tokens separately to increase your usage limit.
                         </AccordionContent>
                     </AccordionItem>}
 
                    <AccordionItem value="I've got errors in my workflow, what should I do?">
-                        <AccordionTrigger>I've got errors in my workflow, what should I do?</AccordionTrigger>
+                        <AccordionTrigger className='text-left'>I've got errors in my workflow, what should I do?</AccordionTrigger>
                         <AccordionContent>
                             If you encounter errors in your workflow, please review the prompt you provided to ensure it clearly describes the steps of the workflow process.
                             If you have general questions or unrelated requests, we won't be able to address them here.
