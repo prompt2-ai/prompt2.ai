@@ -55,7 +55,7 @@ export default function Home() {
   <CardFooter>
 
   <p><Link className={cn(
-            buttonVariants({ variant: "default" }),"")} href="/showcases">Showcases</Link></p>
+            buttonVariants({ variant: "default" }),"")} href="/marketplace">Marketplace</Link></p>
   </CardFooter>
 </Card>
 */}

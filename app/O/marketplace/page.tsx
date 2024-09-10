@@ -72,7 +72,7 @@ const MasonryWallBrick = ({
   )
 }
 
-export default function Showcases() {
+export default function MarketPlace() {
   const [workflows, setWorkflows] = useState([] as Workflows);
   const [page, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -97,7 +97,7 @@ export default function Showcases() {
 
   return (
     <div>
-      <h1 className='text-xl'>Business Operations Compendium</h1>
+      <h1 className='text-xl'>BPMN Blueprints</h1>
       <MasonryWallBrickCourse>
         {workflows.map((workflow: Workflow, id) => (
           <MasonryWallBrick key={id} brick={workflow}/>

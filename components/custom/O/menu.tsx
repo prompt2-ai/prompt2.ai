@@ -119,9 +119,9 @@ export const Menu = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               {/*<NavigationMenuItem>
-                <Link href="/O/showcases" legacyBehavior passHref>
+                <Link href="/O/marketplace" legacyBehavior passHref>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Showcases
+                    Marketplace
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>*/}
@@ -188,7 +188,7 @@ export const Menu = () => {
                 <MenubarItem>
                   <Link href="/documentation">Documentation</Link>
                 </MenubarItem>
-               {/* <MenubarItem><Link href="/O/showcases">Showcases</Link></MenubarItem>*/}
+               {/* <MenubarItem><Link href="/O/marketplace">Marketplace</Link></MenubarItem>*/}
                 <MenubarSeparator />
                 <MenubarItem><Link href="/O/subscriptions">
                   {isLogged && "Subscription"}
