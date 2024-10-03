@@ -68,6 +68,17 @@ const Footer = () => {
                   </svg>
                   <span className="sr-only">GitHub page</span>
               </Link>
+              <Link href="/O/contact" className="dark:text-gray-400 light:text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <g transform="matrix(.035198 0 0 .036777 1.0731 .52692)">
+                  <path fillRule="evenodd" d="m472.6 75.3h-433.2c-21.7 0-39.4 17.6-39.4 39.4v297.6c0 21.7 17.7 39.4 39.4 39.4h433.2c21.7 0 39.4-17.7 39.4-39.4v-297.6c0-21.8-17.7-39.4-39.4-39.4zm20.1 336.9c0 11.1-9 20.1-20.1 20.1h-433.2c-11.1 0-20.2-9-20.2-20.1v-297.5c0-11.1 9-20.2 20.2-20.2h433.2c11.1 0 20.1 9 20.1 20.2z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="m416.2 170c2.2 0 4.4-0.7 6.2-2.2l45.7-38.2c4.1-3.4 4.6-9.5 1.2-13.6s-9.5-4.6-13.6-1.2l-45.7 38.2c-4.1 3.4-4.6 9.5-1.2 13.6 1.9 2.2 4.7 3.4 7.4 3.4z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="m376.7 193.4c-3.4-4.1-9.5-4.6-13.6-1.2l-105.4 88.2-206.4-165.7c-4.1-3.3-10.2-2.7-13.5 1.5-3.3 4.1-2.7 10.2 1.5 13.5l212.6 170.7c1.8 1.4 3.9 2.1 6 2.1 2.2 0 4.4-0.8 6.2-2.2l111.4-93.3c4-3.4 4.6-9.5 1.2-13.6z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="m330.9 274.4c-4-3.6-10-3.3-13.6 0.7-3.6 3.9-3.3 10 0.7 13.6l137.4 124.1c1.8 1.7 4.1 2.5 6.4 2.5 2.6 0 5.2-1.1 7.1-3.2 3.6-3.9 3.3-10-0.7-13.6z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="m176.2 274.4-137.4 124.1c-3.9 3.6-4.3 9.7-0.7 13.6 1.9 2.1 4.5 3.2 7.1 3.2 2.3 0 4.6-0.8 6.4-2.5l137.4-124.1c3.9-3.6 4.3-9.7 0.7-13.6-3.4-4-9.5-4.3-13.5-0.7z" clipRule="evenodd"/>
+                </g>
+              </svg>
+              </Link>
           </div>
       </div>
     </div>
